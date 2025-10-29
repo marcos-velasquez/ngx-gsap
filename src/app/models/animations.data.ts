@@ -21,7 +21,7 @@ export const animations: Animation[] = [
   {
     name: 'Slide In',
     category: 'entrance',
-    value: "slideIn({ x: '-100%' })",
+    value: 'slideIn({ y: "100%" })',
     description: 'Slide in with optional rotation.',
     examples: ["slideIn({ x: '-100%', opacity: 0, rotate: 0 })", "slideIn({ y: '100%' })"],
     gradient: 'from-amber-200 to-amber-400',

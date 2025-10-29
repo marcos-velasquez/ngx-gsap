@@ -36,73 +36,70 @@ export class Presets {
   }
 
   /**
-   * Zoom in animation with customizable direction, scale, and opacity.ß
+   * Zoom in animation - element scales up from small to normal size with fade.
+   * @param scale - Starting scale (default: 0.1)
    * @param x - Horizontal starting position (default: '0')
    * @param y - Vertical starting position (default: '0')
+   * @param opacity - Starting opacity (default: 0)
+   * @example zoomIn() // Simple zoom in from 10% scale
+   * @example zoomIn({ x: '0', y: '100%' }) // Zoom in from bottom
+   * @example zoomIn({ x: '100%', y: '0' }) // Zoom in from right
+   * @example zoomIn({ duration: 1.5 }) // Slower zoom
+   */
+  public static zoomIn({ x = '0', y = '0', scale = 0.1, opacity = 0 } = {}): string {
+    return `set:opacity:${opacity};set:scale:${scale};x:${x}:0;y:${y}:0;to:opacity:1:<@ease=power2.in;to:scale:1:<30%`;
+  }
+
+  /**
+   * Slide in animation - element slides in from a specified direction.
+   * @param x - Horizontal starting position (default: '0')
+   * @param y - Vertical starting position (default: '0')
+   * @example slideIn() // Slide in from left
+   * @example slideIn({ x: '100%' }) // Slide in from right
+   * @example slideIn({ y: '100%' }) // Slide in from up
+   * @example slideIn({ x: '-100%', y: '-100%' }) // Slide in from down/left
+   */
+  public static slideIn({ x = '0', y = '0' } = {}): string {
+    return `x:${x}:0;y:${y}:0`;
+  }
+
+  /**
+   * Bounce in animation - element bounces in with elastic scaling effect.
    * @param scale - Starting scale (default: 0.3)
    * @param opacity - Starting opacity (default: 0)
-   * @example zoomIn() // Simple zoom in
-   * @example zoomIn({ scale: 0.5 }) // Zoom from 50%
-   * @example zoomIn({ y: '-100%', scale: 0.3 }) // Zoom in from top
-   * @example zoomIn({ x: '100%', scale: 0.3 }) // Zoom in from right
-   */
-  public static zoomIn({ x = '0', y = '0', scale = 0.3 } = {}): string {
-    return `x:${x}:>;y:${y}:0;scale:${scale}:0`;
-  }
-
-  /**
-   * Slide in animation with customizable direction, rotation, scale, and opacity.
-   * @param x - Horizontal starting position (default: '0')
-   * @param y - Vertical starting position (default: '0')
-   * @param opacity - Starting opacity (default: 0)
-   * @param rotate - Starting rotation in degrees (default: 0)
-   * @example slideIn({ x: '-100%' }) // Slide in from left
-   * @example slideIn({ y: '100%' }) // Slide in from bottom
-   * @example slideIn({ x: '100%', opacity: 0.5 }) // Slide from right with fade
-   * @example slideIn({ x: '-100%', rotate: -180 }) // Slide with rotation and delay
-   */
-  public static slideIn({ x = '0', y = '0', opacity = 0, rotate = 0 } = {}): string {
-    const rotateAnim = rotate !== 0 ? `;rotate:${rotate}:0;to:rotate:0:>` : '';
-    return `x:${x}:>;y:${y}:0;opacity:${opacity}:0@duration=1.5;<${rotateAnim}`;
-  }
-
-  /**
-   * Bounce in animation with customizable scale values and opacity.
-   * @param startScale - Initial scale (default: 0.3)
-   * @param opacity - Starting opacity (default: 0)
    * @example bounceIn() // Standard bounce in
-   * @example bounceIn({ startScale: 0.5 }) // Less dramatic start
-   * @example bounceIn({ opacity: 0 }) // Bounce with fade
+   * @example bounceIn({ scale: 0.1 }) // Bounce from very small
+   * @example bounceIn({ opacity: 0.5 }) // Bounce with partial fade
+   * @example bounceIn({ duration: 1 }) // Slower bounce
    */
-  public static bounceIn({ startScale = 0.3, opacity = 0 } = {}): string {
-    return `scale:${startScale}:>;opacity:${opacity}:0;to:scale:1.1@ease=cubic-bezier(0.215,0.61,0.355,1);to:scale:0.8;to:scale:1.15;to:scale:0.9;to:scale:1`;
+  public static bounceIn({ scale = 0.3, opacity = 0 } = {}): string {
+    return `scale:${scale}:0@ease=cubic-bezier(0.215,0.61,0.355,1);opacity:${opacity}:0;to:scale:1.1@position=0.2,ease=cubic-bezier(0.215,0.61,0.355,1);to:scale:0.9@position=0.4,ease=cubic-bezier(0.215,0.61,0.355,1);to:opacity:1@position=0.6;to:scale:1.03@position=0.6,ease=cubic-bezier(0.215,0.61,0.355,1);to:scale:0.97@position=0.8,ease=cubic-bezier(0.215,0.61,0.355,1);to:scale:1@ease=cubic-bezier(0.215,0.61,0.355,1)`;
   }
 
   /**
-   * Rotate in animation with customizable direction, rotation, and opacity.
-   * @param x - Horizontal starting position (default: '0')
-   * @param y - Vertical starting position (default: '0')
+   * Rotate in animation - element rotates in with fade.
    * @param rotate - Starting rotation in degrees (default: -200)
    * @param opacity - Starting opacity (default: 0)
-   * @example rotateIn() // Rotate in from -200°
-   * @example rotateIn({ y: '100%', rotate: -45 }) // Rotate in from bottom
+   * @example rotateIn() // Rotate in from -200 degrees
    * @example rotateIn({ rotate: -360 }) // Full rotation entrance
+   * @example rotateIn({ rotate: 180 }) // Half rotation entrance
+   * @example rotateIn({ duration: 1.5 }) // Slower rotation
    */
-  public static rotateIn({ x = '0', y = '0', rotate = -200, opacity = 0 } = {}): string {
-    return `x:${x}:>;y:${y}:0;rotate:${rotate}:0;opacity:${opacity}:0;to:rotate:0:>;to:opacity:1:0`;
+  public static rotateIn({ rotate = -200, opacity = 0 } = {}): string {
+    return `rotate:${rotate}:0;opacity:${opacity}:0;to:rotate:0;to:opacity:1`;
   }
 
   /**
-   * Flip in animation with customizable axis, rotation and opacity.
-   * @param axis - Rotation axis: 'x', 'y', or 'z' (default: 'y')
+   * Flip in animation - element flips in on specified axis with perspective.
+   * @param axis - Rotation axis: 'x' or 'y' (default: 'x')
    * @param opacity - Starting opacity (default: 0)
-   * @example flipIn() // Standard Y-axis flip in
-   * @example flipIn({ axis: 'x' }) // X-axis flip with bounce
-   * @example flipIn({ axis: 'z' }) // Z-axis flip
+   * @example flipIn() // Flip in on X-axis
+   * @example flipIn({ axis: 'y' }) // Flip in on Y-axis
+   * @example flipIn({ duration: 1 }) // Slower flip
    */
-  public static flipIn({ axis = 'y', opacity = 0 } = {}): string {
-    const rotateAxis = axis === 'x' ? 'rotateX' : axis === 'z' ? 'rotateZ' : 'rotateY';
-    return `${rotateAxis}:90:>@ease=ease-in;opacity:${opacity}:0;to:${rotateAxis}:-20:>@ease=ease-in;to:${rotateAxis}:10:>;to:opacity:1:0;to:${rotateAxis}:-5:>;to:${rotateAxis}:0:>`;
+  public static flipIn({ axis = 'x', opacity = 0 } = {}): string {
+    const rotateAxis = axis === 'x' ? 'rotateX' : 'rotateY';
+    return `${rotateAxis}:90:0@ease=ease-in;opacity:${opacity}:0;to:${rotateAxis}:-20@position=0.4,ease=ease-in;to:${rotateAxis}:10@position=0.6;to:opacity:1@position=0.6;to:${rotateAxis}:-5@position=0.8;to:${rotateAxis}:0`;
   }
 
   /**
