@@ -39,7 +39,7 @@ export const animations: Animation[] = [
   {
     name: 'Bounce In',
     category: 'entrance',
-    value: 'bounceIn',
+    value: 'bounceIn()',
     description: 'Bounce in with elastic effect.',
     examples: ['bounceIn', 'bounceIn({ scale: 0, opacity: 0 })'],
     gradient: 'from-blue-300 to-blue-500',

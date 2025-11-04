@@ -65,15 +65,23 @@ export class Presets {
 
   /**
    * Bounce in animation - element bounces in with elastic scaling effect.
-   * @param scale - Starting scale (default: 0.3)
+   * @param scale - Starting scale (default: 0.75)
+   * @param x - Horizontal starting position (default: '0')
+   * @param y - Vertical starting position (default: '0')
    * @param opacity - Starting opacity (default: 0)
+   * @param duration - Animation duration (default: 1.5)
+   * @remarks The animation uses conditional logic to determine the primary property:
+   * - If scale > 0, uses the 'scale' property
+   * - If x !== '0', uses the 'x' property
+   * - Otherwise, uses the 'y' property
    * @example bounceIn() // Standard bounce in
    * @example bounceIn({ scale: 0.1 }) // Bounce from very small
    * @example bounceIn({ opacity: 0.5 }) // Bounce with partial fade
    * @example bounceIn({ duration: 1 }) // Slower bounce
    */
-  public static bounceIn({ scale = 0.3, opacity = 0 } = {}): string {
-    return `scale:${scale}:0@ease=cubic-bezier(0.215,0.61,0.355,1);opacity:${opacity}:0;to:scale:1.1@position=0.2,ease=cubic-bezier(0.215,0.61,0.355,1);to:scale:0.9@position=0.4,ease=cubic-bezier(0.215,0.61,0.355,1);to:opacity:1@position=0.6;to:scale:1.03@position=0.6,ease=cubic-bezier(0.215,0.61,0.355,1);to:scale:0.97@position=0.8,ease=cubic-bezier(0.215,0.61,0.355,1);to:scale:1@ease=cubic-bezier(0.215,0.61,0.355,1)`;
+  public static bounceIn({ scale = 0.75, x = '0', y = '0', opacity = 0, duration = 1.5 } = {}): string {
+    const property = scale > 0 ? { k: 'scale', v: scale } : x !== '0' ? { k: 'x', v: x } : { k: 'y', v: y };
+    return `${property.k}:${property.v}:0@ease=bounce.out,duration=${duration};opacity:${opacity}:0`;
   }
 
   /**
