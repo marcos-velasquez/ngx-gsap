@@ -71,43 +71,51 @@ export class Presets {
    * @param opacity - Starting opacity (default: 0)
    * @param duration - Animation duration (default: 1.5)
    * @remarks The animation uses conditional logic to determine the primary property:
-   * - If scale > 0, uses the 'scale' property
    * - If x !== '0', uses the 'x' property
-   * - Otherwise, uses the 'y' property
+   * - If y !== '0', uses the 'y' property
+   * - Otherwise, uses the 'scale' property
    * @example bounceIn() // Standard bounce in
    * @example bounceIn({ scale: 0.1 }) // Bounce from very small
    * @example bounceIn({ opacity: 0.5 }) // Bounce with partial fade
    * @example bounceIn({ duration: 1 }) // Slower bounce
    */
   public static bounceIn({ scale = 0.75, x = '0', y = '0', opacity = 0, duration = 1.5 } = {}): string {
-    const property = scale > 0 ? { k: 'scale', v: scale } : x !== '0' ? { k: 'x', v: x } : { k: 'y', v: y };
+    const property = x !== '0' ? { k: 'x', v: x } : y !== '0' ? { k: 'y', v: y } : { k: 'scale', v: scale };
     return `${property.k}:${property.v}:0@ease=bounce.out,duration=${duration};opacity:${opacity}:0`;
   }
 
   /**
    * Rotate in animation - element rotates in with fade.
    * @param rotate - Starting rotation in degrees (default: -200)
+   * @param x - Horizontal starting position (default: '0')
+   * @param y - Vertical starting position (default: '0')
    * @param opacity - Starting opacity (default: 0)
    * @example rotateIn() // Rotate in from -200 degrees
    * @example rotateIn({ rotate: -360 }) // Full rotation entrance
    * @example rotateIn({ rotate: 180 }) // Half rotation entrance
    * @example rotateIn({ duration: 1.5 }) // Slower rotation
    */
-  public static rotateIn({ rotate = -200, opacity = 0 } = {}): string {
-    return `rotate:${rotate}:0;opacity:${opacity}:0;to:rotate:0;to:opacity:1`;
+  public static rotateIn({ rotate = '-200deg', x = '0', y = '0', opacity = 0 } = {}): string {
+    return `rotate:${rotate}:0;x:${x}:0;y:${y}:0;opacity:${opacity}:0;`;
   }
 
   /**
-   * Flip in animation - element flips in on specified axis with perspective.
+   * Flip in animation - element flips in on specified axis with multi-stage rotation.
    * @param axis - Rotation axis: 'x' or 'y' (default: 'x')
    * @param opacity - Starting opacity (default: 0)
+   * @remarks The animation performs a multi-stage flip:
+   * - Starts at 90 degrees
+   * - Rotates to -20 degrees at 40% progress
+   * - Rotates to 10 degrees at 60% progress (opacity becomes 1)
+   * - Rotates to -5 degrees at 80% progress
+   * - Ends at 0 degrees
    * @example flipIn() // Flip in on X-axis
    * @example flipIn({ axis: 'y' }) // Flip in on Y-axis
    * @example flipIn({ duration: 1 }) // Slower flip
    */
   public static flipIn({ axis = 'x', opacity = 0 } = {}): string {
     const rotateAxis = axis === 'x' ? 'rotateX' : 'rotateY';
-    return `${rotateAxis}:90:0@ease=ease-in;opacity:${opacity}:0;to:${rotateAxis}:-20@position=0.4,ease=ease-in;to:${rotateAxis}:10@position=0.6;to:opacity:1@position=0.6;to:${rotateAxis}:-5@position=0.8;to:${rotateAxis}:0`;
+    return `set:transformPerspective:400;${rotateAxis}:90:0;opacity:${opacity}:0;to:${rotateAxis}:-20:0.4;to:${rotateAxis}:10:0.6;to:opacity:1:0.6;to:${rotateAxis}:-5:0.8;to:${rotateAxis}:0:>`;
   }
 
   /**
@@ -120,61 +128,85 @@ export class Presets {
    * @example rollIn({ degrees: -240 }) // Double roll
    */
   public static rollIn({ degrees = -120, distance = '-100%', opacity = 0 } = {}): string {
-    return `rotate:${degrees}:>;x:${distance}:0;opacity:${opacity}:0;to:rotate:0:>;to:x:0:0;to:opacity:1:0`;
+    return `rotate:${degrees}:0;x:${distance}:0;opacity:${opacity}:0;to:rotate:0:>;to:x:0:>;to:opacity:1:>`;
   }
 
   /**
    * Light speed in animation with skew effect.
    * @param distance - Horizontal starting distance (default: '100%')
-   * @param skew1 - Initial skew angle (default: -30)
-   * @param skew2 - Mid skew angle (default: 20)
-   * @param skew3 - Final skew angle (default: 0)
+   * @param startSkew - Initial skew angle (default: -30)
+   * @param midSkew - Mid skew angle at 80% progress (default: 5)
+   * @param endSkew - Final skew angle (default: 0)
    * @param opacity - Starting opacity (default: 0)
+   * @remarks The animation performs a skew transition:
+   * - Starts with startSkew angle
+   * - Transitions to midSkew at 80% progress
+   * - Ends with endSkew angle
    * @example lightSpeedIn() // Fast entrance from right
-   * @example lightSpeedIn({ distance: '-100%', skew1: 30, skew2: -20, skew3: 5 }) // From left
+   * @example lightSpeedIn({ distance: '-100%', startSkew: 30, midSkew: -5, endSkew: 0 }) // From left
    */
-  public static lightSpeedIn({ distance = '100%', skew1 = -30, skew2 = 20, skew3 = 0, opacity = 0 } = {}): string {
-    return `x:${distance}:>;skewX:${skew1}:0;opacity:${opacity}:0;to:skewX:${skew2}:>@ease=ease-out;to:opacity:1:0;to:skewX:${skew3}:>;to:x:0:>;to:skewX:0:0`;
+  public static lightSpeedIn({
+    distance = '100%',
+    startSkew = -30,
+    midSkew = 5,
+    endSkew = 0,
+    opacity = 0,
+  } = {}): string {
+    return `x:${distance}:0;skewX:${startSkew}:0;opacity:${opacity}:0;to:skewX:${midSkew}:<80%;to:skewX:${endSkew}:>`;
   }
 
   /**
    * Swing in animation with progressive rotation.
-   * @param start - Starting rotation (default: 15)
-   * @param mid1 - First middle rotation (default: -15)
-   * @param mid2 - Second middle rotation (default: 5)
-   * @param end - Ending rotation (default: 0)
+   * @param startRotate - Starting rotation (default: 15)
+   * @param midRotate1 - First middle rotation (default: -15)
+   * @param midRotate2 - Second middle rotation (default: 5)
+   * @param endRotate - Ending rotation (default: 0)
+   * @param opacity - Starting opacity (default: 0)
    * @example swingIn() // Standard swing entrance
-   * @example swingIn({ start: 20, mid1: -15 }) // Wider swing
+   * @example swingIn({ startRotate: 20, midRotate1: -15 }) // Wider swing
    */
-  public static swingIn({ start = 15, mid1 = -15, mid2 = 5, end = 0 } = {}): string {
-    return `rotate:${start}:>;to:rotate:${mid1}:>;to:rotate:${mid2}:>;to:rotate:${end}:>`;
+  public static swingIn({
+    startRotate = 15,
+    midRotate1 = -15,
+    midRotate2 = 5,
+    endRotate = 0,
+    opacity = 0,
+  } = {}): string {
+    return `rotate:${startRotate}:0;opacity:${opacity}:0;to:rotate:${midRotate1}:<;to:rotate:${midRotate2}:>;to:rotate:${endRotate}:>;to:opacity:1:>`;
   }
 
   /**
-   * Zoom out animation with customizable scale and opacity.
-   * @param scale - Ending scale (default: 0)
+   * Zoom out animation - element scales down to small size with fade and optional movement.
+   * @param x - Horizontal ending position (default: '0')
+   * @param y - Vertical ending position (default: '0')
+   * @param scale - Ending scale (default: 0.1)
    * @param opacity - Ending opacity (default: 0)
-   * @example zoomOut() // Zoom out to nothing
-   * @example zoomOut({ scale: 0.5 }) // Zoom out to 50%
+   * @example zoomOut() // Simple zoom out to 10% scale
+   * @example zoomOut({ x: '0', y: '100%' }) // Zoom out to bottom
+   * @example zoomOut({ x: '100%', y: '0' }) // Zoom out to right
    * @example zoomOut({ scale: 0.3, duration: 2 }) // Slow zoom out
    */
-  public static zoomOut({ scale = 0, opacity = 0 } = {}): string {
-    return `to:scale:${scale}:>;to:opacity:${opacity}:0`;
+  public static zoomOut({ x = '0', y = '0', scale = 0.1, opacity = 0 } = {}): string {
+    return `to:x:${x}:0;to:y:${y}:0;to:scale:${scale}:0@ease=power2.out;to:opacity:${opacity}:0`;
   }
 
   /**
-   * Flip out animation with customizable axis, rotation and opacity.
-   * @param axis - Rotation axis: 'x', 'y', or 'z' (default: 'y')
-   * @param degrees - Rotation degrees (default: 90)
+   * Flip out animation - element flips out on specified axis with multi-stage rotation.
+   * @param axis - Rotation axis: 'x' or 'y' (default: 'x')
    * @param opacity - Ending opacity (default: 0)
-   * @example flipOut() // Standard Y-axis flip out
-   * @example flipOut({ axis: 'x', degrees: 90 }) // X-axis flip out
-   * @example flipOut({ degrees: 180 }) // Half flip out
-   * @example flipOut({ degrees: -90 }) // Flip out reverse
+   * @remarks The animation performs a multi-stage flip (reverse of flipIn):
+   * - Starts at 0 degrees
+   * - Rotates to 5 degrees at 20% progress
+   * - Rotates to -10 degrees at 40% progress (opacity becomes 0)
+   * - Rotates to 20 degrees at 60% progress
+   * - Ends at 90 degrees
+   * @example flipOut() // Flip out on X-axis
+   * @example flipOut({ axis: 'y' }) // Flip out on Y-axis
+   * @example flipOut({ duration: 1 }) // Slower flip
    */
-  public static flipOut({ axis = 'y', degrees = 90, opacity = 0 } = {}): string {
-    const rotateAxis = axis === 'x' ? 'rotateX' : axis === 'z' ? 'rotateZ' : 'rotateY';
-    return `to:${rotateAxis}:${degrees}:>;to:opacity:${opacity}:0`;
+  public static flipOut({ axis = 'x', opacity = 0 } = {}): string {
+    const rotateAxis = axis === 'x' ? 'rotateX' : 'rotateY';
+    return `set:transformPerspective:400;to:${rotateAxis}:5:0.2;to:${rotateAxis}:-10:0.4;to:opacity:${opacity}:0.4;to:${rotateAxis}:20:0.6;to:${rotateAxis}:90:>`;
   }
 
   /**
