@@ -115,7 +115,7 @@ export class Presets {
    */
   public static flipIn({ axis = 'x', opacity = 0 } = {}): string {
     const rotateAxis = axis === 'x' ? 'rotateX' : 'rotateY';
-    return `set:transformPerspective:400;${rotateAxis}:90:0;opacity:${opacity}:0;to:${rotateAxis}:-20:0.4;to:${rotateAxis}:10:0.6;to:opacity:1:0.6;to:${rotateAxis}:-5:0.8;to:${rotateAxis}:0:>`;
+    return `set:transformPerspective:400;${rotateAxis}:90:0;opacity:${opacity}:0;to:${rotateAxis}:-20:0.4;to:${rotateAxis}:10:0.6;to:opacity:1:0.6;to:${rotateAxis}:-5:0.8;to:${rotateAxis}:0`;
   }
 
   /**
@@ -128,7 +128,7 @@ export class Presets {
    * @example rollIn({ degrees: -240 }) // Double roll
    */
   public static rollIn({ degrees = -120, distance = '-100%', opacity = 0 } = {}): string {
-    return `rotate:${degrees}:0;x:${distance}:0;opacity:${opacity}:0;to:rotate:0:>;to:x:0:>;to:opacity:1:>`;
+    return `rotate:${degrees}:0;x:${distance}:0;opacity:${opacity}:0;`;
   }
 
   /**
@@ -152,7 +152,7 @@ export class Presets {
     endSkew = 0,
     opacity = 0,
   } = {}): string {
-    return `x:${distance}:0;skewX:${startSkew}:0;opacity:${opacity}:0;to:skewX:${midSkew}:<80%;to:skewX:${endSkew}:>`;
+    return `x:${distance}:0;skewX:${startSkew}:0;opacity:${opacity}:0;to:skewX:${midSkew}:<25%;to:skewX:${endSkew}`;
   }
 
   /**
@@ -172,41 +172,40 @@ export class Presets {
     endRotate = 0,
     opacity = 0,
   } = {}): string {
-    return `rotate:${startRotate}:0;opacity:${opacity}:0;to:rotate:${midRotate1}:<;to:rotate:${midRotate2}:>;to:rotate:${endRotate}:>;to:opacity:1:>`;
+    return `rotate:${startRotate}:0;opacity:${opacity}:0;to:rotate:${midRotate1}:<;to:rotate:${midRotate2}:>;to:rotate:${endRotate}:>`;
   }
 
   /**
    * Zoom out animation - element scales down to small size with fade and optional movement.
    * @param x - Horizontal ending position (default: '0')
    * @param y - Vertical ending position (default: '0')
-   * @param scale - Ending scale (default: 0.1)
+   * @param scale - Ending scale (default: .3)
    * @param opacity - Ending opacity (default: 0)
    * @example zoomOut() // Simple zoom out to 10% scale
    * @example zoomOut({ x: '0', y: '100%' }) // Zoom out to bottom
    * @example zoomOut({ x: '100%', y: '0' }) // Zoom out to right
    * @example zoomOut({ scale: 0.3, duration: 2 }) // Slow zoom out
    */
-  public static zoomOut({ x = '0', y = '0', scale = 0.1, opacity = 0 } = {}): string {
+  public static zoomOut({ x = '0', y = '0', scale = 0.3, opacity = 0 } = {}): string {
     return `to:x:${x}:0;to:y:${y}:0;to:scale:${scale}:0@ease=power2.out;to:opacity:${opacity}:0`;
   }
 
   /**
-   * Flip out animation - element flips out on specified axis with multi-stage rotation.
+   * Flip out animation - element flips out on specified axis with perspective.
    * @param axis - Rotation axis: 'x' or 'y' (default: 'x')
    * @param opacity - Ending opacity (default: 0)
-   * @remarks The animation performs a multi-stage flip (reverse of flipIn):
-   * - Starts at 0 degrees
-   * - Rotates to 5 degrees at 20% progress
-   * - Rotates to -10 degrees at 40% progress (opacity becomes 0)
-   * - Rotates to 20 degrees at 60% progress
-   * - Ends at 90 degrees
+   * @remarks The animation performs a two-stage flip with perspective:
+   * - Uses perspective of 400px
+   * - Rotates to -5 degrees
+   * - Rotates to 90 degrees (fully flipped out)
+   * - Opacity fades at 20% progress
    * @example flipOut() // Flip out on X-axis
    * @example flipOut({ axis: 'y' }) // Flip out on Y-axis
    * @example flipOut({ duration: 1 }) // Slower flip
    */
   public static flipOut({ axis = 'x', opacity = 0 } = {}): string {
     const rotateAxis = axis === 'x' ? 'rotateX' : 'rotateY';
-    return `set:transformPerspective:400;to:${rotateAxis}:5:0.2;to:${rotateAxis}:-10:0.4;to:opacity:${opacity}:0.4;to:${rotateAxis}:20:0.6;to:${rotateAxis}:90:>`;
+    return `set:transformPerspective:400;to:${rotateAxis}:-5;to:${rotateAxis}:90;to:opacity:${opacity}:<20%`;
   }
 
   /**
@@ -219,21 +218,18 @@ export class Presets {
    * @example rollOut({ degrees: 240 }) // Double roll out
    */
   public static rollOut({ degrees = 120, distance = '100%', opacity = 0 } = {}): string {
-    return `to:rotate:${degrees}:>;to:x:${distance}:0;to:opacity:${opacity}:0`;
+    return `to:rotate:${degrees}:0;to:x:${distance}:0;to:opacity:${opacity}:0`;
   }
 
   /**
    * Pulse animation that scales up and down with optional fade.
    * @param scale1 - Peak scale value (default: 1.05)
-   * @param opacity - Starting opacity for fade effect (default: 1, no fade)
    * @example pulse() // Subtle pulse
    * @example pulse({ scale1: 1.1 }) // Stronger pulse
-   * @example pulse({ opacity: 0 }) // Pulse with fade in
-   * @example pulse({ duration: 0.5, repeat: 3 }) // Pulse 4 times
+   * @example pulse({ repeat: 3, yoyo: true }) // Pulse 4 times with yoyo effect
    */
-  public static pulse({ scale1 = 1.05, opacity = 1 } = {}): string {
-    const opacityAnim = opacity !== 1 ? `opacity:${opacity}:0;` : '';
-    return `${opacityAnim}to:scale:${scale1}:>@ease=ease-in-out;to:scale:1:>@ease=ease-in-out`;
+  public static pulse({ scale1 = 1.05 } = {}): string {
+    return `to:scale:${scale1};to:scale:1`;
   }
 
   /**
@@ -245,8 +241,9 @@ export class Presets {
    * @example shake({ y: '10px' }) // Vertical shake
    * @example shake({ x: '10px', y: '10px' }) // Diagonal shake
    */
-  public static shake({ x = '10px', y = '0' } = {}): string {
-    return `to:x:-${x}:>;to:y:-${y}:0;to:x:${x}:>;to:y:${y}:0;to:x:-${x}:>;to:y:-${y}:0;to:x:${x}:>;to:y:${y}:0;to:x:-${x}:>;to:y:-${y}:0;to:x:0:>;to:y:0:0`;
+  public static shake({ axis = 'x', distance = '10', repeat = 3 } = {}): string {
+    const shakeAxis = axis === 'x' ? 'x' : 'y';
+    return `to:${shakeAxis}:${distance};to:${shakeAxis}:-${distance};to:${shakeAxis}:0`;
   }
 
   /**
