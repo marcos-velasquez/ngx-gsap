@@ -7,8 +7,8 @@ export class AnimateDirective extends GsapHostDirective {
   public readonly sequence = input.required<string>({ alias: 'animate' });
 
   public registerAnimation() {
-    new AnimationParser(this.sequence()).parse().forEach((animation) => {
-      this.timeline()[animation.method](animation.selector, animation.vars, animation.position);
-    });
+    const { animations, timelineVars } = new AnimationParser(this.sequence()).parse();
+    this.timeline().configure(timelineVars);
+    animations.forEach((anim) => this.timeline()[anim.method](anim.selector, anim.vars, anim.position));
   }
 }

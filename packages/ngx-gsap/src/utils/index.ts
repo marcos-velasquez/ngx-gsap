@@ -7,3 +7,4 @@ export * from './regex-patterns';
 export * from './object-normalizer';
 export * from './object-parser';
 export * from './object-serializer';
+export * from './is';

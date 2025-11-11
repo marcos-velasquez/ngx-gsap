@@ -33,4 +33,11 @@ export class RegexPatterns {
    * Sequence delimiter
    */
   public static readonly SEQUENCE_DELIMITER = /;/;
+
+  /**
+   * Matches timeline properties syntax: timeline@props
+   * Example: "timeline@repeat=3,yoyo=true"
+   * Groups: [1] = props string
+   */
+  public static readonly TIMELINE_PROPS = /timeline@([^;]+)/;
 }

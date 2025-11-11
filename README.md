@@ -132,6 +132,26 @@ For complete control, use raw GSAP syntax:
 
 **Note:** The `set` method instantly sets properties without animation, useful for establishing initial states.
 
+### Timeline Properties
+
+Apply properties to the entire timeline using `timeline@`:
+
+```html
+<!-- Repeat entire animation sequence -->
+<div animateClick="timeline@repeat=3,yoyo=true;to:x:10;to:x:-10;to:x:0">Shake 4 times</div>
+
+<!-- Infinite loop -->
+<div animateLoad="timeline@repeat=-1;pulse">Pulse forever</div>
+
+<!-- Timeline properties can be anywhere in the sequence -->
+<div animateClick="fadeIn;timeline@repeat=2;pulse">Fade then pulse 3 times</div>
+<div animateClick="shake;timeline@duration=2,ease=power2.out">Slow shake</div>
+```
+
+**Syntax:** `timeline@[props]`
+
+Timeline properties apply to the **entire animation sequence**, regardless of where `timeline@` appears.
+
 ### Combining Animations
 
 Combine multiple animations using semicolons:

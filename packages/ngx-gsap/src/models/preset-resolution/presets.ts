@@ -234,16 +234,17 @@ export class Presets {
 
   /**
    * Shake animation with horizontal and/or vertical movement.
-   * @param x - Horizontal shake distance (default: '10px')
-   * @param y - Vertical shake distance (default: '0')
-   * @example shake() // Horizontal shake
-   * @example shake({ x: '15px' }) // Stronger horizontal shake
-   * @example shake({ y: '10px' }) // Vertical shake
-   * @example shake({ x: '10px', y: '10px' }) // Diagonal shake
+   * @param axis - Shake axis: 'x' or 'y' (default: 'x')
+   * @param distance - Shake distance (default: '10')
+   * @param repeat - Number of times to repeat (default: 5)
+   * @example shake() // Horizontal shake, repeats 5 times
+   * @example shake({ distance: '15' }) // Stronger shake
+   * @example shake({ axis: 'y' }) // Vertical shake
+   * @example shake({ repeat: 3 }) // Shake 3 times
    */
-  public static shake({ axis = 'x', distance = '10', repeat = 3 } = {}): string {
+  public static shake({ axis = 'x', distance = '10', repeat = 5 } = {}): string {
     const shakeAxis = axis === 'x' ? 'x' : 'y';
-    return `to:${shakeAxis}:${distance};to:${shakeAxis}:-${distance};to:${shakeAxis}:0`;
+    return `timeline@repeat=${repeat};to:${shakeAxis}:${distance}@duration=0.1;to:${shakeAxis}:-${distance}@duration=0.1;to:${shakeAxis}:0@duration=0`;
   }
 
   /**

@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import { Is } from '../../utils';
 import { Trigger, TriggerRef, TriggerType } from '../trigger';
 
 export class Timeline {
@@ -19,6 +20,13 @@ export class Timeline {
 
   public with(triggerType: TriggerType): Timeline {
     this.triggerRef = new Trigger(this.element).when(triggerType).then(() => this.play());
+    return this;
+  }
+
+  public configure(vars: gsap.TimelineVars): Timeline {
+    Object.entries(vars)
+      .filter(([key]) => new Is(this.gsapTimeline[key]).function())
+      .forEach(([key, value]) => this.gsapTimeline[key](value));
     return this;
   }
 
