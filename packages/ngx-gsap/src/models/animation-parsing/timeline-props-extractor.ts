@@ -1,3 +1,4 @@
+import { gsap } from 'gsap';
 import { RegexPatterns } from '../../utils';
 import { PropsParser } from './props-parser';
 

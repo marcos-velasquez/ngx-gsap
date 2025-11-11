@@ -1,3 +1,4 @@
+import { gsap } from 'gsap';
 import { TypeSerializer } from '../../utils';
 
 export class CustomVarsAppender {

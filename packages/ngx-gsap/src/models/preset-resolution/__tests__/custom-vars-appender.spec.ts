@@ -33,9 +33,9 @@ describe('CustomVarsAppender', () => {
     });
 
     it('should handle boolean customVars', () => {
-      const result = new CustomVarsAppender('x:100%:>').append({ yoyo: true, repeat: false });
+      const result = new CustomVarsAppender('x:100%:>').append({ yoyo: true, paused: false });
 
-      expect(result).toBe('x:100%:>@yoyo=true,repeat=false');
+      expect(result).toBe('x:100%:>@yoyo=true,paused=false');
     });
 
     it('should handle numeric customVars', () => {
