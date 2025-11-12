@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { TypeChecker } from '../../utils';
+import { PropertyInvoker } from '../../utils';
 import { Trigger, TriggerRef, TriggerType } from '../trigger';
 
 export class Timeline {
@@ -26,9 +26,7 @@ export class Timeline {
   }
 
   public configure(vars: gsap.TimelineVars): Timeline {
-    Object.entries(vars)
-      .filter(([key]) => new TypeChecker(this.gsapTimeline[key]).isFunction())
-      .forEach(([key, value]) => this.gsapTimeline[key](value));
+    new PropertyInvoker(this.gsapTimeline).invoke(vars);
     return this;
   }
 
