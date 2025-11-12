@@ -1,6 +1,5 @@
 import { GsapHostDirective } from '../../directives/gsap-host.directive';
 import { Timeline } from './timeline';
-import { TweenVars } from './tween-vars';
 
 const cache = new WeakMap<GsapHostDirective, Timeline>();
 
@@ -12,7 +11,7 @@ export class TimelineFactory {
   }
 
   private _create(): Timeline {
-    return new Timeline(this.host.element, new TweenVars(this.host).create()).with(this.host.trigger());
+    return new Timeline(this.host.element, { immediateRender: false }).with(this.host.trigger());
   }
 
   public create(): Timeline {

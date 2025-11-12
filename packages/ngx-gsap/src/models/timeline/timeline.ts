@@ -8,6 +8,8 @@ export class Timeline {
 
   constructor(private readonly element: HTMLElement, defaults: gsap.TweenVars) {
     this.gsapTimeline = gsap.timeline({ paused: true, defaults });
+    this.timeline.eventCallback('onStart', () => this.disconnect() as unknown as void);
+    this.timeline.eventCallback('onComplete', () => this.connect() as unknown as void);
   }
 
   public get timeline(): gsap.core.Timeline {
