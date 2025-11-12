@@ -1,17 +1,20 @@
 import { PresetMatcher } from './preset-matcher';
 import { PresetExpander } from './preset-expander';
 import { CustomVarsExtractor } from './custom-vars-extractor';
-import { CustomVarsAppender } from './custom-vars-appender';
+import { TimelineVarsExtractor } from './timeline-vars-extractor';
+import { VarsAppender } from './vars-appender';
 
 export class PresetResolver {
   private readonly presetMatcher: PresetMatcher;
   private readonly presetExpander: PresetExpander;
-  private readonly presetCustomVarsExtractor: CustomVarsExtractor;
+  private readonly customVarsExtractor: CustomVarsExtractor;
+  private readonly timelineVarsExtractor: TimelineVarsExtractor;
 
   constructor(private readonly sequence: string) {
     this.presetMatcher = new PresetMatcher(sequence);
     this.presetExpander = new PresetExpander(this.presetMatcher);
-    this.presetCustomVarsExtractor = new CustomVarsExtractor(this.presetMatcher);
+    this.customVarsExtractor = new CustomVarsExtractor(this.presetMatcher);
+    this.timelineVarsExtractor = new TimelineVarsExtractor(this.presetMatcher);
   }
 
   public isPreset(): boolean {
@@ -22,7 +25,9 @@ export class PresetResolver {
     if (!this.isPreset()) return this.sequence;
 
     const sequence = this.presetExpander.expand();
-    const customVars = this.presetCustomVarsExtractor.extract();
-    return new CustomVarsAppender(sequence).append(customVars);
+    const customVars = this.customVarsExtractor.extract();
+    const timelineVars = this.timelineVarsExtractor.extract();
+
+    return new VarsAppender(sequence).append(customVars, timelineVars);
   }
 }

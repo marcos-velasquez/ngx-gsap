@@ -186,5 +186,42 @@ describe('PresetResolver', () => {
       expect(result).toContain('selector=.item');
       expect(result).toContain('duration=2');
     });
+
+    it('should extract and append timeline vars from preset', () => {
+      const resolver = new PresetResolver('shake({ timeline: { repeat: 1 } })');
+      const result = resolver.resolve();
+
+      expect(result).toContain('timeline@repeat=1');
+      expect(result).toContain('to:x:10');
+    });
+
+    it('should replace existing timeline@ with timeline parameter', () => {
+      const resolver = new PresetResolver('shake({ timeline: { repeat: 2, yoyo: true } })');
+      const result = resolver.resolve();
+
+      expect(result).toContain('timeline@repeat=2');
+      expect(result).toContain('yoyo=true');
+      expect(result).not.toContain('repeat=5'); // Default from shake preset
+    });
+
+    it('should handle timeline vars with other custom vars', () => {
+      const resolver = new PresetResolver('fadeIn({ x: "-100%", duration: 2, timeline: { repeat: 3 } })');
+      const result = resolver.resolve();
+
+      expect(result).toContain('timeline@repeat=3');
+      expect(result).toContain('x:-100%');
+      expect(result).toContain('duration=2');
+    });
+
+    it('should not include timeline in custom vars', () => {
+      const resolver = new PresetResolver('pulse({ timeline: { repeat: -1 }, duration: 1 })');
+      const result = resolver.resolve();
+
+      expect(result).toContain('timeline@repeat=-1');
+      expect(result).toContain('duration=1');
+      // timeline should not appear as a custom var
+      const timelineMatches = result.match(/timeline/g);
+      expect(timelineMatches?.length).toBe(1); // Only in timeline@
+    });
   });
 });
