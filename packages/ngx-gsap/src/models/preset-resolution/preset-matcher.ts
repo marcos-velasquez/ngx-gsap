@@ -34,10 +34,10 @@ export class PresetMatcher {
   }
 
   public isPreset(): boolean {
-    return !!(Presets as any)[this.presetName];
+    return !!this.preset;
   }
 
-  public toPresetMatch(): PresetMatch {
+  public asPresetMatch(): PresetMatch {
     assert(this.isFunction(), 'Sequence does not have function syntax');
 
     return { presetName: this.presetName, argsString: this.argsString, hasArgs: !!this.argsString.trim() };

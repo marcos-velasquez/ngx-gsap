@@ -8,14 +8,12 @@ export class CustomVarsExtractor {
   public extract(): gsap.TweenVars {
     if (!this.presetMatcher.isFunction()) return {};
 
-    const { argsString, hasArgs } = this.presetMatcher.toPresetMatch();
+    const { argsString, hasArgs } = this.presetMatcher.asPresetMatch();
     if (!hasArgs) return {};
 
-    const presetParamNames = this.presetMatcher.paramNames();
     const params = new ObjectParser(argsString).parse();
-
     return Object.keys(params).reduce((acc, key) => {
-      if (!presetParamNames.includes(key)) acc[key] = params[key];
+      if (!this.presetMatcher.paramNames().includes(key)) acc[key] = params[key];
       return acc;
     }, {} as gsap.TweenVars);
   }

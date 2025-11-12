@@ -8,7 +8,7 @@ export class PresetExpander {
   public expand(): string {
     if (!this.presetMatcher.isFunction()) return (Presets as any)[this.presetMatcher.sequence]();
 
-    const { presetName, argsString } = this.presetMatcher.toPresetMatch();
+    const { presetName, argsString } = this.presetMatcher.asPresetMatch();
     return Presets.eval(presetName, new ObjectNormalizer(argsString).normalize());
   }
 }

@@ -82,7 +82,7 @@ describe('PresetMatcher', () => {
   describe('toPresetMatch()', () => {
     it('should return PresetMatch with args', () => {
       const matcher = new PresetMatcher('fadeOut({ x: "100%" })');
-      const result = matcher.toPresetMatch();
+      const result = matcher.asPresetMatch();
 
       expect(result.presetName).toBe('fadeOut');
       expect(result.argsString).toBe('{ x: "100%" }');
@@ -91,7 +91,7 @@ describe('PresetMatcher', () => {
 
     it('should return PresetMatch without args', () => {
       const matcher = new PresetMatcher('fadeIn()');
-      const result = matcher.toPresetMatch();
+      const result = matcher.asPresetMatch();
 
       expect(result.presetName).toBe('fadeIn');
       expect(result.argsString).toBe('');
@@ -100,14 +100,14 @@ describe('PresetMatcher', () => {
 
     it('should handle whitespace-only args as no args', () => {
       const matcher = new PresetMatcher('fadeIn(   )');
-      const result = matcher.toPresetMatch();
+      const result = matcher.asPresetMatch();
 
       expect(result.hasArgs).toBe(false);
     });
 
     it('should throw error for non-function syntax', () => {
       const matcher = new PresetMatcher('fadeIn');
-      expect(() => matcher.toPresetMatch()).toThrow();
+      expect(() => matcher.asPresetMatch()).toThrow();
     });
   });
 });
