@@ -248,36 +248,6 @@ export class Presets {
   }
 
   /**
-   * Wobble animation with rotation and horizontal movement.
-   * @param x1 - First horizontal position (default: '-25%')
-   * @param rotate1 - First rotation angle (default: -5)
-   * @param x2 - Second horizontal position (default: '20%')
-   * @param rotate2 - Second rotation angle (default: 3)
-   * @param x3 - Third horizontal position (default: '-15%')
-   * @param rotate3 - Third rotation angle (default: -3)
-   * @param x4 - Fourth horizontal position (default: '10%')
-   * @param rotate4 - Fourth rotation angle (default: 2)
-   * @param x5 - Fifth horizontal position (default: '-5%')
-   * @param rotate5 - Fifth rotation angle (default: -1)
-   * @example wobble() // Standard wobble
-   * @example wobble({ x1: '-30%', x2: '25%' }) // Wider wobble
-   */
-  public static wobble({
-    x1 = '-25%',
-    rotate1 = -5,
-    x2 = '20%',
-    rotate2 = 3,
-    x3 = '-15%',
-    rotate3 = -3,
-    x4 = '10%',
-    rotate4 = 2,
-    x5 = '-5%',
-    rotate5 = -1,
-  } = {}): string {
-    return `to:x:${x1}:>;to:rotate:${rotate1}:0;to:x:${x2}:>;to:rotate:${rotate2}:0;to:x:${x3}:>;to:rotate:${rotate3}:0;to:x:${x4}:>;to:rotate:${rotate4}:0;to:x:${x5}:>;to:rotate:${rotate5}:0;to:x:0:>;to:rotate:0:0`;
-  }
-
-  /**
    * Jello animation with skew wobble effect.
    * @param skewX1 - First skew angle (default: -12.5)
    * @param skewY1 - First Y skew angle (default: -12.5)
@@ -423,27 +393,6 @@ export class Presets {
   }
 
   /**
-   * Bounce animation with decreasing movement (vertical or horizontal).
-   * @param x1 - First horizontal bounce distance (default: '0')
-   * @param y1 - First vertical bounce height (default: '-30px')
-   * @param x2 - Second horizontal bounce distance (default: '0')
-   * @param y2 - Second vertical bounce height (default: '-15px')
-   * @param x3 - Third horizontal bounce distance (default: '0')
-   * @param y3 - Third vertical bounce height (default: '-4px')
-   * @example bounce() // Standard vertical bounce
-   * @example bounce({ y1: '-40px' }) // Higher bounce
-   * @example bounce({ x1: '20px', y1: '0' }) // Horizontal bounce
-   * @example bounce({ x1: '20px', y1: '-20px' }) // Diagonal bounce
-   */
-  public static bounce({ x1 = '0', y1 = '-30px', x2 = '0', y2 = '-15px', x3 = '0', y3 = '-4px' } = {}): string {
-    const hasX = x1 !== '0' || x2 !== '0' || x3 !== '0';
-    if (hasX) {
-      return `to:x:${x1}:>;to:y:${y1}:0;to:x:0:>;to:y:0:0;to:x:${x2}:>;to:y:${y2}:0;to:x:0:>;to:y:0:0;to:x:${x3}:>;to:y:${y3}:0;to:x:0:>;to:y:0:0`;
-    }
-    return `to:y:${y1}:>;to:y:0:>;to:y:${y2}:>;to:y:0:>;to:y:${y3}:>;to:y:0:>`;
-  }
-
-  /**
    * Tada animation with scale and rotation for celebration effect.
    * @param scale1 - First scale value (default: 0.9)
    * @param scale2 - Second scale value (default: 1.1)
@@ -454,45 +403,6 @@ export class Presets {
    */
   public static tada({ scale1 = 0.9, scale2 = 1.1, rotate1 = -3, rotate2 = 3 } = {}): string {
     return `to:scale:${scale1}:>;to:rotate:${rotate1}:0;to:scale:${scale1}:>;to:rotate:${rotate1}:0;to:scale:${scale2}:>;to:rotate:${rotate2}:0;to:scale:${scale2}:>;to:rotate:${rotate1}:0;to:scale:${scale2}:>;to:rotate:${rotate2}:0;to:scale:${scale2}:>;to:rotate:${rotate1}:0;to:scale:${scale2}:>;to:rotate:${rotate2}:0;to:scale:${scale2}:>;to:rotate:${rotate1}:0;to:scale:${scale2}:>;to:rotate:${rotate2}:0;to:scale:1:>;to:rotate:0:0`;
-  }
-
-  /**
-   * Swing animation - pendulum-like rotation.
-   * @param rotate1 - First rotation angle (default: 15)
-   * @param rotate2 - Second rotation angle (default: -10)
-   * @param rotate3 - Third rotation angle (default: 5)
-   * @param rotate4 - Fourth rotation angle (default: -5)
-   * @example swing() // Standard pendulum swing
-   * @example swing({ rotate1: 20, rotate2: -15 }) // Wider swing
-   */
-  public static swing({ rotate1 = 15, rotate2 = -10, rotate3 = 5, rotate4 = -5 } = {}): string {
-    return `to:rotate:${rotate1}:>;to:rotate:${rotate2}:>;to:rotate:${rotate3}:>;to:rotate:${rotate4}:>;to:rotate:0:>`;
-  }
-
-  /**
-   * Head shake animation - horizontal shake with rotation.
-   * @param x1 - First horizontal position (default: '-6px')
-   * @param rotateY1 - First Y rotation (default: -9)
-   * @param x2 - Second horizontal position (default: '5px')
-   * @param rotateY2 - Second Y rotation (default: 7)
-   * @param x3 - Third horizontal position (default: '-3px')
-   * @param rotateY3 - Third Y rotation (default: -5)
-   * @param x4 - Fourth horizontal position (default: '2px')
-   * @param rotateY4 - Fourth Y rotation (default: 3)
-   * @example headShake() // Standard head shake (no gesture)
-   * @example headShake({ x1: '-10px', rotateY1: -12 }) // Stronger shake
-   */
-  public static headShake({
-    x1 = '-6px',
-    rotateY1 = -9,
-    x2 = '5px',
-    rotateY2 = 7,
-    x3 = '-3px',
-    rotateY3 = -5,
-    x4 = '2px',
-    rotateY4 = 3,
-  } = {}): string {
-    return `to:x:${x1}:>@ease=ease-in-out;to:rotateY:${rotateY1}:0;to:x:${x2}:>;to:rotateY:${rotateY2}:0;to:x:${x3}:>;to:rotateY:${rotateY3}:0;to:x:${x4}:>;to:rotateY:${rotateY4}:0;to:x:0:>;to:rotateY:0:0`;
   }
 
   /**
@@ -523,21 +433,6 @@ export class Presets {
     scaleY5 = 0.95,
   } = {}): string {
     return `to:scaleX:${scaleX1}:>;to:scaleY:${scaleY1}:0;to:scaleX:${scaleX2}:>;to:scaleY:${scaleY2}:0;to:scaleX:${scaleX3}:>;to:scaleY:${scaleY3}:0;to:scaleX:${scaleX4}:>;to:scaleY:${scaleY4}:0;to:scaleX:${scaleX5}:>;to:scaleY:${scaleY5}:0;to:scaleX:1:>;to:scaleY:1:0`;
-  }
-
-  /**
-   * Flip animation with customizable axis.
-   * @param axis - Rotation axis: 'x', 'y', or 'z' (default: 'y')
-   * @param rotate1 - First rotation angle (default: 180)
-   * @param rotate2 - Second rotation angle (default: 360)
-   * @example flip() // Standard Y-axis flip
-   * @example flip({ axis: 'x' }) // X-axis flip
-   * @example flip({ rotate1: 90, rotate2: 180 }) // Half flip
-   * @example flip({ rotate2: 720, duration: 2 }) // Double flip slowly
-   */
-  public static flip({ axis = 'y', rotate1 = 180, rotate2 = 360 } = {}): string {
-    const rotateAxis = axis === 'x' ? 'rotateX' : axis === 'z' ? 'rotateZ' : 'rotateY';
-    return `to:${rotateAxis}:${rotate1}:>;to:${rotateAxis}:${rotate2}:>`;
   }
 
   /**
@@ -604,17 +499,6 @@ export class Presets {
   }
 
   /**
-   * Hang animation - element hangs and returns.
-   * @param y - Hang distance (default: '-20px')
-   * @example hang() // Standard hang
-   * @example hang({ y: '-30px' }) // Hang higher
-   * @example hang({ duration: 1, ease: 'elastic.out' }) // Elastic hang
-   */
-  public static hang({ y = '-20px' } = {}): string {
-    return `to:y:${y}:>;to:y:0:>`;
-  }
-
-  /**
    * Float animation - gentle up and down movement.
    * @param y1 - First float position (default: '-20px')
    * @param y2 - Second float position (default: '-10px')
@@ -651,18 +535,6 @@ export class Presets {
   }
 
   /**
-   * Blink animation - rapid opacity flashing.
-   * @param opacity1 - First opacity (default: 0)
-   * @param opacity2 - Second opacity (default: 1)
-   * @example blink() // Standard blink
-   * @example blink({ opacity1: 0.3 }) // Subtle blink
-   * @example blink({ duration: 0.5, repeat: -1 }) // Continuous blinking
-   */
-  public static blink({ opacity1 = 0, opacity2 = 1 } = {}): string {
-    return `to:opacity:${opacity1}:>;to:opacity:${opacity2}:>;to:opacity:${opacity1}:>;to:opacity:${opacity2}:>;to:opacity:${opacity1}:>;to:opacity:${opacity2}:>`;
-  }
-
-  /**
    * Skew animation on both axes.
    * @param skewX - X-axis skew angle (default: -10)
    * @param skewY - Y-axis skew angle (default: -10)
@@ -695,7 +567,7 @@ export class Presets {
    * @example expand({ scaleX: 2, scaleY: 1 }) // Horizontal expand only
    * @example expand({ scaleX: 1.2, scaleY: 1.2, duration: 2 }) // Slow expand
    */
-  public static expand({ scaleX = 1, scaleY = 1 } = {}): string {
+  public static expand({ scaleX = 1.1, scaleY = 1.1 } = {}): string {
     return `to:scaleX:${scaleX}:>;to:scaleY:${scaleY}:0`;
   }
 
@@ -733,19 +605,6 @@ export class Presets {
   }
 
   /**
-   * Dancing animation - rotation with vertical movement.
-   * @param rotate1 - First rotation (default: -15)
-   * @param rotate2 - Second rotation (default: 15)
-   * @param y1 - First vertical position (default: '-10px')
-   * @param y2 - Second vertical position (default: '10px')
-   * @example dancing() // Standard dance
-   * @example dancing({ rotate1: -30, rotate2: 30 }) // More energetic dance
-   */
-  public static dancing({ rotate1 = -15, rotate2 = 15, y1 = '-10px', y2 = '10px' } = {}): string {
-    return `to:rotate:${rotate1}:>;to:y:${y1}:0;to:rotate:${rotate2}:>;to:y:${y2}:0;to:rotate:${rotate1}:>;to:y:${y1}:0;to:rotate:0:>;to:y:0:0`;
-  }
-
-  /**
    * Big dramatic entrance with rotation.
    * @param scale - Starting scale (default: 0)
    * @param rotate - Rotation degrees (default: 720)
@@ -767,19 +626,6 @@ export class Presets {
    */
   public static hatch({ scale = 0, rotate = -180, opacity = 0 } = {}): string {
     return `scale:${scale}:>;rotate:${rotate}:0;opacity:${opacity}:0;to:rotate:0:>`;
-  }
-
-  /**
-   * Tossing animation - rotation with vertical movement.
-   * @param rotate1 - First rotation (default: -10)
-   * @param rotate2 - Second rotation (default: 10)
-   * @param y1 - First vertical position (default: '-5px')
-   * @param y2 - Second vertical position (default: '5px')
-   * @example tossing() // Standard toss
-   * @example tossing({ rotate1: -20, y1: '-10px' }) // Stronger toss
-   */
-  public static tossing({ rotate1 = -10, rotate2 = 10, y1 = '-5px', y2 = '5px' } = {}): string {
-    return `to:rotate:${rotate1}:>;to:y:${y1}:0;to:rotate:${rotate2}:>;to:y:${y2}:0;to:rotate:${rotate1}:>;to:y:${y1}:0;to:rotate:0:>;to:y:0:0`;
   }
 
   /**
