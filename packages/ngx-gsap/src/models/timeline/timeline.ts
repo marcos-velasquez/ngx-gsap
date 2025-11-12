@@ -8,8 +8,8 @@ export class Timeline {
 
   constructor(private readonly element: HTMLElement, defaults: gsap.TweenVars) {
     this.gsapTimeline = gsap.timeline({ paused: true, defaults });
-    this.timeline.eventCallback('onStart', () => this.disconnect() as unknown as void);
-    this.timeline.eventCallback('onComplete', () => this.connect() as unknown as void);
+    this.gsapTimeline.eventCallback('onStart', () => this.disconnect() as unknown as void);
+    this.gsapTimeline.eventCallback('onComplete', () => this.connect() as unknown as void);
   }
 
   public get timeline(): gsap.core.Timeline {
@@ -27,7 +27,7 @@ export class Timeline {
 
   public configure(vars: gsap.TimelineVars): Timeline {
     Object.entries(vars)
-      .filter(([key]) => new TypeChecker(this.gsapTimeline[key]).function())
+      .filter(([key]) => new TypeChecker(this.gsapTimeline[key]).isFunction())
       .forEach(([key, value]) => this.gsapTimeline[key](value));
     return this;
   }

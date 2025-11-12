@@ -1,35 +1,35 @@
 export class TypeChecker {
   constructor(private readonly value: unknown) {}
 
-  public string(): boolean {
+  public isString(): boolean {
     return typeof this.value === 'string';
   }
 
-  public number(): boolean {
+  public isNumber(): boolean {
     return typeof this.value === 'number';
   }
 
-  public boolean(): boolean {
+  public isBoolean(): boolean {
     return typeof this.value === 'boolean';
   }
 
-  public function(): boolean {
+  public isFunction(): boolean {
     return typeof this.value === 'function';
   }
 
-  public object(): boolean {
+  public isObject(): boolean {
     return typeof this.value === 'object';
   }
 
-  public undefined(): boolean {
+  public isUndefined(): boolean {
     return typeof this.value === 'undefined';
   }
 
-  public symbol(): boolean {
+  public isSymbol(): boolean {
     return typeof this.value === 'symbol';
   }
 
-  public bigint(): boolean {
+  public isBigint(): boolean {
     return typeof this.value === 'bigint';
   }
 }
