@@ -54,5 +54,24 @@ describe('PresetCustomVarsExtractor', () => {
 
       expect(() => extractor.extract()).not.toThrow();
     });
+
+    it('should exclude timeline parameter from customVars', () => {
+      const matcher = new PresetMatcher('shake({ timeline: { repeat: 3 }, duration: 2 })');
+      const extractor = new CustomVarsExtractor(matcher);
+
+      const result = extractor.extract();
+
+      expect(result).toEqual({ duration: 2 });
+      expect(result).not.toHaveProperty('timeline');
+    });
+
+    it('should handle only timeline parameter', () => {
+      const matcher = new PresetMatcher('shake({ timeline: { repeat: 1, yoyo: true } })');
+      const extractor = new CustomVarsExtractor(matcher);
+
+      const result = extractor.extract();
+
+      expect(result).toEqual({});
+    });
   });
 });

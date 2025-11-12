@@ -12,9 +12,15 @@ export class CustomVarsExtractor {
     if (!hasArgs) return {};
 
     const params = new ObjectParser(argsString).parse();
-    return Object.keys(params).reduce((acc, key) => {
-      if (!this.presetMatcher.paramNames().includes(key)) acc[key] = params[key];
-      return acc;
-    }, {} as gsap.TweenVars);
+    return Object.keys(params)
+      .filter((key) => this.isCustomVar(key))
+      .reduce((acc, key) => {
+        acc[key] = params[key];
+        return acc;
+      }, {} as gsap.TweenVars);
+  }
+
+  private isCustomVar(key: string): boolean {
+    return key !== 'timeline' && !this.presetMatcher.paramNames().includes(key);
   }
 }
