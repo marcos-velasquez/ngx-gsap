@@ -134,23 +134,19 @@ For complete control, use raw GSAP syntax:
 
 ### Timeline Properties
 
-Apply properties to the entire timeline using `timeline@`:
+Apply properties to the entire timeline using `timeline@` or the `timeline` parameter in presets:
 
 ```html
-<!-- Repeat entire animation sequence -->
+<!-- Raw syntax -->
 <div animateClick="timeline@repeat=3,yoyo=true;to:x:10;to:x:-10;to:x:0">Shake 4 times</div>
-
-<!-- Infinite loop -->
 <div animateLoad="timeline@repeat=-1;pulse">Pulse forever</div>
 
-<!-- Timeline properties can be anywhere in the sequence -->
-<div animateClick="fadeIn;timeline@repeat=2;pulse">Fade then pulse 3 times</div>
-<div animateClick="shake;timeline@duration=2,ease=power2.out">Slow shake</div>
+<!-- Preset syntax -->
+<div animateClick="shake({ timeline: { repeat: 1 } })">Shake twice</div>
+<div animateClick="pulse({ opacity: 0, timeline: { repeat: 2, yoyo: true } })">Pulse 3 times</div>
 ```
 
-**Syntax:** `timeline@[props]`
-
-Timeline properties apply to the **entire animation sequence**, regardless of where `timeline@` appears.
+Timeline properties apply to the **entire animation sequence** and can be placed anywhere in the sequence.
 
 ### Combining Animations
 
