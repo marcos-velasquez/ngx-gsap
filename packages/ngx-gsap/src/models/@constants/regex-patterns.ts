@@ -1,3 +1,5 @@
+import { Animation } from './animation';
+
 /**
  * Centralized regex patterns used across the application
  */
@@ -32,7 +34,7 @@ export class RegexPatterns {
   /**
    * Sequence delimiter
    */
-  public static readonly SEQUENCE_DELIMITER = /;/;
+  public static readonly SEQUENCE_DELIMITER = new RegExp(Animation.DELIMITER);
 
   /**
    * Matches timeline properties syntax: timeline@props

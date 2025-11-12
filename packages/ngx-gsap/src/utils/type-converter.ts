@@ -1,4 +1,4 @@
-import { RegexPatterns } from './regex-patterns';
+import { RegexPatterns } from '../models/@constants/regex-patterns';
 
 export class TypeConverter {
   constructor(private readonly value: string) {}

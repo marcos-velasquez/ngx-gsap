@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { RegexPatterns } from '../../utils';
+import { RegexPatterns } from '../@constants';
 import { PropsParser } from './props-parser';
 
 export type Method = 'to' | 'from' | 'set';

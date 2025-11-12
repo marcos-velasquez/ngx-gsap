@@ -1,4 +1,5 @@
-import { assert, RegexPatterns } from '../../utils';
+import { assert } from '../../utils';
+import { RegexPatterns } from '../@constants';
 import { Presets, Preset } from './presets';
 
 export type PresetMatch = { presetName: string; argsString: string; hasArgs: boolean };
