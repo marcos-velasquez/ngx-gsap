@@ -431,16 +431,24 @@ export class Presets {
   }
 
   /**
-   * Blur animation with opacity fade.
-   * @param startBlur - Starting blur amount (default: '10')
-   * @param endBlur - Ending blur amount (default: '0')
-   * @param opacity - Starting opacity (default: 0)
-   * @example blur() // Blur to focus
-   * @example blur({ startBlur: '20' }) // Stronger blur start
-   * @example blur({ endBlur: '5' }) // End with slight blur
+   * Blur animation - transitions from blurred to focused state.
+   * @param startBlur - Starting blur amount in pixels (default: 10)
+   * @param endBlur - Ending blur amount in pixels (default: 0)
+   * @param duration - Animation duration (default: 1.5)
+   * @remarks Animation sequence:
+   * - Sets initial blur filter
+   * - Animates to end blur value
+   * - Numeric values are automatically converted to 'px' units
+   * - String values with units are used as-is
+   * @example blur() // Blur from 10px to 0px (focus)
+   * @example blur({ startBlur: 20 }) // Stronger blur start
+   * @example blur({ endBlur: 5 }) // End with slight blur
+   * @example blur({ duration: 2 }) // Slower blur transition
    */
-  public static blur({ startBlur = '10', endBlur = '0', opacity = 0 } = {}): string {
-    return `filter:blur(${startBlur});opacity:${opacity}:0;to:filter:blur(${endBlur})`;
+  public static blur({ startBlur = 10, endBlur = 0, duration = 1.5 } = {}): string {
+    const startBlurValue = Number.isNaN(Number(startBlur)) ? startBlur : `${Number(startBlur)}px`;
+    const endBlurValue = Number.isNaN(Number(endBlur)) ? endBlur : `${Number(endBlur)}px`;
+    return `filter:blur(${startBlurValue})@duration=${duration};to:filter:blur(${endBlurValue})@duration=${duration}`;
   }
 
   /**
