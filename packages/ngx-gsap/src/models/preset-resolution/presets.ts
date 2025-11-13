@@ -140,10 +140,12 @@ export class Presets {
    * @param opacity - Starting opacity (default: 0)
    * @remarks The animation performs a skew transition:
    * - Starts with startSkew angle
-   * - Transitions to midSkew at 80% progress
+   * - Transitions to midSkew at 80% progress (operator matches distance direction)
    * - Ends with endSkew angle
-   * @example lightSpeedIn() // Fast entrance from right
-   * @example lightSpeedIn({ distance: '-100%', startSkew: 30, midSkew: -5, endSkew: 0 }) // From left
+   * - If distance is negative (left), midSkew uses '-' operator
+   * - If distance is positive (right), midSkew uses '+' operator
+   * @example lightSpeedIn() // Fast entrance from right with positive skew
+   * @example lightSpeedIn({ distance: '-100%', startSkew: 30, midSkew: 5, endSkew: 0 }) // From left with negative skew
    */
   public static lightSpeedIn({
     distance = '100%',
@@ -152,7 +154,8 @@ export class Presets {
     endSkew = 0,
     opacity = 0,
   } = {}): string {
-    return `x:${distance}:0;skewX:${startSkew}:0;opacity:${opacity}:0;to:skewX:${midSkew}:<25%;to:skewX:${endSkew}`;
+    const operator = distance.startsWith('-') ? '-' : '+';
+    return `x:${distance}:0;skewX:${startSkew}:0;opacity:${opacity}:0;to:skewX:${operator}${midSkew}:<25%;to:skewX:${endSkew}`;
   }
 
   /**
@@ -240,7 +243,7 @@ export class Presets {
    * @example shake() // Horizontal shake, repeats 5 times
    * @example shake({ distance: '15' }) // Stronger shake
    * @example shake({ axis: 'y' }) // Vertical shake
-   * @example shake({ repeat: 3 }) // Shake 3 times
+   * @example shake({ repeat: -1 }) // Shake infinite times
    */
   public static shake({ axis = 'x', distance = '10', repeat = 5 } = {}): string {
     const shakeAxis = axis === 'x' ? 'x' : 'y';
@@ -248,122 +251,138 @@ export class Presets {
   }
 
   /**
-   * Jello animation with skew wobble effect.
-   * @param skewX1 - First skew angle (default: -12.5)
-   * @param skewY1 - First Y skew angle (default: -12.5)
-   * @param skewX2 - Second skew angle (default: 6.25)
-   * @param skewY2 - Second Y skew angle (default: 6.25)
+   * Jello animation with skew wobble effect using bounce ease.
+   * @param skewX - Base skew X angle (default: -12.5)
+   * @param skewY - Base skew Y angle (default: -12.5)
+   * @remarks Creates a jello wobble effect:
+   * - Skews to base angles simultaneously
+   * - Returns to 0 with bounce.out ease for natural wobble
+   * - Second skew positioned at 50% for synchronized effect
    * @example jello() // Standard jello wobble
-   * @example jello({ skewX1: -20, skewY1: -20 }) // More dramatic wobble
+   * @example jello({ skewX: -20, skewY: -20 }) // More dramatic wobble
    */
-  public static jello({ skewX1 = -12.5, skewY1 = -12.5, skewX2 = 6.25, skewY2 = 6.25 } = {}): string {
-    return `to:skewX:${skewX1}:>;to:skewY:${skewY1}:0;to:skewX:${skewX2}:>;to:skewY:${skewY2}:0;to:skewX:${
-      -skewX2 / 2
-    }:>;to:skewY:${-skewY2 / 2}:0;to:skewX:${skewX2 / 4}:>;to:skewY:${skewY2 / 4}:0;to:skewX:0:>;to:skewY:0:0`;
+  public static jello({ skewX = -12.5, skewY = -12.5 } = {}): string {
+    return `to:skewX:${skewX}:0;to:skewY:${skewY}:0;to:skewX:0:<50%@ease=bounce.out;to:skewY:0:<@ease=bounce.out`;
   }
 
   /**
    * Heart beat animation with pulsing scale.
-   * @param scale1 - Enlarged scale (default: 1.3)
+   * @param scale - Enlarged scale (default: 1.3)
+   * @param repeat - Number of times to repeat (default: 2)
+   * @param timeScale - Animation speed multiplier (default: 1.2)
    * @example heartBeat() // Standard heart beat
-   * @example heartBeat({ scale1: 1.5 }) // Stronger beat
+   * @example heartBeat({ scale: 1.5 }) // Stronger beat
    */
-  public static heartBeat({ scale1 = 1.3 } = {}): string {
-    return `to:scale:${scale1}:>@ease=ease-in-out;to:scale:1:>@ease=ease-in-out;to:scale:${scale1}:>@ease=ease-in-out;to:scale:1:>@ease=ease-in-out`;
+  public static heartBeat({ scale = 1.3, repeat = 1, timeScale = 1.2 } = {}): string {
+    return `timeline@repeat=${repeat},timeScale=${timeScale};to:scale:${scale}:0;to:scale:1`;
   }
 
   /**
-   * Hinge animation - element falls and rotates like a door hinge.
-   * @param rotate1 - First rotation (default: 80)
-   * @param rotate2 - Second rotation (default: 60)
-   * @param distance - Fall distance (default: '100%')
-   * @param opacity - Ending opacity (default: 0)
-   * @example hinge() // Standard hinge fall
-   * @example hinge({ rotate1: 90, distance: '150%' }) // Longer fall
-   */
-  public static hinge({ rotate1 = 80, rotate2 = 60, distance = '100%', opacity = 0 } = {}): string {
-    return `to:rotate:${rotate1}:>;to:rotate:${rotate2}:>;to:y:${distance}:>;to:opacity:${opacity}:0`;
-  }
-
-  /**
-   * Jack in the box animation - pops out with rotation.
-   * @param rotate1 - Starting rotation (default: 30)
-   * @param scale - Starting scale (default: 0.1)
-   * @param opacity - Starting opacity (default: 0)
-   * @param rotate2 - Middle rotation (default: -10)
-   * @param rotate3 - Final rotation adjustment (default: 3)
+   * Jack in the box animation - element pops out with rotation bounce.
+   * @param startRotate - Initial rotation angle (default: 30)
+   * @param scale - Initial scale (default: 0.1)
+   * @param opacity - Initial opacity (default: 0)
+   * @param midRotate - Middle rotation for bounce effect (default: -10)
+   * @param endRotate - Final rotation before settling (default: 3)
+   * @remarks Animation sequence:
+   * - Starts rotated, scaled down, and transparent
+   * - Rotates to midRotate for bounce effect
+   * - Rotates to endRotate for settling
+   * - Returns to 0 rotation
    * @example jackInTheBox() // Standard pop out
-   * @example jackInTheBox({ scale: 0, rotate1: 45 }) // More dramatic
+   * @example jackInTheBox({ scale: 0, startRotate: 45 }) // More dramatic entrance
    */
-  public static jackInTheBox({ rotate1 = 30, scale = 0.1, opacity = 0, rotate2 = -10, rotate3 = 3 } = {}): string {
-    return `rotate:${rotate1}:>;scale:${scale}:0;opacity:${opacity}:0;to:rotate:${rotate2}:>;to:rotate:${rotate3}:>;to:rotate:0:>`;
+  public static jackInTheBox({
+    scale = 0.1,
+    opacity = 0,
+    startRotate = 30,
+    midRotate = -10,
+    endRotate = 3,
+  } = {}): string {
+    return `rotate:${startRotate}:0;scale:${scale}:0;opacity:${opacity}:0;to:rotate:${midRotate}:>;to:rotate:${endRotate}:>;to:rotate:0:>`;
   }
 
   /**
-   * Back in animation with overshoot effect.
+   * Back in animation - element enters from a position with scale and opacity transition.
    * @param x - Horizontal starting position (default: '0')
    * @param y - Vertical starting position (default: '0')
-   * @param scale1 - Starting scale (default: 0)
-   * @param opacity - Starting opacity (default: 0)
-   * @param scale2 - Overshoot scale (default: 1.1)
-   * @param scale3 - Final scale (default: 1)
-   * @example backIn() // Standard back in
-   * @example backIn({ y: '-100%' }) // Back in from top
-   * @example backIn({ scale2: 1.2 }) // More overshoot
+   * @param scale - Initial scale (default: 0.7)
+   * @param opacity - Initial opacity (default: 0.7)
+   * @remarks Animation sequence:
+   * - Sets initial scale and opacity
+   * - Animates from x/y position to origin
+   * - Scales to 1 and fades to full opacity simultaneously
+   * @example backIn() // Standard back in from left
+   * @example backIn({ y: '-100%', x: '0' }) // Back in from top
+   * @example backIn({ scale: 0.5, opacity: 0 }) // Smaller start with fade in
    */
-  public static backIn({ x = '0', y = '0', startScale = 0, midScale = 1.3, endScale = 1, opacity = 0 } = {}): string {
-    return `x:${x}:>;y:${y}:0;scale:${startScale}:0;opacity:${opacity}:0;to:scale:${midScale}:>;to:scale:${endScale}:>`;
+  public static backIn({ x = '0', y = '0', scale = 0.7, opacity = 0.7 } = {}): string {
+    return `set:scale:${scale};set:opacity:${opacity};x:${x}:0;y:${y}:0;to:scale:1:>;to:opacity:1:<`;
   }
 
   /**
-   * Back out animation with overshoot effect.
-   * @param scale1 - Overshoot scale (default: 1.1)
-   * @param scale2 - Ending scale (default: 0.7)
-   * @param opacity - Ending opacity (default: 0)
-   * @example backOut() // Standard back out
-   * @example backOut({ scale1: 1.2 }) // More overshoot
-   * @example backOut({ duration: 0.8 }) // Slower exit
+   * Back out animation - element exits to a position with scale and opacity transition.
+   * @param x - Horizontal ending position (default: '0')
+   * @param y - Vertical ending position (default: '0')
+   * @param scale - Intermediate scale (default: 0.7)
+   * @param opacity - Intermediate opacity (default: 0.7)
+   * @remarks Animation sequence:
+   * - Scales down to scale value and reduces opacity simultaneously
+   * - Moves to x/y position
+   * - Fades out to opacity 0
+   * @example backOut() // Standard back out to right
+   * @example backOut({ x: '0', y: '1000' }) // Back out to bottom
+   * @example backOut({ scale: 0.5, opacity: 0.5 }) // Smaller scale with more fade
    */
-  public static backOut({ scale1 = 1.1, scale2 = 0.7, opacity = 0 } = {}): string {
-    return `to:scale:${scale1}:>;to:scale:${scale2}:>;to:opacity:${opacity}:0`;
+  public static backOut({ x = '0', y = '0', scale = 0.7, opacity = 0.7 } = {}): string {
+    return `to:scale:${scale}:0;to:opacity:${opacity}:0;to:x:${x};to:y:${y}:<;to:opacity:0:<`;
   }
 
   /**
    * Flash animation with opacity pulsing.
-   * @example flash() // Standard flash (4 pulses)
-   * @example flash({ duration: 0.5, repeat: 2 }) // Rapid flashing
+   * @param repeat - Number of times to repeat the flash (default: 1)
+   * @remarks Animation sequence:
+   * - Fades to opacity 0
+   * - Fades back to opacity 1
+   * - Repeats based on repeat parameter (2 flashes total with default)
+   * @example flash() // Standard flash (2 flashes)
+   * @example flash({ repeat: 3 }) // Flash 4 times
+   * @example flash({ repeat: -1 }) // Infinite flashing
    */
-  public static flash(): string {
-    return `to:opacity:0:>;to:opacity:1:>;to:opacity:0:>;to:opacity:1:>`;
+  public static flash({ repeat = 1 } = {}): string {
+    return `timeline@repeat=${repeat};to:opacity:0:>;to:opacity:1:>;`;
   }
 
   /**
-   * Slide out animation with customizable direction, rotation, and opacity.
+   * Slide out animation - element moves to a position.
    * @param x - Horizontal ending position (default: '0')
    * @param y - Vertical ending position (default: '0')
-   * @param rotate - Ending rotation in degrees (default: 0)
-   * @param opacity - Ending opacity (default: 1)
+   * @remarks Animation sequence:
+   * - Animates x and y simultaneously to target position
+   * - Use negative values to slide left/up, positive for right/down
    * @example slideOut({ x: '-100%' }) // Slide out to left
    * @example slideOut({ y: '100%' }) // Slide out to bottom
    * @example slideOut({ x: '100%', y: '-100%' }) // Slide out to top-right
-   * @example slideOut({ x: '100%', rotate: 180 }) // Slide with rotation
    */
-  public static slideOut({ x = '0', y = '0', rotate = 0, opacity = 1 } = {}): string {
-    const rotateAnim = rotate !== 0 ? `;to:rotate:${rotate}:0` : '';
-    const opacityAnim = opacity !== 1 ? `;to:opacity:${opacity}:0` : '';
-    return `to:x:${x}:>;to:y:${y}:0${rotateAnim}${opacityAnim}`;
+  public static slideOut({ x = '0', y = '0' } = {}): string {
+    return `to:x:${x}:0;to:y:${y}:0`;
   }
 
   /**
-   * Rotate out animation with fade.
-   * @param degrees - Rotation degrees (default: 200)
+   * Rotate out animation - element rotates and moves to a position while fading out.
+   * @param rotate - Rotation value (default: '-200deg')
+   * @param x - Horizontal ending position (default: '0')
+   * @param y - Vertical ending position (default: '0')
    * @param opacity - Ending opacity (default: 0)
-   * @example rotateOut() // Standard rotate out
-   * @example rotateOut({ degrees: 360 }) // Full rotation out
-   * @example rotateOut({ degrees: -180 }) // Reverse rotation
+   * @remarks Animation sequence:
+   * - Rotates, moves to x/y position, and fades out simultaneously
+   * - Use negative rotation for counter-clockwise, positive for clockwise
+   * @example rotateOut() // Standard rotate out to right
+   * @example rotateOut({ rotate: '360deg' }) // Full rotation out
+   * @example rotateOut({ rotate: '180deg', x: '0', y: '1000' }) // Rotate and exit to bottom
    */
-  public static rotateOut({ degrees = 200, opacity = 0 } = {}): string {
-    return `to:rotate:${degrees}:>;to:opacity:${opacity}:0`;
+  public static rotateOut({ rotate = '-200deg', x = '0', y = '0', opacity = 0 } = {}): string {
+    return `to:rotate:${rotate}:0;to:x:${x}:0;to:y:${y}:0;to:opacity:${opacity}:0;`;
   }
 
   /**
@@ -375,8 +394,9 @@ export class Presets {
    * @example bounceOut({ scale1: 1.2 }) // Bigger bounce
    * @example bounceOut({ scale2: 0.5 }) // Partial shrink
    */
-  public static bounceOut({ scale1 = 1.1, scale2 = 0, opacity = 0 } = {}): string {
-    return `to:scale:${scale1}:>;to:scale:${scale2}:>;to:opacity:${opacity}:0`;
+  public static bounceOut({ scale = 0.75, x = '0', y = '0', opacity = 0, duration = 1.5 } = {}): string {
+    const property = x !== '0' ? { k: 'x', v: x } : y !== '0' ? { k: 'y', v: y } : { k: 'scale', v: scale };
+    return `to:${property.k}:${property.v}:0@duration=${duration};to:${property.k}:${property.v}:0@duration=${duration};to:${property.k}:0;to:opacity:${opacity}:<10%;`;
   }
 
   /**
@@ -384,59 +404,22 @@ export class Presets {
    * @param distance - Horizontal ending distance (default: '100%')
    * @param skew - Skew angle on X-axis (default: 30)
    * @param opacity - Ending opacity (default: 0)
-   * @example lightSpeedOut() // Fast exit to right
-   * @example lightSpeedOut({ distance: '-100%', skew: -30 }) // To left
-   * @example lightSpeedOut({ duration: 0.2 }) // Ultra fast exit
+   * @remarks Animation sequence:
+   * - Moves to distance position
+   * - Applies skew with operator matching distance direction
+   * - If distance is negative (left), skew uses '-' operator
+   * - If distance is positive (right), skew has no operator
+   * - Fades out simultaneously
+   * @example lightSpeedOut() // Fast exit to right with positive skew
+   * @example lightSpeedOut({ distance: '-100%', skew: 30 }) // Exit to left with negative skew
    */
   public static lightSpeedOut({ distance = '100%', skew = 30, opacity = 0 } = {}): string {
-    return `to:x:${distance}:>;to:skewX:${skew}:0;to:opacity:${opacity}:0`;
+    const operator = distance.startsWith('-') ? '-' : '';
+    return `to:x:${distance}:>;to:skewX:${operator}${skew}:0;to:opacity:${opacity}:0`;
   }
 
   /**
-   * Tada animation with scale and rotation for celebration effect.
-   * @param scale1 - First scale value (default: 0.9)
-   * @param scale2 - Second scale value (default: 1.1)
-   * @param rotate1 - First rotation angle (default: -3)
-   * @param rotate2 - Second rotation angle (default: 3)
-   * @example tada() // Standard celebration
-   * @example tada({ scale2: 1.2, rotate2: 5 }) // More dramatic
-   */
-  public static tada({ scale1 = 0.9, scale2 = 1.1, rotate1 = -3, rotate2 = 3 } = {}): string {
-    return `to:scale:${scale1}:>;to:rotate:${rotate1}:0;to:scale:${scale1}:>;to:rotate:${rotate1}:0;to:scale:${scale2}:>;to:rotate:${rotate2}:0;to:scale:${scale2}:>;to:rotate:${rotate1}:0;to:scale:${scale2}:>;to:rotate:${rotate2}:0;to:scale:${scale2}:>;to:rotate:${rotate1}:0;to:scale:${scale2}:>;to:rotate:${rotate2}:0;to:scale:${scale2}:>;to:rotate:${rotate1}:0;to:scale:${scale2}:>;to:rotate:${rotate2}:0;to:scale:1:>;to:rotate:0:0`;
-  }
-
-  /**
-   * Rubber band animation with alternating X and Y scale.
-   * @param scaleX1 - First X scale (default: 1.25)
-   * @param scaleY1 - First Y scale (default: 0.75)
-   * @param scaleX2 - Second X scale (default: 0.75)
-   * @param scaleY2 - Second Y scale (default: 1.25)
-   * @param scaleX3 - Third X scale (default: 1.15)
-   * @param scaleY3 - Third Y scale (default: 0.85)
-   * @param scaleX4 - Fourth X scale (default: 0.95)
-   * @param scaleY4 - Fourth Y scale (default: 1.05)
-   * @param scaleX5 - Fifth X scale (default: 1.05)
-   * @param scaleY5 - Fifth Y scale (default: 0.95)
-   * @example rubberBand() // Standard rubber band
-   * @example rubberBand({ scaleX1: 1.5, scaleY1: 0.5 }) // More elastic
-   */
-  public static rubberBand({
-    scaleX1 = 1.25,
-    scaleY1 = 0.75,
-    scaleX2 = 0.75,
-    scaleY2 = 1.25,
-    scaleX3 = 1.15,
-    scaleY3 = 0.85,
-    scaleX4 = 0.95,
-    scaleY4 = 1.05,
-    scaleX5 = 1.05,
-    scaleY5 = 0.95,
-  } = {}): string {
-    return `to:scaleX:${scaleX1}:>;to:scaleY:${scaleY1}:0;to:scaleX:${scaleX2}:>;to:scaleY:${scaleY2}:0;to:scaleX:${scaleX3}:>;to:scaleY:${scaleY3}:0;to:scaleX:${scaleX4}:>;to:scaleY:${scaleY4}:0;to:scaleX:${scaleX5}:>;to:scaleY:${scaleY5}:0;to:scaleX:1:>;to:scaleY:1:0`;
-  }
-
-  /**
-   * Spin animation with Z-axis rotation.
+   * Spin animation.
    * @param degrees - Rotation degrees (default: 360)
    * @example spin() // One full rotation
    * @example spin({ degrees: 720 }) // Two rotations
@@ -444,208 +427,138 @@ export class Presets {
    * @example spin({ degrees: -360 }) // Reverse rotation
    */
   public static spin({ degrees = 360 } = {}): string {
-    return `to:rotate:${degrees}:>`;
+    return `to:rotate:${degrees}`;
   }
 
   /**
    * Blur animation with opacity fade.
-   * @param blur1 - Starting blur amount (default: '10px')
-   * @param blur2 - Ending blur amount (default: '0px')
+   * @param startBlur - Starting blur amount (default: '10')
+   * @param endBlur - Ending blur amount (default: '0')
    * @param opacity - Starting opacity (default: 0)
    * @example blur() // Blur to focus
-   * @example blur({ blur1: '20px' }) // Stronger blur start
-   * @example blur({ blur2: '5px' }) // End with slight blur
+   * @example blur({ startBlur: '20' }) // Stronger blur start
+   * @example blur({ endBlur: '5' }) // End with slight blur
    */
-  public static blur({ blur1 = '10px', blur2 = '0px', opacity = 0 } = {}): string {
-    return `filter:blur(${blur1}):>;opacity:${opacity}:0;to:filter:blur(${blur2}):>`;
-  }
-
-  /**
-   * Ken Burns effect - slow zoom and pan, perfect for images.
-   * @param scale - Ending scale (default: 1.2)
-   * @param x - Horizontal pan distance (default: '10%')
-   * @param y - Vertical pan distance (default: '10%')
-   * @example kenBurns() // Standard Ken Burns
-   * @example kenBurns({ scale: 1.3, duration: 5 }) // Slower, more dramatic
-   * @example kenBurns({ x: '-10%', y: '-10%' }) // Pan opposite direction
-   */
-  public static kenBurns({ scale = 1.2, x = '10%', y = '10%' } = {}): string {
-    return `to:scale:${scale}:>;to:x:${x}:0;to:y:${y}:0`;
+  public static blur({ startBlur = '10', endBlur = '0', opacity = 0 } = {}): string {
+    return `filter:blur(${startBlur});opacity:${opacity}:0;to:filter:blur(${endBlur})`;
   }
 
   /**
    * Morphing animation with scale and rotation changes.
-   * @param scale1 - First scale (default: 1.2)
+   * @param startScale - First scale (default: 1.1)
    * @param rotate - Rotation degrees (default: 45)
-   * @param scale2 - Second scale (default: 0.8)
+   * @param endScale - Second scale (default: 0.9)
    * @example morphing() // Standard morph
-   * @example morphing({ scale1: 1.5, rotate: 90 }) // Dramatic morph
+   * @example morphing({ startScale: 1.5, rotate: 90 }) // Dramatic morph
    * @example morphing({ duration: 2 }) // Slow transformation
    */
-  public static morphing({ scale1 = 1.2, rotate = 45, scale2 = 0.8 } = {}): string {
-    return `to:scale:${scale1}:>;to:rotate:${rotate}:0;to:scale:${scale2}:>;to:rotate:0:0;to:scale:1:>`;
-  }
-
-  /**
-   * Jump animation with vertical bouncing.
-   * @param y1 - First jump height (default: '-30px')
-   * @param y2 - Second jump height (default: '-15px')
-   * @example jump() // Standard jump
-   * @example jump({ y1: '-50px' }) // Higher jump
-   * @example jump({ duration: 0.5, repeat: 2 }) // Quick repeated jumps
-   */
-  public static jump({ y1 = '-30px', y2 = '-15px' } = {}): string {
-    return `to:y:${y1}:>;to:y:0:>;to:y:${y2}:>;to:y:0:>`;
+  public static morphing({ startScale = 1.1, rotate = 45, endScale = 0.9 } = {}): string {
+    return `to:scale:${startScale}:0;to:rotate:${rotate}:0;to:scale:${endScale};to:rotate:0;to:scale:1`;
   }
 
   /**
    * Float animation - gentle up and down movement.
-   * @param y1 - First float position (default: '-20px')
-   * @param y2 - Second float position (default: '-10px')
+   * @param startY - First float position (default: '-20px')
+   * @param endY - Second float position (default: '-10px')
    * @example float() // Standard float
-   * @example float({ y1: '-30px', y2: '-15px' }) // Wider float
+   * @example float({ startY: '-30px', endY: '-15px' }) // Wider float
    * @example float({ duration: 2, repeat: -1 }) // Continuous floating
    */
-  public static float({ y1 = '-20px', y2 = '-10px' } = {}): string {
-    return `to:y:${y1}:>;to:y:${y2}:>;to:y:${y1}:>;to:y:${y2}:>`;
-  }
-
-  /**
-   * Sink animation - element sinks down.
-   * @param y - Sink distance (default: '20px')
-   * @example sink() // Standard sink
-   * @example sink({ y: '50px' }) // Sink deeper
-   * @example sink({ duration: 1.5 }) // Slow sink
-   */
-  public static sink({ y = '20px' } = {}): string {
-    return `to:y:${y}:>`;
+  public static float({ startY = '-20px', endY = '-10px' } = {}): string {
+    return `to:y:${startY};to:y:${endY};to:y:${startY};to:y:${endY};`;
   }
 
   /**
    * Pop animation - quick scale up with overshoot.
-   * @param scale1 - Starting scale (default: 0)
-   * @param scale2 - Overshoot scale (default: 1.1)
-   * @param scale3 - Final scale (default: 1)
+   * @param startScale - Starting scale (default: 0)
+   * @param midScale - Overshoot scale (default: 1.1)
+   * @param endScale - Final scale (default: 1)
    * @example pop() // Standard pop
-   * @example pop({ scale2: 1.3 }) // Bigger pop
+   * @example pop({ midScale: 1.3 }) // Bigger pop
    * @example pop({ duration: 0.3 }) // Quick pop
    */
-  public static pop({ scale1 = 0, scale2 = 1.1, scale3 = 1 } = {}): string {
-    return `scale:${scale1}:>;to:scale:${scale2}:>;to:scale:${scale3}:>`;
+  public static pop({ startScale = 0.75, midScale = 1.1, endScale = 1 } = {}): string {
+    return `scale:${startScale}:>;to:scale:${midScale}:<50%;to:scale:${endScale}`;
   }
 
   /**
    * Skew animation on both axes.
    * @param skewX - X-axis skew angle (default: -10)
    * @param skewY - Y-axis skew angle (default: -10)
+   * @remarks Animation sequence:
+   * - Skews to target angles simultaneously at position 0
+   * - Returns to 0 skew at position 1 (after first animation completes)
    * @example skew() // Standard skew
    * @example skew({ skewX: -20, skewY: -20 }) // Stronger skew
    * @example skew({ skewX: 15, skewY: -15 }) // Opposite skew
    */
   public static skew({ skewX = -10, skewY = -10 } = {}): string {
-    return `to:skewX:${skewX}:>;to:skewY:${skewY}:0;to:skewX:0:>;to:skewY:0:0`;
+    return `to:skewX:${skewX}:0;to:skewY:${skewY}:0;to:skewX:0:1;to:skewY:0:1`;
   }
 
   /**
-   * Squeeze animation - alternating horizontal and vertical compression.
-   * @param scaleX1 - First X scale (default: 1.3)
-   * @param scaleY1 - First Y scale (default: 0.7)
-   * @param scaleX2 - Second X scale (default: 0.7)
-   * @param scaleY2 - Second Y scale (default: 1.3)
-   * @example squeeze() // Standard squeeze
-   * @example squeeze({ scaleX1: 1.5, scaleY1: 0.5 }) // Stronger squeeze
-   */
-  public static squeeze({ scaleX1 = 1.3, scaleY1 = 0.7, scaleX2 = 0.7, scaleY2 = 1.3 } = {}): string {
-    return `to:scaleX:${scaleX1}:>;to:scaleY:${scaleY1}:0;to:scaleX:${scaleX2}:>;to:scaleY:${scaleY2}:0;to:scaleX:1:>;to:scaleY:1:0`;
-  }
-
-  /**
-   * Expand animation - scale up on both axes.
-   * @param scaleX - X-axis scale (default: 1)
-   * @param scaleY - Y-axis scale (default: 1)
+   * Expand animation - scale up on both axes simultaneously.
+   * @param scaleX - X-axis scale (default: 1.1)
+   * @param scaleY - Y-axis scale (default: 1.1)
+   * @remarks Animation sequence:
+   * - Scales both axes simultaneously to target values
+   * - Default expands to 110% on both axes
+   * @example expand() // Expand to 110%
    * @example expand({ scaleX: 1.5, scaleY: 1.5 }) // Expand to 150%
    * @example expand({ scaleX: 2, scaleY: 1 }) // Horizontal expand only
-   * @example expand({ scaleX: 1.2, scaleY: 1.2, duration: 2 }) // Slow expand
    */
   public static expand({ scaleX = 1.1, scaleY = 1.1 } = {}): string {
-    return `to:scaleX:${scaleX}:>;to:scaleY:${scaleY}:0`;
+    return `to:scaleX:${scaleX}:0;to:scaleY:${scaleY}:0`;
   }
 
   /**
-   * Rotational wave animation - continuous rotation back and forth.
-   * @param rotate1 - First rotation (default: 15)
-   * @param rotate2 - Second rotation (default: -15)
-   * @example rotationalWave() // Standard wave
-   * @example rotationalWave({ rotate1: 30, rotate2: -30 }) // Wider wave
-   * @example rotationalWave({ duration: 2, repeat: -1 }) // Continuous wave
-   */
-  public static rotationalWave({ rotate1 = 15, rotate2 = -15 } = {}): string {
-    return `to:rotate:${rotate1}:>;to:rotate:${rotate2}:>;to:rotate:${rotate1}:>;to:rotate:${rotate2}:>;to:rotate:0:>`;
-  }
-
-  /**
-   * Impulse rotation animation.
-   * @param direction - Rotation direction: 'left' or 'right' (default: 'right')
-   * @param rotate1 - First rotation (default: auto based on direction)
-   * @param rotate2 - Second rotation (default: auto based on direction)
-   * @example impulseRotation() // Standard right impulse
-   * @example impulseRotation({ direction: 'left' }) // Left impulse
-   * @example impulseRotation({ rotate1: 15 }) // Stronger impulse
-   */
-  public static impulseRotation({
-    direction = 'right',
-    rotate1,
-    rotate2,
-  }: { direction?: 'left' | 'right'; rotate1?: number; rotate2?: number } = {}): string {
-    const defaultRotate1 = direction === 'right' ? 10 : -10;
-    const defaultRotate2 = direction === 'right' ? -5 : 5;
-    const finalRotate1 = rotate1 !== undefined ? rotate1 : defaultRotate1;
-    const finalRotate2 = rotate2 !== undefined ? rotate2 : defaultRotate2;
-    return `to:rotate:${finalRotate1}:>;to:rotate:${finalRotate2}:>;to:rotate:0:>`;
-  }
-
-  /**
-   * Big dramatic entrance with rotation.
+   * Big dramatic entrance - element appears with rotation from scaled and transparent state.
    * @param scale - Starting scale (default: 0)
    * @param rotate - Rotation degrees (default: 720)
    * @param opacity - Starting opacity (default: 0)
-   * @example bigEntrance() // Dramatic spinning entrance
-   * @example bigEntrance({ rotate: 1080 }) // Triple spin
+   * @remarks Animation sequence:
+   * - Sets initial scale, rotation, and opacity simultaneously
+   * - Animates to normal state (scale 1, rotate 0, opacity 1)
+   * - Default performs two full rotations (720deg) while appearing
+   * @example bigEntrance() // Dramatic double-spin entrance
+   * @example bigEntrance({ rotate: 1080 }) // Triple spin entrance
+   * @example bigEntrance({ scale: 0.5, opacity: 0.5 }) // Partial start state
    */
   public static bigEntrance({ scale = 0, rotate = 720, opacity = 0 } = {}): string {
-    return `scale:${scale}:>;rotate:${rotate}:>;opacity:${opacity}:0`;
+    return `scale:${scale}:0;rotate:${rotate}:0;opacity:${opacity}:0`;
   }
 
   /**
-   * Hatch animation - emerge with rotation.
+   * Hatch animation - element emerges with rotation from scaled and transparent state.
    * @param scale - Starting scale (default: 0)
    * @param rotate - Starting rotation (default: -180)
    * @param opacity - Starting opacity (default: 0)
-   * @example hatch() // Standard hatch
+   * @remarks Animation sequence:
+   * - Sets initial scale (sequenced), rotation, and opacity simultaneously
+   * - Animates to normal state (scale 1, rotate 0, opacity 1)
+   * - Default performs half rotation counter-clockwise (-180deg) while appearing
+   * @example hatch() // Standard hatch with half rotation
    * @example hatch({ rotate: -360 }) // Full rotation hatch
+   * @example hatch({ scale: 0.3, opacity: 0.3 }) // Partial start state
    */
   public static hatch({ scale = 0, rotate = -180, opacity = 0 } = {}): string {
-    return `scale:${scale}:>;rotate:${rotate}:0;opacity:${opacity}:0;to:rotate:0:>`;
+    return `scale:${scale}:>;rotate:${rotate}:0;opacity:${opacity}:0;`;
   }
 
   /**
-   * Pull up animation - quick upward movement.
+   * Pull animation - quick movement up or down and return.
    * @param y - Pull distance (default: '20px')
-   * @example pullUp() // Standard pull up
-   * @example pullUp({ y: '30px' }) // Stronger pull
+   * @param direction - Pull direction: 'up' or 'down' (default: 'up')
+   * @remarks Animation sequence:
+   * - Moves to y position (negative for up, positive for down)
+   * - Returns to original position
+   * @example pull() // Standard pull up
+   * @example pull({ direction: 'down' }) // Pull down
+   * @example pull({ y: '30', direction: 'up' }) // Stronger pull up
    */
-  public static pullUp({ y = '20px' } = {}): string {
-    return `to:y:-${y}:>;to:y:0:>`;
-  }
-
-  /**
-   * Pull down animation - quick downward movement.
-   * @param y - Pull distance (default: '20px')
-   * @example pullDown() // Standard pull down
-   * @example pullDown({ y: '30px' }) // Stronger pull
-   */
-  public static pullDown({ y = '20px' } = {}): string {
-    return `to:y:${y}:>;to:y:0:>`;
+  public static pull({ y = '20', direction = 'up' }: { y?: string; direction?: 'up' | 'down' } = {}): string {
+    const distance = direction === 'up' ? `-${y}` : y;
+    return `to:y:${distance}:>;to:y:0:>`;
   }
 
   /**
@@ -655,49 +568,6 @@ export class Presets {
    * @example glow({ boxShadow: '0 0 30px rgba(0, 255, 255, 1)' }) // Cyan glow
    */
   public static glow({ boxShadow = '0 0 20px rgba(255, 255, 255, 0.8)' } = {}): string {
-    return `to:boxShadow:${boxShadow}:>`;
-  }
-
-  /**
-   * Shadow effect animation.
-   * @param boxShadow - Shadow (default: '0 10px 20px rgba(0, 0, 0, 0.3)')
-   * @example shadow() // Standard shadow
-   * @example shadow({ boxShadow: '0 15px 30px rgba(0, 0, 0, 0.5)' }) // Darker shadow
-   */
-  public static shadow({ boxShadow = '0 10px 20px rgba(0, 0, 0, 0.3)' } = {}): string {
-    return `to:boxShadow:${boxShadow}:>`;
-  }
-
-  /**
-   * Grow with shadow effect.
-   * @param scale - Ending scale (default: 1.1)
-   * @param boxShadow - Shadow (default: '0 10px 30px rgba(0, 0, 0, 0.4)')
-   * @example growShadow() // Grow with shadow
-   * @example growShadow({ scale: 1.2 }) // Grow more
-   */
-  public static growShadow({ scale = 1.1, boxShadow = '0 10px 30px rgba(0, 0, 0, 0.4)' } = {}): string {
-    return `to:scale:${scale}:>;to:boxShadow:${boxShadow}:0`;
-  }
-
-  /**
-   * Float with shadow effect.
-   * @param y - Float distance (default: '-10px')
-   * @param boxShadow - Shadow (default: '0 15px 30px rgba(0, 0, 0, 0.3)')
-   * @example floatShadow() // Float with shadow
-   * @example floatShadow({ y: '-20px' }) // Float higher
-   */
-  public static floatShadow({ y = '-10px', boxShadow = '0 15px 30px rgba(0, 0, 0, 0.3)' } = {}): string {
-    return `to:y:${y}:>;to:boxShadow:${boxShadow}:0`;
-  }
-
-  /**
-   * Buzz animation - rapid horizontal vibration.
-   * @param x - Vibration distance (default: '3px')
-   * @example buzz() // Standard buzz
-   * @example buzz({ x: '5px' }) // Stronger buzz
-   * @example buzz({ duration: 0.3 }) // Quick buzz
-   */
-  public static buzz({ x = '3px' } = {}): string {
-    return `to:x:-${x}:>;to:x:${x}:>;to:x:-${x}:>;to:x:${x}:>;to:x:-${x}:>;to:x:${x}:>;to:x:-${x}:>;to:x:${x}:>;to:x:0:>`;
+    return `to:boxShadow:${boxShadow}`;
   }
 }

@@ -133,7 +133,7 @@ export const animations: Animation[] = [
   {
     name: 'Slide Out',
     category: 'exit',
-    value: "slideOut({ x: '100%' })",
+    value: 'slideOut',
     description: 'Slide out in any direction.',
     examples: ["slideOut({ x: '100%' })", "slideOut({ x: '0', y: '-100%', opacity: 0 })"],
     gradient: 'from-gray-300 to-gray-500',
@@ -194,14 +194,6 @@ export const animations: Animation[] = [
     examples: ['backOut', 'backOut({ scale1: 1.2 })', 'backOut({ duration: 0.8 })'],
     gradient: 'from-lime-300 to-green-500',
   },
-  {
-    name: 'Hinge',
-    category: 'exit',
-    value: 'hinge',
-    description: 'Element falls and rotates like a door hinge.',
-    examples: ['hinge', "hinge({ rotate1: 90, distance: '150%' })"],
-    gradient: 'from-amber-300 to-orange-500',
-  },
   // ATTENTION SEEKERS
   {
     name: 'Pulse',
@@ -218,14 +210,6 @@ export const animations: Animation[] = [
     description: 'Horizontal shake effect.',
     examples: ['shake', "shake({ x1: '-10px', x2: '10px' })"],
     gradient: 'from-red-400 to-orange-600',
-  },
-  {
-    name: 'Tada',
-    category: 'attention',
-    value: 'tada',
-    description: 'Celebratory shake and scale.',
-    examples: ['tada', 'tada({ scale: 1.1, rotate: 3 })'],
-    gradient: 'from-yellow-400 to-lime-600',
   },
   {
     name: 'Jello',
@@ -245,14 +229,6 @@ export const animations: Animation[] = [
     content: '<div class="text-6xl">❤️</div>',
   },
   {
-    name: 'Rubber Band',
-    category: 'attention',
-    value: 'rubberBand',
-    description: 'Rubber band stretch effect.',
-    examples: ['rubberBand', 'rubberBand({ scaleX: 1.25, scaleY: 0.75 })'],
-    gradient: 'from-emerald-400 to-teal-600',
-  },
-  {
     name: 'Flash',
     category: 'attention',
     value: 'flash',
@@ -261,44 +237,12 @@ export const animations: Animation[] = [
     gradient: 'from-yellow-300 to-yellow-500',
   },
   {
-    name: 'Rotational Wave',
+    name: 'Pull',
     category: 'attention',
-    value: 'rotationalWave',
-    description: 'Continuous rotation wave.',
-    examples: ['rotationalWave', 'rotationalWave({ rotate1: 15, rotate2: -15 })'],
-    gradient: 'from-purple-400 to-fuchsia-600',
-  },
-  {
-    name: 'Impulse Rotation',
-    category: 'attention',
-    value: 'impulseRotation',
-    description: 'Impulse rotation with direction.',
-    examples: ['impulseRotation', "impulseRotation({ direction: 'left' })", 'impulseRotation({ rotate1: 15 })'],
-    gradient: 'from-fuchsia-400 to-rose-600',
-  },
-  {
-    name: 'Pull Up',
-    category: 'attention',
-    value: 'pullUp',
-    description: 'Pull up and down motion.',
-    examples: ['pullUp', "pullUp({ y: '-10px' })"],
+    value: 'pull',
+    description: 'Quick pull motion up or down.',
+    examples: ['pull', "pull({ direction: 'down' })", "pull({ y: '30', direction: 'up' })"],
     gradient: 'from-red-400 to-orange-500',
-  },
-  {
-    name: 'Pull Down',
-    category: 'attention',
-    value: 'pullDown',
-    description: 'Pull down and up motion.',
-    examples: ['pullDown', "pullDown({ y: '10px' })"],
-    gradient: 'from-orange-400 to-amber-500',
-  },
-  {
-    name: 'Jump',
-    category: 'attention',
-    value: 'jump',
-    description: 'Vertical bouncing jump.',
-    examples: ['jump', "jump({ y1: '-50px' })", 'jump({ duration: 0.5, repeat: 2 })'],
-    gradient: 'from-cyan-400 to-sky-500',
   },
   {
     name: 'Float',
@@ -309,14 +253,6 @@ export const animations: Animation[] = [
     gradient: 'from-sky-400 to-blue-500',
   },
   {
-    name: 'Sink',
-    category: 'attention',
-    value: 'sink',
-    description: 'Element sinks down.',
-    examples: ['sink', "sink({ y: '50px' })", 'sink({ duration: 1.5 })'],
-    gradient: 'from-blue-400 to-indigo-500',
-  },
-  {
     name: 'Pop',
     category: 'attention',
     value: 'pop',
@@ -324,15 +260,6 @@ export const animations: Animation[] = [
     examples: ['pop', 'pop({ scale2: 1.3 })', 'pop({ duration: 0.3 })'],
     gradient: 'from-indigo-400 to-violet-500',
   },
-  {
-    name: 'Buzz',
-    category: 'attention',
-    value: 'buzz',
-    description: 'Rapid horizontal vibration.',
-    examples: ['buzz', "buzz({ x: '5px' })", 'buzz({ duration: 0.3 })'],
-    gradient: 'from-red-400 to-orange-500',
-  },
-
   // SPECIAL EFFECTS
   {
     name: 'Spin',
@@ -359,14 +286,6 @@ export const animations: Animation[] = [
     gradient: 'from-fuchsia-500 to-pink-500',
   },
   {
-    name: 'Squeeze',
-    category: 'special',
-    value: 'squeeze',
-    description: 'Alternating compression effect.',
-    examples: ['squeeze', 'squeeze({ scaleX1: 1.5, scaleY1: 0.5 })'],
-    gradient: 'from-rose-500 to-red-500',
-  },
-  {
     name: 'Expand',
     category: 'special',
     value: 'expand',
@@ -386,15 +305,6 @@ export const animations: Animation[] = [
     examples: ['blur', "blur({ blur1: '10px', blur2: '0px', opacity: 0 })"],
     gradient: 'from-cyan-400 to-blue-600',
   },
-  {
-    name: 'Ken Burns',
-    category: 'special',
-    value: 'kenBurns',
-    description: 'Slow zoom and pan for images.',
-    examples: ['kenBurns', "kenBurns({ scale: 1.2, x: '10%', y: '10%' })"],
-    gradient: 'from-blue-400 to-indigo-600',
-  },
-
   // SHADOW EFFECTS
   {
     name: 'Glow',
@@ -403,29 +313,5 @@ export const animations: Animation[] = [
     description: 'Glow effect animation.',
     examples: ['glow', "glow({ boxShadow: '0 0 20px rgba(255, 255, 255, 0.8)' })"],
     gradient: 'from-amber-400 to-yellow-500',
-  },
-  {
-    name: 'Shadow',
-    category: 'shadow',
-    value: 'shadow',
-    description: 'Shadow effect animation.',
-    examples: ['shadow', "shadow({ boxShadow: '0 10px 20px rgba(0, 0, 0, 0.3)' })"],
-    gradient: 'from-yellow-400 to-lime-500',
-  },
-  {
-    name: 'Grow Shadow',
-    category: 'shadow',
-    value: 'growShadow',
-    description: 'Grow with shadow effect.',
-    examples: ['growShadow', "growShadow({ scale: 1.1, boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)' })"],
-    gradient: 'from-lime-400 to-green-500',
-  },
-  {
-    name: 'Float Shadow',
-    category: 'shadow',
-    value: 'floatShadow',
-    description: 'Float with shadow effect.',
-    examples: ['floatShadow', "floatShadow({ y: '-10px', boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3)' })"],
-    gradient: 'from-green-400 to-emerald-500',
   },
 ];
