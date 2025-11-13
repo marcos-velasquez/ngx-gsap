@@ -133,7 +133,7 @@ export const animations: Animation[] = [
   {
     name: 'Slide Out',
     category: 'exit',
-    value: 'slideOut',
+    value: 'slideOut({ x: "200%" })',
     description: 'Slide out in any direction.',
     examples: ["slideOut({ x: '100%' })", "slideOut({ y: '-100%' })"],
     gradient: 'from-gray-300 to-gray-500',

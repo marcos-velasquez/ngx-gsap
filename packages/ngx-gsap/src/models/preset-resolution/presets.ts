@@ -402,7 +402,7 @@ export class Presets {
    * @example bounceOut({ x: '2000', bounceDistance: 40 }) // Stronger horizontal bounce
    * @example bounceOut({ scale: 0.5 }) // Bounce out with scale
    */
-  public static bounceOut({ scale = 0.3, x = '0', y = '100', opacity = 0, bounceDistance = 20 } = {}): string {
+  public static bounceOut({ scale = 0.3, x = '0', y = '0', opacity = 0, bounceDistance = 20 } = {}): string {
     const property = x !== '0' ? { k: 'x', v: x } : y !== '0' ? { k: 'y', v: y } : { k: 'scale', v: scale };
     const sign = property.k !== 'scale' ? (Number(property.v) > 0 ? '-' : '') : '';
     const bounce = property.k === 'y' ? bounceDistance / 2 : bounceDistance;
