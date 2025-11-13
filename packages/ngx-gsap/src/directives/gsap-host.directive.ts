@@ -1,4 +1,6 @@
 import * as ng from '@angular/core';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Timeline, TimelineFactory } from '../models/timeline';
 import { TriggerType } from '../models/trigger';
 
@@ -17,6 +19,7 @@ export abstract class GsapHostDirective implements ng.OnInit, ng.OnDestroy {
   public readonly timeline = ng.signal<Timeline>(TimelineFactory.empty());
 
   constructor(public readonly elementRef: ng.ElementRef<HTMLElement>) {
+    gsap.registerPlugin(ScrollTrigger);
     ng.effect(() => {
       this.timeline().timeline.eventCallback('onStart', () => this.animateStart.emit(this));
       this.timeline().timeline.eventCallback('onComplete', () => this.animateComplete.emit(this));
