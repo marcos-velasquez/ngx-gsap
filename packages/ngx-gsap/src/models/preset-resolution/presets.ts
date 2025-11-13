@@ -140,10 +140,10 @@ export class Presets {
    * @param opacity - Starting opacity (default: 0)
    * @remarks The animation performs a skew transition:
    * - Starts with startSkew angle
-   * - Transitions to midSkew at 80% progress (operator matches distance direction)
+   * - Transitions to midSkew at 80% progress (sign matches distance direction)
    * - Ends with endSkew angle
-   * - If distance is negative (left), midSkew uses '-' operator
-   * - If distance is positive (right), midSkew uses '+' operator
+   * - If distance is negative (left), midSkew uses '-' sign
+   * - If distance is positive (right), midSkew uses '+' sign
    * @example lightSpeedIn() // Fast entrance from right with positive skew
    * @example lightSpeedIn({ distance: '-100%', startSkew: 30, midSkew: 5, endSkew: 0 }) // From left with negative skew
    */
@@ -154,8 +154,8 @@ export class Presets {
     endSkew = 0,
     opacity = 0,
   } = {}): string {
-    const operator = distance.startsWith('-') ? '-' : '+';
-    return `x:${distance}:0;skewX:${startSkew}:0;opacity:${opacity}:0;to:skewX:${operator}${midSkew}:<25%;to:skewX:${endSkew}`;
+    const sign = distance.startsWith('-') ? '-' : '+';
+    return `x:${distance}:0;skewX:${startSkew}:0;opacity:${opacity}:0;to:skewX:${sign}${midSkew}:<25%;to:skewX:${endSkew}`;
   }
 
   /**
@@ -386,17 +386,33 @@ export class Presets {
   }
 
   /**
-   * Bounce out animation with scale.
-   * @param scale1 - Bounce scale (default: 1.1)
-   * @param scale2 - Ending scale (default: 0)
+   * Bounce out animation - element bounces out with elastic effect.
+   * @param scale - Ending scale (default: 0.3)
+   * @param x - Horizontal ending position (default: '0')
+   * @param y - Vertical ending position (default: '100')
    * @param opacity - Ending opacity (default: 0)
-   * @example bounceOut() // Standard bounce out
-   * @example bounceOut({ scale1: 1.2 }) // Bigger bounce
-   * @example bounceOut({ scale2: 0.5 }) // Partial shrink
+   * @param bounceDistance - Initial bounce distance (default: 20). For y-axis, uses half for initial bounce and full value for mid bounce
+   * @remarks The animation uses conditional logic to determine the primary property:
+   * - If x !== '0', animates along x-axis with scaleX (bounces opposite direction first)
+   * - If y !== '0', animates along y-axis with scaleY (two-phase bounce: bounceDistance/2 then bounceDistance)
+   * - Otherwise, uses scale property with bounce effect (0.9 → 1.1 → scale)
+   * @example bounceOut() // Bounce out down (y: '100')
+   * @example bounceOut({ x: '2000' }) // Bounce out to right
+   * @example bounceOut({ y: '-2000' }) // Bounce out up
+   * @example bounceOut({ x: '2000', bounceDistance: 40 }) // Stronger horizontal bounce
+   * @example bounceOut({ scale: 0.5 }) // Bounce out with scale
    */
-  public static bounceOut({ scale = 0.75, x = '0', y = '0', opacity = 0, duration = 1.5 } = {}): string {
+  public static bounceOut({ scale = 0.3, x = '0', y = '100', opacity = 0, bounceDistance = 20 } = {}): string {
     const property = x !== '0' ? { k: 'x', v: x } : y !== '0' ? { k: 'y', v: y } : { k: 'scale', v: scale };
-    return `to:${property.k}:${property.v}:0@duration=${duration};to:${property.k}:${property.v}:0@duration=${duration};to:${property.k}:0;to:opacity:${opacity}:<10%;`;
+    const sign = property.k !== 'scale' ? (Number(property.v) > 0 ? '-' : '') : '';
+    const bounce = property.k === 'y' ? bounceDistance / 2 : bounceDistance;
+    const midBounce = property.k === 'y' ? bounceDistance : 0;
+
+    return property.k === 'x'
+      ? `to:x:${sign}${bounce}:0.2;to:scaleX:0.9:0.2;to:opacity:1:0.2;to:x:${x};to:scaleX:1:<;to:opacity:${opacity}:<`
+      : property.k === 'y'
+      ? `to:y:${sign}${bounce}:0.2;to:scaleY:0.985:0.2;to:y:${sign}${midBounce}:0.4;to:scaleY:0.9:0.45;to:opacity:1:0.45;to:y:${y};to:scaleY:1:<;to:opacity:${opacity}:<`
+      : `to:scale:0.9:0.2;to:scale:1.1:0.5;to:opacity:1:0.55;to:scale:${scale};to:opacity:${opacity}:<`;
   }
 
   /**
@@ -406,16 +422,16 @@ export class Presets {
    * @param opacity - Ending opacity (default: 0)
    * @remarks Animation sequence:
    * - Moves to distance position
-   * - Applies skew with operator matching distance direction
-   * - If distance is negative (left), skew uses '-' operator
-   * - If distance is positive (right), skew has no operator
+   * - Applies skew with sign matching distance direction
+   * - If distance is negative (left), skew uses '-' sign
+   * - If distance is positive (right), skew has no sign
    * - Fades out simultaneously
    * @example lightSpeedOut() // Fast exit to right with positive skew
    * @example lightSpeedOut({ distance: '-100%', skew: 30 }) // Exit to left with negative skew
    */
   public static lightSpeedOut({ distance = '100%', skew = 30, opacity = 0 } = {}): string {
-    const operator = distance.startsWith('-') ? '-' : '';
-    return `to:x:${distance}:>;to:skewX:${operator}${skew}:0;to:opacity:${opacity}:0`;
+    const sign = distance.startsWith('-') ? '-' : '';
+    return `to:x:${distance}:>;to:skewX:${sign}${skew}:0;to:opacity:${opacity}:0`;
   }
 
   /**
