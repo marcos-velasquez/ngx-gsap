@@ -1,6 +1,5 @@
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { assert } from '../../utils';
+import { ScrollTriggerVars, TimelineVars } from '../@types';
 import { Animation } from '../@constants';
 import { PresetResolver } from '../preset-resolution/preset-resolver';
 import { SequenceParser, ParsedAnimation } from './sequence-parser';
@@ -9,8 +8,8 @@ import { ScrollPropsExtractor } from './scroll-props-extractor';
 
 export type AnimationParserResult = {
   animations: ParsedAnimation[];
-  timelineVars: gsap.TimelineVars;
-  scrollVars: ScrollTrigger.StaticVars;
+  timelineVars: TimelineVars;
+  scrollVars: ScrollTriggerVars;
 };
 
 export class AnimationParser {

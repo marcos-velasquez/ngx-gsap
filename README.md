@@ -57,6 +57,9 @@ Each directive handles a specific event:
 <!-- animateLeave - Triggers on mouse leave -->
 <div animateLeave="fadeOut">Fades out on mouse leave</div>
 
+<!-- animateScroll - Triggers on scroll position -->
+<div animateScroll="fadeIn">Fades in when scrolled into view</div>
+
 <!-- Combine multiple directives -->
 <div animateClick="scale" animateEnter="fadeIn" animateLeave="fadeOut">Multiple triggers</div>
 ```
@@ -147,6 +150,22 @@ Apply properties to the entire timeline using `timeline@` or the `timeline` para
 ```
 
 Timeline properties apply to the **entire animation sequence** and can be placed anywhere in the sequence.
+
+### Scroll Properties
+
+Configure scroll-triggered animations using `scroll@` or the `scrollTrigger` parameter in presets:
+
+```html
+<!-- Raw syntax -->
+<div animateScroll="fadeIn;scroll@start='top center',scrub=true">Smooth scroll fade</div>
+<div animateScroll="slideIn({ x: '-100%' });scroll@start='top bottom',end='bottom top'">Slide on scroll</div>
+
+<!-- Preset syntax -->
+<div animateScroll="fadeIn({ scrollTrigger: { start: 'top center', scrub: true } })">Smooth fade</div>
+<div animateScroll="zoomIn({ scrollTrigger: { start: 'top bottom', pin: true, markers: true } })">Pinned zoom</div>
+```
+
+Scroll properties apply to the **entire timeline** and work with `animateScroll` directive.
 
 ### Combining Animations
 
