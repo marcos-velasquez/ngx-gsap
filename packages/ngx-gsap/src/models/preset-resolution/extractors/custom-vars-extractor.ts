@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
-import { ObjectParser } from '../../utils';
-import { PresetMatcher } from './preset-matcher';
+import { ObjectParser } from '../../../utils';
+import { PresetMatcher } from '../preset-matcher';
 
 export class CustomVarsExtractor {
   constructor(private readonly presetMatcher: PresetMatcher) {}

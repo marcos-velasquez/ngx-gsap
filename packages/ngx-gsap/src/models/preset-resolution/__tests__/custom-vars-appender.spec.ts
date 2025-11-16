@@ -1,4 +1,4 @@
-import { CustomVarsAppender } from '../custom-vars-appender';
+import { CustomVarsAppender } from '../appenders/custom-vars-appender';
 
 describe('CustomVarsAppender', () => {
   describe('append()', () => {
@@ -23,7 +23,9 @@ describe('CustomVarsAppender', () => {
     it('should append multiple customVars to multiple sequences', () => {
       const result = new CustomVarsAppender('x:100%:>;y:0:0;opacity:0:0').append({ duration: 2, ease: 'power2.out' });
 
-      expect(result).toBe('x:100%:>@duration=2,ease=power2.out;y:0:0@duration=2,ease=power2.out;opacity:0:0@duration=2,ease=power2.out');
+      expect(result).toBe(
+        'x:100%:>@duration=2,ease=power2.out;y:0:0@duration=2,ease=power2.out;opacity:0:0@duration=2,ease=power2.out'
+      );
     });
 
     it('should return sequence unchanged when no customVars', () => {

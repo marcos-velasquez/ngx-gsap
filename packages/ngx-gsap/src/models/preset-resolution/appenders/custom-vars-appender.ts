@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { TypeSerializer } from '../../utils';
+import { TypeSerializer } from '../../../utils';
 
 export class CustomVarsAppender {
   constructor(private readonly sequence: string) {}
