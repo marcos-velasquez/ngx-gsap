@@ -21,6 +21,6 @@ export class CustomVarsExtractor {
   }
 
   private isCustomVar(key: string): boolean {
-    return key !== 'timeline' && !this.presetMatcher.paramNames().includes(key);
+    return key !== 'timeline' && key !== 'scroll' && !this.presetMatcher.paramNames().includes(key);
   }
 }

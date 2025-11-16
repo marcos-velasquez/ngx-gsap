@@ -153,7 +153,7 @@ Timeline properties apply to the **entire animation sequence** and can be placed
 
 ### Scroll Properties
 
-Configure scroll-triggered animations using `scroll@` or the `scrollTrigger` parameter in presets:
+Configure scroll-triggered animations using `scroll@` or the `scroll` parameter in presets:
 
 ```html
 <!-- Raw syntax -->
@@ -161,8 +161,8 @@ Configure scroll-triggered animations using `scroll@` or the `scrollTrigger` par
 <div animateScroll="slideIn({ x: '-100%' });scroll@start='top bottom',end='bottom top'">Slide on scroll</div>
 
 <!-- Preset syntax -->
-<div animateScroll="fadeIn({ scrollTrigger: { start: 'top center', scrub: true } })">Smooth fade</div>
-<div animateScroll="zoomIn({ scrollTrigger: { start: 'top bottom', pin: true, markers: true } })">Pinned zoom</div>
+<div animateScroll="fadeIn({ scroll: { start: 'top center', scrub: true } })">Smooth fade</div>
+<div animateScroll="zoomIn({ scroll: { start: 'top bottom', pin: true, markers: true } })">Pinned zoom</div>
 ```
 
 Scroll properties apply to the **entire timeline** and work with `animateScroll` directive.
