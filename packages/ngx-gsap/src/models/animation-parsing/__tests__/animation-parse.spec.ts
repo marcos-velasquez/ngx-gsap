@@ -28,6 +28,54 @@ describe('AnimationParser', () => {
     });
   });
 
+  describe('Scroll properties', () => {
+    it('should extract scroll properties from any position', () => {
+      const beginning = new AnimationParser('scroll@start="top center",scrub=true;to:x:100:>').parse();
+      expect(beginning.scrollVars).toEqual({ start: 'top center', scrub: true });
+      expect(beginning.animations.length).toBe(1);
+
+      const middle = new AnimationParser('to:x:100:>;scroll@scrub=1,pin=true;to:y:50:>').parse();
+      expect(middle.scrollVars).toEqual({ scrub: 1, pin: true });
+      expect(middle.animations.length).toBe(2);
+
+      const end = new AnimationParser('to:x:100:>;scroll@markers=true').parse();
+      expect(end.scrollVars).toEqual({ markers: true });
+    });
+
+    it('should work with presets', () => {
+      const result = new AnimationParser('fadeIn();scroll@scrub=true,pin=true').parse();
+      expect(result.scrollVars).toEqual({ scrub: true, pin: true });
+      expect(result.animations.length).toBeGreaterThan(0);
+    });
+
+    it('should return empty scrollVars when no scroll@', () => {
+      const result = new AnimationParser('to:x:100:>').parse();
+      expect(result.scrollVars).toEqual({});
+      expect(result.animations.length).toBe(1);
+    });
+
+    it('should handle all ScrollTrigger properties', () => {
+      const result = new AnimationParser(
+        'fadeIn();scroll@start="top bottom",end="bottom top",scrub=1.5,pin=true,markers=false,toggleActions="play reverse play reverse"'
+      ).parse();
+      expect(result.scrollVars).toEqual({
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1.5,
+        pin: true,
+        markers: false,
+        toggleActions: 'play reverse play reverse',
+      });
+    });
+
+    it('should work together with timeline properties', () => {
+      const result = new AnimationParser('fadeIn();timeline@repeat=2,yoyo=true;scroll@scrub=true,pin=true').parse();
+      expect(result.timelineVars).toEqual({ repeat: 2, yoyo: true });
+      expect(result.scrollVars).toEqual({ scrub: true, pin: true });
+      expect(result.animations.length).toBeGreaterThan(0);
+    });
+  });
+
   describe('Animation parsing', () => {
     it('should parse single animation with from (default)', () => {
       const result = new AnimationParser('opacity:0:>').parse();

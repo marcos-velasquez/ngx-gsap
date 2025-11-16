@@ -1,10 +1,16 @@
-export type TriggerType = 'enter' | 'leave' | 'click' | 'scroll' | 'load' | 'none';
+import { Condition } from '../../utils';
+
+export type TriggerType = 'enter' | 'leave' | 'click' | 'load' | 'scroll' | 'none';
 export type TriggerRef = { connect: () => void; disconnect: () => void };
 
 export class Trigger {
   public static readonly default = 'none';
 
   constructor(private readonly el: HTMLElement) {}
+
+  public static isScroll(type: TriggerType): Condition {
+    return new Condition(() => type === 'scroll');
+  }
 
   public onEnter(callback: () => void): TriggerRef {
     this.el.addEventListener('mouseenter', callback);
@@ -35,6 +41,11 @@ export class Trigger {
     return Trigger.empty();
   }
 
+  public onScroll(callback: () => void): TriggerRef {
+    callback();
+    return Trigger.empty();
+  }
+
   public when(triggerType: TriggerType): { then: (callback: VoidFunction) => TriggerRef } {
     return {
       then: (callback: () => void) => {
@@ -47,6 +58,8 @@ export class Trigger {
             return this.onClick(callback);
           case 'load':
             return this.onLoad(callback);
+          case 'scroll':
+            return this.onScroll(callback);
           default:
             return Trigger.empty();
         }

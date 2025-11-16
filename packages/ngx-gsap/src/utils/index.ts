@@ -3,6 +3,7 @@ export * from './sleep';
 export * from './that';
 export * from './type-converter';
 export * from './type-serializer';
+export * from './condition';
 export * from './object-normalizer';
 export * from './object-parser';
 export * from './object-serializer';

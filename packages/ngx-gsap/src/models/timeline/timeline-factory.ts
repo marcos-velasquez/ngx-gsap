@@ -11,7 +11,9 @@ export class TimelineFactory {
   }
 
   private _create(): Timeline {
-    return new Timeline(this.host.element, { immediateRender: false }).with(this.host.trigger());
+    return new Timeline(this.host.element, { immediateRender: this.host.isScroll().evaluate() }).with(
+      this.host.trigger()
+    );
   }
 
   public create(): Timeline {

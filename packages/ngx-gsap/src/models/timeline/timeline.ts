@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PropertyInvoker } from '../../utils';
 import { Trigger, TriggerRef, TriggerType } from '../trigger';
 
@@ -45,7 +46,11 @@ export class Timeline {
     return this;
   }
 
-  private getTarget(selector?: string): gsap.TweenTarget {
+  public scroll(vars: ScrollTrigger.StaticVars = {}): ScrollTrigger {
+    return ScrollTrigger.create({ trigger: this.element, animation: this.gsapTimeline, ...vars });
+  }
+
+  private getTarget(selector?: string): gsap.DOMTarget {
     return selector ? this.element.querySelectorAll(selector) : this.element;
   }
 

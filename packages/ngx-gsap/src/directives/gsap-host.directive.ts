@@ -2,7 +2,7 @@ import * as ng from '@angular/core';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Timeline, TimelineFactory } from '../models/timeline';
-import { TriggerType } from '../models/trigger';
+import { Trigger, TriggerType } from '../models/trigger';
 
 @ng.Directive({ selector: '[gsap]' })
 export abstract class GsapHostDirective implements ng.OnInit, ng.OnDestroy {
@@ -17,6 +17,8 @@ export abstract class GsapHostDirective implements ng.OnInit, ng.OnDestroy {
   public readonly injector = ng.inject(ng.Injector);
 
   public readonly timeline = ng.signal<Timeline>(TimelineFactory.empty());
+
+  public readonly isScroll = ng.computed(() => Trigger.isScroll(this.trigger()));
 
   constructor(public readonly elementRef: ng.ElementRef<HTMLElement>) {
     gsap.registerPlugin(ScrollTrigger);

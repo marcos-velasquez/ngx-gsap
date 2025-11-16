@@ -42,4 +42,11 @@ export class RegexPatterns {
    * Groups: [1] = props string
    */
   public static readonly TIMELINE_PROPS = /timeline@([^;]+)/;
+
+  /**
+   * Matches scroll trigger properties syntax: scroll@props
+   * Example: "scroll@start='top center',scrub=true"
+   * Groups: [1] = props string
+   */
+  public static readonly SCROLL_PROPS = /scroll@([^;]+)/;
 }
