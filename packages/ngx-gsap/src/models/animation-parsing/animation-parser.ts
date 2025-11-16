@@ -1,7 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { assert } from '../../utils';
-import { Animation } from '../@constants';
 import { PresetResolver } from '../preset-resolution/preset-resolver';
 import { SequenceParser, ParsedAnimation } from './sequence-parser';
 import { TimelinePropsExtractor } from './timeline-props-extractor';
@@ -14,20 +13,24 @@ export type AnimationParserResult = {
 };
 
 export class AnimationParser {
+  public static readonly DELIMITER = ';';
+
   private readonly sequences: string[];
 
   constructor(sequence: string) {
     assert(!!sequence?.trim(), 'Sequence is required');
 
-    const parts = sequence.trim().split(Animation.DELIMITER);
-    this.sequences = parts.flatMap((part) => new PresetResolver(part.trim()).resolve().split(Animation.DELIMITER));
+    const parts = sequence.trim().split(AnimationParser.DELIMITER);
+    this.sequences = parts.flatMap((part) =>
+      new PresetResolver(part.trim()).resolve().split(AnimationParser.DELIMITER)
+    );
   }
 
   public parse(): AnimationParserResult {
-    const fullSequence = this.sequences.join(Animation.DELIMITER);
+    const sequence = this.sequences.join(AnimationParser.DELIMITER);
     return {
-      timelineVars: new TimelinePropsExtractor(fullSequence).extract(),
-      scrollVars: new ScrollPropsExtractor(fullSequence).extract(),
+      timelineVars: new TimelinePropsExtractor(sequence).extract(),
+      scrollVars: new ScrollPropsExtractor(sequence).extract(),
       animations: this.sequences.map((s) => new SequenceParser(s).parse()).filter((anim) => anim !== null),
     };
   }

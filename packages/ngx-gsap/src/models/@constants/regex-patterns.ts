@@ -1,5 +1,3 @@
-import { Animation } from './animation';
-
 /**
  * Centralized regex patterns used across the application
  */
@@ -30,11 +28,6 @@ export class RegexPatterns {
    * Used to remove quotes from string values
    */
   public static readonly QUOTED_STRING = /^['"]|['"]$/g;
-
-  /**
-   * Sequence delimiter
-   */
-  public static readonly SEQUENCE_DELIMITER = new RegExp(Animation.DELIMITER);
 
   /**
    * Matches timeline properties syntax: timeline@props
