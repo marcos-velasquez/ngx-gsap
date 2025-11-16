@@ -3,8 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { assert } from '../../utils';
 import { PresetResolver } from '../preset-resolution/preset-resolver';
 import { SequenceParser, ParsedAnimation } from './sequence-parser';
-import { TimelinePropsExtractor } from './timeline-props-extractor';
-import { ScrollPropsExtractor } from './scroll-props-extractor';
+import { TimelinePropsExtractor, ScrollPropsExtractor } from './extractors';
 
 export type AnimationParserResult = {
   animations: ParsedAnimation[];

@@ -1,4 +1,4 @@
-import { ScrollPropsExtractor } from '../scroll-props-extractor';
+import { ScrollPropsExtractor } from '../extractors/scroll-props-extractor';
 
 describe('ScrollPropsExtractor', () => {
   it('should extract from beginning', () => {
@@ -74,7 +74,9 @@ describe('ScrollPropsExtractor', () => {
   });
 
   it('should handle mixed quotes', () => {
-    const scrollVars = new ScrollPropsExtractor('scroll@start="top center",toggleActions=\'play none none none\'').extract();
+    const scrollVars = new ScrollPropsExtractor(
+      'scroll@start="top center",toggleActions=\'play none none none\''
+    ).extract();
     expect(scrollVars).toEqual({ start: 'top center', toggleActions: 'play none none none' });
   });
 });

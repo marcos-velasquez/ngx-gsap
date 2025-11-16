@@ -1,4 +1,4 @@
-import { TimelinePropsExtractor } from '../timeline-props-extractor';
+import { TimelinePropsExtractor } from '../extractors/timeline-props-extractor';
 
 describe('TimelinePropsExtractor', () => {
   it('should extract from beginning', () => {
@@ -22,7 +22,9 @@ describe('TimelinePropsExtractor', () => {
   });
 
   it('should handle multiple property types', () => {
-    const timelineVars = new TimelinePropsExtractor('timeline@ease=power2.out,duration=2,repeat=-1,yoyo=true;fadeIn').extract();
+    const timelineVars = new TimelinePropsExtractor(
+      'timeline@ease=power2.out,duration=2,repeat=-1,yoyo=true;fadeIn'
+    ).extract();
     expect(timelineVars).toEqual({ ease: 'power2.out', duration: 2, repeat: -1, yoyo: true });
   });
 });

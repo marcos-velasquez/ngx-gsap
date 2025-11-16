@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
-import { RegexPatterns } from '../@constants';
-import { PropsExtractor } from './props-extractor';
+import { RegexPatterns } from '../../@constants';
+import { PropsExtractor } from '../props-extractor';
 
 export class TimelinePropsExtractor extends PropsExtractor<gsap.TimelineVars> {
   constructor(sequence: string) {
