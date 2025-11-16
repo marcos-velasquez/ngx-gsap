@@ -57,6 +57,9 @@ Each directive handles a specific event:
 <!-- animateLeave - Triggers on mouse leave -->
 <div animateLeave="fadeOut">Fades out on mouse leave</div>
 
+<!-- animateScroll - Triggers on scroll position -->
+<div animateScroll="fadeIn">Fades in when scrolled into view</div>
+
 <!-- Combine multiple directives -->
 <div animateClick="scale" animateEnter="fadeIn" animateLeave="fadeOut">Multiple triggers</div>
 ```
@@ -124,11 +127,45 @@ For complete control, use raw GSAP syntax:
 
 **Syntax:** `[method]:[property]:[value]:[position]@[props]`
 
-- **method**: `from` (default) or `to`
+- **method**: `from` (default), `to`, or `set`
 - **property**: GSAP property (`opacity`, `scale`, `x`, `y`, `rotate`, etc.)
 - **value**: Target value
 - **position**: `>` sequence, `<` simultaneous, `0` start, etc. _(optional)_
 - **props**: GSAP properties like `duration`, `ease` _(optional)_
+
+**Note:** The `set` method instantly sets properties without animation, useful for establishing initial states.
+
+### Timeline Properties
+
+Apply properties to the entire timeline using `timeline@` or the `timeline` parameter in presets:
+
+```html
+<!-- Raw syntax -->
+<div animateClick="timeline@repeat=3,yoyo=true;to:x:10;to:x:-10;to:x:0">Shake 4 times</div>
+<div animateLoad="timeline@repeat=-1;pulse">Pulse forever</div>
+
+<!-- Preset syntax -->
+<div animateClick="shake({ timeline: { repeat: 1 } })">Shake twice</div>
+<div animateClick="pulse({ opacity: 0, timeline: { repeat: 2, yoyo: true } })">Pulse 3 times</div>
+```
+
+Timeline properties apply to the **entire animation sequence** and can be placed anywhere in the sequence.
+
+### Scroll Properties
+
+Configure scroll-triggered animations using `scroll@` or the `scroll` parameter in presets:
+
+```html
+<!-- Raw syntax -->
+<div animateScroll="fadeIn;scroll@start='top center',scrub=true">Smooth scroll fade</div>
+<div animateScroll="slideIn({ x: '-100%' });scroll@start='top bottom',end='bottom top'">Slide on scroll</div>
+
+<!-- Preset syntax -->
+<div animateScroll="fadeIn({ scroll: { start: 'top center', scrub: true } })">Smooth fade</div>
+<div animateScroll="zoomIn({ scroll: { start: 'top bottom', pin: true, markers: true } })">Pinned zoom</div>
+```
+
+Scroll properties apply to the **entire timeline** and work with `animateScroll` directive.
 
 ### Combining Animations
 
@@ -234,13 +271,13 @@ export class MyComponent {
 Control animations programmatically using template references:
 
 ```html
-<div #myAnimation="animate" animate="fadeIn">Content</div>
+<div #animation="animate" animate="fadeIn">Content</div>
 
-<button (click)="myAnimation.play()">Play</button>
-<button (click)="myAnimation.pause()">Pause</button>
-<button (click)="myAnimation.reverse()">Reverse</button>
-<button (click)="myAnimation.resume()">Resume</button>
-<button (click)="myAnimation.restart()">Restart</button>
+<button (click)="animation.play()">Play</button>
+<button (click)="animation.pause()">Pause</button>
+<button (click)="animation.reverse()">Reverse</button>
+<button (click)="animation.resume()">Resume</button>
+<button (click)="animation.restart()">Restart</button>
 ```
 
 **Available methods:**
@@ -250,6 +287,29 @@ Control animations programmatically using template references:
 - `reverse()` - Reverse the animation direction
 - `resume()` - Resume a paused animation
 - `restart()` - Restart the animation from the beginning
+
+## Important Notes
+
+### ⚠️ CSS Transitions Conflict
+
+**Do not use CSS `transition` properties on elements animated by GSAP.** CSS transitions and GSAP animations will conflict when controlling the same properties, causing unexpected behavior.
+
+```html
+<!-- ❌ BAD: CSS transition conflicts with GSAP -->
+<div animateClick="zoomIn" class="transition-transform duration-300 hover:scale-105">Will not work correctly</div>
+
+<!-- ✅ GOOD: No CSS transitions on animated element -->
+<div animateClick="zoomIn">Works perfectly</div>
+
+<!-- ✅ GOOD: Apply directive to parent, CSS transitions on child -->
+<div animateClick="zoomIn">
+  <div class="transition-transform duration-300 hover:scale-105">
+    Also works - child has transitions, parent is animated
+  </div>
+</div>
+```
+
+**Rule of thumb:** If GSAP animates an element's `transform`, `opacity`, or any other property, don't use CSS transitions/animations on those same properties for that element.
 
 ## License
 
