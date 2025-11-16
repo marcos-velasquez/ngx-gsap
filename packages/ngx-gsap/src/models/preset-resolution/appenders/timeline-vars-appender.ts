@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
-import { RegexPatterns } from '../@constants';
-import { PresetAppender } from './preset-appender';
+import { RegexPatterns } from '../../@constants';
+import { PresetAppender } from '../preset-appender';
 
 export class TimelineVarsAppender extends PresetAppender<gsap.TimelineVars> {
   constructor(sequence: string) {

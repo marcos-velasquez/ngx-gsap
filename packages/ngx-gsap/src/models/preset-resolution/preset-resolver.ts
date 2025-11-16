@@ -1,8 +1,7 @@
 import { PresetMatcher } from './preset-matcher';
 import { PresetExpander } from './preset-expander';
 import { CustomVarsExtractor } from './custom-vars-extractor';
-import { TimelineVarsExtractor } from './timeline-vars-extractor';
-import { ScrollVarsExtractor } from './scroll-vars-extractor';
+import { TimelineVarsExtractor, ScrollVarsExtractor } from './extractors';
 import { VarsAppender } from './vars-appender';
 
 export class PresetResolver {

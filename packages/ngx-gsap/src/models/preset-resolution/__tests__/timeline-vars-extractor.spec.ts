@@ -1,5 +1,5 @@
 import { PresetMatcher } from '../preset-matcher';
-import { TimelineVarsExtractor } from '../timeline-vars-extractor';
+import { TimelineVarsExtractor } from '../extractors/timeline-vars-extractor';
 
 describe('TimelineVarsExtractor', () => {
   it('should extract timeline vars from preset with timeline parameter', () => {

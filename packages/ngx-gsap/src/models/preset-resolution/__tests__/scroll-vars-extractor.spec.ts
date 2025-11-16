@@ -1,5 +1,5 @@
 import { PresetMatcher } from '../preset-matcher';
-import { ScrollVarsExtractor } from '../scroll-vars-extractor';
+import { ScrollVarsExtractor } from '../extractors/scroll-vars-extractor';
 
 describe('ScrollVarsExtractor', () => {
   it('should extract scroll from preset function', () => {

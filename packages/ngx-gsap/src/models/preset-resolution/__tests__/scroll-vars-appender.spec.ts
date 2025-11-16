@@ -1,4 +1,4 @@
-import { ScrollVarsAppender } from '../scroll-vars-appender';
+import { ScrollVarsAppender } from '../appenders/scroll-vars-appender';
 
 describe('ScrollVarsAppender', () => {
   it('should append scrollTrigger vars to sequence', () => {

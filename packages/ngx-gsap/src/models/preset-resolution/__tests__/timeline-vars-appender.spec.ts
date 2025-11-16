@@ -1,4 +1,4 @@
-import { TimelineVarsAppender } from '../timeline-vars-appender';
+import { TimelineVarsAppender } from '../appenders/timeline-vars-appender';
 
 describe('TimelineVarsAppender', () => {
   it('should append timeline vars to sequence without existing timeline@', () => {
