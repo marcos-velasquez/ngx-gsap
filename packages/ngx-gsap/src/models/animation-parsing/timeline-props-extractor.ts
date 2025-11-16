@@ -1,14 +1,9 @@
 import { gsap } from 'gsap';
 import { RegexPatterns } from '../@constants';
-import { PropsParser } from './props-parser';
+import { PropsExtractor } from './props-extractor';
 
-export class TimelinePropsExtractor {
-  constructor(private readonly sequence: string) {}
-
-  public extract(): gsap.TimelineVars {
-    const match = this.sequence.match(RegexPatterns.TIMELINE_PROPS);
-    if (!match) return {};
-
-    return new PropsParser(match[1]).parse();
+export class TimelinePropsExtractor extends PropsExtractor<gsap.TimelineVars> {
+  constructor(sequence: string) {
+    super(sequence, RegexPatterns.TIMELINE_PROPS);
   }
 }
