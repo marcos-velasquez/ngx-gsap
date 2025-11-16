@@ -1,10 +1,10 @@
-import { TweenVars } from '../@types';
+import { gsap } from 'gsap';
 import { TypeSerializer } from '../../utils';
 
 export class CustomVarsAppender {
   constructor(private readonly sequence: string) {}
 
-  public append(customVars: TweenVars): string {
+  public append(customVars: gsap.TweenVars): string {
     if (Object.keys(customVars).length === 0) return this.sequence;
 
     const customVarsString = Object.entries(customVars)

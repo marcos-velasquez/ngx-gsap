@@ -1,11 +1,11 @@
+import { gsap } from 'gsap';
 import { ObjectParser } from '../../utils';
-import { TweenVars } from '../@types';
 import { PresetMatcher } from './preset-matcher';
 
 export class CustomVarsExtractor {
   constructor(private readonly presetMatcher: PresetMatcher) {}
 
-  public extract(): TweenVars {
+  public extract(): gsap.TweenVars {
     if (!this.presetMatcher.isFunction()) return {};
 
     const { argsString, hasArgs } = this.presetMatcher.asPresetMatch();
@@ -17,7 +17,7 @@ export class CustomVarsExtractor {
       .reduce((acc, key) => {
         acc[key] = params[key];
         return acc;
-      }, {} as TweenVars);
+      }, {} as gsap.TweenVars);
   }
 
   private isCustomVar(key: string): boolean {
