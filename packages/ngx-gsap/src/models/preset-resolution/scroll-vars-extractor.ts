@@ -1,17 +1,9 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ObjectParser } from '../../utils';
 import { PresetMatcher } from './preset-matcher';
+import { PresetVarsExtractor } from './preset-vars-extractor';
 
-export class ScrollVarsExtractor {
-  constructor(private readonly presetMatcher: PresetMatcher) {}
-
-  public extract(): ScrollTrigger.StaticVars {
-    if (!this.presetMatcher.isFunction()) return {};
-
-    const { argsString, hasArgs } = this.presetMatcher.asPresetMatch();
-    if (!hasArgs) return {};
-
-    const params = new ObjectParser(argsString).parse();
-    return (params['scrollTrigger'] as ScrollTrigger.StaticVars) || {};
+export class ScrollVarsExtractor extends PresetVarsExtractor<ScrollTrigger.StaticVars> {
+  constructor(presetMatcher: PresetMatcher) {
+    super(presetMatcher, 'scrollTrigger');
   }
 }
