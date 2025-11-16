@@ -1,10 +1,10 @@
-import { GsapHostDirective } from '../../directives/gsap-host.directive';
+import { AnimateDirective } from '../../directives/animate.directive';
 import { Timeline } from './timeline';
 
-const cache = new WeakMap<GsapHostDirective, Timeline>();
+const cache = new WeakMap<AnimateDirective, Timeline>();
 
 export class TimelineFactory {
-  constructor(private readonly host: GsapHostDirective) {
+  constructor(private readonly host: AnimateDirective) {
     if (!cache.has(this.host)) {
       cache.set(this.host, this._create());
     }

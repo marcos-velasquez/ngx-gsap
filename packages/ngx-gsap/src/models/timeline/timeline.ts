@@ -103,4 +103,9 @@ export class Timeline {
     this.triggerRef.connect();
     return this;
   }
+
+  public kill(): Timeline {
+    this.gsapTimeline.kill();
+    return this;
+  }
 }
