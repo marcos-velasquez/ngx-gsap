@@ -1,4 +1,4 @@
-import { VarsAppender } from '../vars-appender';
+import { VarsAppender } from '../appenders/vars-appender';
 
 describe('VarsAppender', () => {
   it('should append both custom vars and timeline vars', () => {
@@ -69,11 +69,7 @@ describe('VarsAppender', () => {
 
   it('should append all three types of vars', () => {
     const appender = new VarsAppender('to:opacity:0:>');
-    const result = appender.append(
-      { duration: 2 },
-      { repeat: 2 },
-      { scrub: 1, markers: true }
-    );
+    const result = appender.append({ duration: 2 }, { repeat: 2 }, { scrub: 1, markers: true });
 
     expect(result).toContain('duration=2');
     expect(result).toContain('timeline@repeat=2');
