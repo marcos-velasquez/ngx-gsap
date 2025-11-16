@@ -4,14 +4,14 @@ export class TypeConverter {
   constructor(private readonly value: string) {}
 
   public convert(): unknown {
-    const trimmed = this.value.trim();
+    const value = this.value.trim();
 
-    if (trimmed === 'true') return true;
-    if (trimmed === 'false') return false;
-    if (trimmed === 'null') return null;
-    if (trimmed === 'undefined') return undefined;
-    if (!isNaN(Number(trimmed))) return Number(trimmed);
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    if (value === 'null') return null;
+    if (value === 'undefined') return undefined;
+    if (!isNaN(Number(value))) return Number(value);
 
-    return trimmed.replace(RegexPatterns.QUOTED_STRING, '');
+    return value.replace(RegexPatterns.QUOTED_STRING, '');
   }
 }
