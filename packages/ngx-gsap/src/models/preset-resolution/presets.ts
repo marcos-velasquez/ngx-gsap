@@ -52,15 +52,16 @@ export class Presets {
 
   /**
    * Slide in animation - element slides in from a specified direction.
-   * @param x - Horizontal starting position (default: '0')
-   * @param y - Vertical starting position (default: '0')
-   * @example slideIn() // Slide in from left
-   * @example slideIn({ x: '100%' }) // Slide in from right
-   * @example slideIn({ y: '100%' }) // Slide in from up
-   * @example slideIn({ x: '-100%', y: '-100%' }) // Slide in from down/left
+   * @param axis - Animation axis: 'x' for horizontal or 'y' for vertical (default: 'x')
+   * @param distance - Starting distance from final position (default: '0')
+   * @example slideIn() // Slide in horizontally from x: 0
+   * @example slideIn({ axis: 'x', distance: '100%' }) // Slide in from right
+   * @example slideIn({ axis: 'y', distance: '100%' }) // Slide in from bottom
+   * @example slideIn({ axis: 'y', distance: '-100%' }) // Slide in from top
    */
-  public static slideIn({ x = '0', y = '0' } = {}): string {
-    return `x:${x}:0;y:${y}:0`;
+  public static slideIn({ axis = 'x', distance = '0' } = {}): string {
+    const property = axis === 'y' ? `y` : `x`;
+    return `${property}:${distance}`;
   }
 
   /**
@@ -355,17 +356,18 @@ export class Presets {
 
   /**
    * Slide out animation - element moves to a position.
-   * @param x - Horizontal ending position (default: '0')
-   * @param y - Vertical ending position (default: '0')
+   * @param axis - Animation axis: 'x' for horizontal or 'y' for vertical (default: 'x')
+   * @param distance - Ending distance from current position (default: '0')
    * @remarks Animation sequence:
-   * - Animates x and y simultaneously to target position
+   * - Animates along the specified axis to the target distance
    * - Use negative values to slide left/up, positive for right/down
-   * @example slideOut({ x: '-100%' }) // Slide out to left
-   * @example slideOut({ y: '100%' }) // Slide out to bottom
-   * @example slideOut({ x: '100%', y: '-100%' }) // Slide out to top-right
+   * @example slideOut({ axis: 'x', distance: '-100%' }) // Slide out to left
+   * @example slideOut({ axis: 'y', distance: '100%' }) // Slide out to bottom
+   * @example slideOut({ axis: 'x', distance: '100%' }) // Slide out to right
    */
-  public static slideOut({ x = '0', y = '0' } = {}): string {
-    return `to:x:${x}:0;to:y:${y}:0`;
+  public static slideOut({ axis = 'x', distance = '0' } = {}): string {
+    const property = axis === 'y' ? `y` : `x`;
+    return `to:${property}:${distance}`;
   }
 
   /**

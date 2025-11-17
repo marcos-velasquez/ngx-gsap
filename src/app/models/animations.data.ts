@@ -21,9 +21,9 @@ export const animations: Animation[] = [
   {
     name: 'Slide In',
     category: 'entrance',
-    value: 'slideIn({ y: -200 })',
+    value: 'slideIn({ axis: "y", distance: -200 })',
     description: 'Slide in from a specified direction.',
-    examples: ['slideIn', "slideIn({ x: '100%' })", "slideIn({ y: '100%' })"],
+    examples: ['slideIn', "slideIn({ axis: 'x', distance: '100%' })", "slideIn({ axis: 'y', distance: '100%' })"],
     gradient: 'from-amber-200 to-amber-400',
     content: '<div class="w-16 h-24 bg-amber-600 rounded-lg transform -rotate-12"></div>',
   },
@@ -133,9 +133,9 @@ export const animations: Animation[] = [
   {
     name: 'Slide Out',
     category: 'exit',
-    value: 'slideOut({ x: "200%" })',
+    value: 'slideOut({ axis: "x", distance: "200%" })',
     description: 'Slide out in any direction.',
-    examples: ["slideOut({ x: '100%' })", "slideOut({ y: '-100%' })"],
+    examples: ["slideOut({ axis: 'x', distance: '100%' })", "slideOut({ axis: 'y', distance: '-100%' })"],
     gradient: 'from-gray-300 to-gray-500',
   },
   {
