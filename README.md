@@ -170,7 +170,7 @@ Configure scroll-triggered animations using `scroll@` or the `scroll` parameter 
 ```html
 <!-- Raw syntax -->
 <div animateScroll="fadeIn;scroll@start='top center',scrub=true">Smooth scroll fade</div>
-<div animateScroll="slideIn({ x: '-100%' });scroll@start='top bottom',end='bottom top'">Slide on scroll</div>
+<div animateScroll="slideIn({ distance: '-100%' });scroll@start='top bottom',end='bottom top'">Slide on scroll</div>
 
 <!-- Preset syntax -->
 <div animateScroll="fadeIn({ scroll: { start: 'top center', scrub: true } })">Smooth fade</div>
@@ -193,7 +193,7 @@ Combine multiple animations using semicolons:
 
 <!-- Mix presets with raw syntax -->
 <div animateClick="fadeIn;to:scale:1.2:>">Fade then scale</div>
-<div animateLoad="slideIn({ x: '-100%' });rotate:360:>">Slide and rotate</div>
+<div animateLoad="slideIn({ distance: '-100%' });rotate:360:>">Slide and rotate</div>
 ```
 
 ### Dynamic Values
