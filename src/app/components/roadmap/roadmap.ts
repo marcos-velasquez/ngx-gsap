@@ -10,50 +10,45 @@ export class Roadmap {
   upcomingFeatures = [
     {
       title: 'GSAP Plugins',
-      status: 'Próximamente',
-      description: 'Integración de plugins oficiales de GSAP para animaciones avanzadas',
+      status: 'Coming Soon',
+      description: 'Integration of official GSAP plugins for advanced animations',
       items: [
         {
-          name: 'ScrollTrigger',
-          description: 'Animaciones basadas en scroll con puntos de activación personalizables',
-          icon: '📜',
+          name: 'TextPlugin',
+          description: 'Character-by-character text animation',
+          icon: '📝',
         },
         {
           name: 'Draggable',
-          description: 'Elementos arrastrables con física y límites configurables',
+          description: 'Draggable elements with physics and configurable bounds',
           icon: '🖱️',
         },
         {
           name: 'MotionPath',
-          description: 'Animaciones a lo largo de trazados SVG personalizados',
+          description: 'Animations along custom SVG paths',
           icon: '🛤️',
         },
         {
           name: 'MorphSVG',
-          description: 'Transformación fluida entre formas SVG',
+          description: 'Smooth transformation between SVG shapes',
           icon: '🔄',
         },
         {
           name: 'ScrollSmoother',
-          description: 'Scroll suave y fluido con efectos parallax',
+          description: 'Smooth and fluid scroll with parallax effects',
           icon: '✨',
         },
         {
           name: 'Flip',
-          description: 'Transiciones fluidas entre estados de elementos',
+          description: 'Smooth transitions between element states',
           icon: '🔀',
-        },
-        {
-          name: 'TextPlugin',
-          description: 'Animación de texto carácter por carácter',
-          icon: '📝',
         },
       ],
     },
     {
-      title: 'Presets de Animaciones',
-      status: 'Próximamente',
-      description: 'Colección de animaciones predefinidas listas para usar',
+      title: 'Animation Presets',
+      status: 'Coming Soon',
+      description: 'Collection of ready-to-use predefined animations',
       items: [
         {
           name: 'Entrance Animations',
@@ -77,7 +72,7 @@ export class Roadmap {
         },
         {
           name: 'Page Transitions',
-          description: 'Transiciones fluidas entre rutas',
+          description: 'Smooth transitions between routes',
           icon: '🔄',
         },
       ],
