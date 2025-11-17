@@ -13,20 +13,23 @@ npm install gsap ngx-gsap
 Import the directives you need:
 
 ```typescript
-import { AnimateClickDirective, AnimateEnterDirective, AnimateLeaveDirective, AnimateLoadDirective } from 'ngx-gsap';
+import { AnimateClickDirective, AnimateEnterDirective, AnimateLeaveDirective, AnimateLoadDirective, AnimateScrollDirective } from 'ngx-gsap';
 
 @Component({
-  imports: [AnimateClickDirective, AnimateEnterDirective, AnimateLeaveDirective, AnimateLoadDirective],
+  imports: [AnimateClickDirective, AnimateEnterDirective, AnimateLeaveDirective, AnimateLoadDirective, AnimateScrollDirective],
   template: `
     <div animateClick="pulse">Click me!</div>
     <div animateEnter="fadeIn">Hover over me!</div>
     <div animateLeave="fadeOut">Mouse leave</div>
     <div animateLoad="slideIn">Animates on page load</div>
+    <div animateScroll="fadeIn">Fades in when scrolled into view</div>
   `
 })
 ```
 
 ## Basic Usage
+
+### Preset Syntax
 
 ```html
 <!-- Simple animation -->
@@ -34,6 +37,14 @@ import { AnimateClickDirective, AnimateEnterDirective, AnimateLeaveDirective, An
 
 <!-- With parameters -->
 <div animateClick="fadeIn({ opacity: 0.1, duration: 2 })">Custom fade in</div>
+```
+
+### Raw Syntax
+
+```html
+<!-- Custom control with raw GSAP syntax -->
+<div animateClick="opacity:0:>">Fade in from transparent</div>
+<div animateClick="x:100:0@duration=2;scale:1.2:<20%">Slide right then scale</div>
 ```
 
 ## Animation Triggers
@@ -58,7 +69,7 @@ Each directive handles a specific event:
 <div animateLeave="fadeOut">Fades out on mouse leave</div>
 
 <!-- animateScroll - Triggers on scroll position -->
-<div animateScroll="fadeIn">Fades in when scrolled into view</div>
+<div animateScroll="fadeIn({ scroll: { start: 'top center', scrub: true } })">Smooth fade</div>
 
 <!-- Combine multiple directives -->
 <div animateClick="scale" animateEnter="fadeIn" animateLeave="fadeOut">Multiple triggers</div>
@@ -73,11 +84,12 @@ Use with the `trigger` input for flexibility:
 <button animate="pulse" trigger="click">Pulse on click</button>
 <div animate="fadeIn" trigger="enter">Fades in on hover</div>
 <div animate="fadeOut" trigger="leave">Fades out on mouse leave</div>
+<div animate="zoomIn" trigger="scroll">Zoom in when scrolled into view</div>
 ```
 
 ## Animation Presets
 
-**60+ preset animations** organized in 5 categories: Entrance, Exit, Attention, Special Effects, and Shadow Effects.
+**30+ preset animations** organized in 5 categories: Entrance, Exit, Attention, Special Effects, and Shadow Effects.
 
 ### Flexible & Parametrized
 
