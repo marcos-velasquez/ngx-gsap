@@ -1,217 +1,328 @@
 # ngx-gsap
 
-Powerful GSAP animations for Angular with **69+ preset animations** - highly customizable and easy to use.
+A lightweight Angular animation library powered by GSAP. Highly customizable, declarative, and easy to use.
 
-## ✨ Features
-
-- 🎨 **69 preset animations** categorized in: Entrance (25), Exit (12), Attention (25), and Special (25)
-- 🎯 **Highly customizable** - each animation accepts parameters
-- 🚀 **Easy to use** - simple directive-based API
-- 📦 **Lightweight** - tree-shakeable and optimized
-- 🔧 **TypeScript** - full type safety
-- ⚡ **Powered by GSAP** - industry-leading animation library
-
-## 📦 Installation
+## Installation
 
 ```bash
-npm install ngx-gsap gsap
+npm install gsap ngx-gsap
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
-### 1. Import the directives
+Import the directives you need:
 
 ```typescript
-import { Component } from '@angular/core';
-import { AnimateDirective, AnimateClickDirective } from 'ngx-gsap';
+import { AnimateClickDirective, AnimateEnterDirective, AnimateLeaveDirective, AnimateLoadDirective, AnimateScrollDirective } from 'ngx-gsap';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [AnimateDirective, AnimateClickDirective],
+  imports: [AnimateClickDirective, AnimateEnterDirective, AnimateLeaveDirective, AnimateLoadDirective, AnimateScrollDirective],
   template: `
-    <div animate="fadeIn">Fades in on load</div>
-    <button animateClick="bounce">Click me!</button>
+    <div animateClick="pulse">Click me!</div>
+    <div animateEnter="fadeIn">Hover over me!</div>
+    <div animateLeave="fadeOut">Mouse leave</div>
+    <div animateLoad="slideIn">Animates on page load</div>
+    <div animateScroll="fadeIn">Fades in when scrolled into view</div>
   `
 })
-export class AppComponent {}
 ```
 
-### 2. Use the animations
+## Basic Usage
+
+### Preset Syntax
 
 ```html
-<!-- Simple animations -->
-<div animate="fadeIn">Fade in</div>
-<div animate="slideIn({ x: '-100%' })">Slide from left</div>
-<div animate="zoomIn">Zoom in</div>
+<!-- Simple animation -->
+<div animateClick="fadeIn">Fade in on click</div>
 
-<!-- With triggers -->
-<div animateLoad="bounceIn">On page load</div>
-<div animateEnter="fadeIn">On element enter viewport</div>
-<button animateClick="pulse">On click</button>
-<div animateLeave="fadeOut">On element leave viewport</div>
-
-<!-- Custom parameters -->
-<div animate="fadeIn({ x: '-100%', y: '100%', opacity: 0 })">
-  Fade from bottom-left
-</div>
+<!-- With parameters -->
+<div animateClick="fadeIn({ opacity: 0.1, duration: 2 })">Custom fade in</div>
 ```
 
-## 📚 Available Animations
-
-### Entrance Animations (25)
-`fadeIn`, `slideIn`, `zoomIn`, `bounceIn`, `rotateIn`, `flipIn`, `flipInX`, `flipInY`, `rollIn`, `lightSpeedIn`, `backIn`, `blurredFadeIn`, `pop`, `bounceFadeIn`, `slideUpFade`, `slideInBounce`, `zoomInRotate`, `slideRotateIn`, `swingDropIn`, `pulseFadeIn`, `slideExpandUp`, `expandUp`, `expandOpen`, `bigEntrance`, `hatch`
-
-### Exit Animations (12)
-`fadeOut`, `slideOut`, `zoomOut`, `flipOut`, `flipOutY`, `rollOut`, `backOut`, `hinge`, `bounceOut`, `rotateOut`, `lightSpeedOut`, `slideRotateOut`
-
-### Attention Animations (25)
-`pulse`, `shake`, `wobble`, `jello`, `heartBeat`, `flash`, `swingIn`, `rubberBandIn`, `rubberBand`, `jackInTheBox`, `tada`, `bounce`, `swing`, `headShake`, `wiggle`, `jump`, `float`, `blink`, `sway`, `tilt`, `dancing`, `hang`, `sink`, `skewRight`, `kenBurns`
-
-### Special Animations (25)
-`spin`, `flip`, `glitch`, `morphing`, `squeeze`, `skew`, `expand`, `blur`, `verticalBounce`, `horizontalBounce`, `rotationalWave`, `impulseRotationRight`, `impulseRotationLeft`, `tossing`, `pullUp`, `pullDown`, `glow`, `shadow`, `growShadow`, `floatShadow`, `bob`, `buzz`, `buzzOut`, `wobbleSkew`, `kenBurns`
-
-## 🎯 Directives
-
-### `animate`
-Triggers animation on page load.
+### Raw Syntax
 
 ```html
-<div animate="fadeIn">Content</div>
+<!-- Custom control with raw GSAP syntax -->
+<div animateClick="opacity:0:>">Fade in from transparent</div>
+<div animateClick="x:100:0@duration=2;scale:1.2:<20%">Slide right then scale</div>
 ```
 
-### `animateLoad`
-Alias for `animate` - triggers on page load.
+## Animation Triggers
+
+There are **two ways** to trigger animations:
+
+### 1. Specific Directives (Recommended)
+
+Each directive handles a specific event:
 
 ```html
-<div animateLoad="slideIn({ x: '-100%' })">Content</div>
+<!-- animateLoad - Triggers on page load -->
+<div animateLoad="fadeIn">Appears on page load</div>
+
+<!-- animateClick - Triggers on click -->
+<button animateClick="pulse">Pulse on click</button>
+
+<!-- animateEnter - Triggers on mouse enter (hover) -->
+<div animateEnter="fadeIn">Fades in on hover</div>
+
+<!-- animateLeave - Triggers on mouse leave -->
+<div animateLeave="fadeOut">Fades out on mouse leave</div>
+
+<!-- animateScroll - Triggers on scroll position -->
+<div animateScroll="fadeIn({ scroll: { start: 'top center', scrub: true } })">Smooth fade</div>
+
+<!-- Combine multiple directives -->
+<div animateClick="scale" animateEnter="fadeIn" animateLeave="fadeOut">Multiple triggers</div>
 ```
 
-### `animateClick`
-Triggers animation on click.
+### 2. Universal `animate` Directive
+
+Use with the `trigger` input for flexibility:
 
 ```html
-<button animateClick="bounce">Click me</button>
+<div animate="fadeIn" trigger="load">Appears on page load</div>
+<button animate="pulse" trigger="click">Pulse on click</button>
+<div animate="fadeIn" trigger="enter">Fades in on hover</div>
+<div animate="fadeOut" trigger="leave">Fades out on mouse leave</div>
+<div animate="zoomIn" trigger="scroll">Zoom in when scrolled into view</div>
 ```
 
-### `animateEnter`
-Triggers animation when element enters viewport.
+## Animation Presets
+
+**30+ preset animations** organized in 5 categories: Entrance, Exit, Attention, Special Effects, and Shadow Effects.
+
+### Flexible & Parametrized
+
+Instead of dozens of similar animations (`fadeInLeft`, `fadeInRight`, `fadeInUp`, etc.), we provide **one powerful animation** that you customize with parameters:
 
 ```html
-<div animateEnter="fadeIn">Appears when scrolled into view</div>
+<!-- One animation, infinite possibilities -->
+<div animateLoad="fadeIn">Simple fade in</div>
+<div animateLoad="fadeIn({ x: '-100%' })">Fade in from left</div>
+<div animateLoad="fadeIn({ x: '100%' })">Fade in from right</div>
+<div animateLoad="fadeIn({ y: '100%' })">Fade in from bottom</div>
+<div animateLoad="fadeIn({ y: '-100%' })">Fade in from top</div>
+<div animateLoad="fadeIn({ x: '-100%', y: '-100%' })">Fade in from top-left</div>
+<div animateLoad="fadeIn({ y: '2000px' })">Fade in from far away</div>
 ```
 
-### `animateLeave`
-Triggers animation when element leaves viewport.
+### GSAP Properties
+
+You can use **any valid GSAP property** to customize animations:
+
+- **Timing**: `duration`, `delay`, `ease`
+- **Effects**: `stagger`, `repeat`, `yoyo`
+- **And more**: See [GSAP documentation](https://greensock.com/docs/)
 
 ```html
-<div animateLeave="fadeOut">Fades when scrolling away</div>
+<div animateClick="pulse({ duration: 2, ease: 'elastic.out', repeat: 3 })">Custom pulse</div>
 ```
 
-## 🎨 Customization
+## Advanced Features
 
-All animations accept parameters for full customization:
+### Custom Animations (Raw Syntax)
+
+For complete control, use raw GSAP syntax:
 
 ```html
-<!-- Fade in from left -->
-<div animate="fadeIn({ x: '-100%' })">Content</div>
+<!-- Single property -->
+<div animateClick="opacity:0:>">Fade in</div>
+<div animateClick="to:opacity:0:>">Fade out</div>
 
-<!-- Fade in from bottom-right -->
-<div animate="fadeIn({ x: '100%', y: '100%' })">Content</div>
+<!-- Multiple properties -->
+<div animateClick="opacity:0:>;scale:0.5:<">Fade and scale</div>
+<div animateClick="x:-100%:>;opacity:0:0">Slide from left with fade</div>
 
-<!-- Custom duration and easing -->
-<div animate="fadeIn({ duration: 2, ease: 'power2.out' })">Content</div>
-
-<!-- Combine parameters -->
-<div animate="slideIn({ x: '-100%', duration: 1.5, ease: 'elastic.out' })">
-  Content
-</div>
+<!-- Sequential animations -->
+<div animateClick="scale:0:>;to:scale:1.2:>;to:scale:1:>">Bounce effect</div>
 ```
 
-### Common Parameters
+**Syntax:** `[method]:[property]:[value]:[position]@[props]`
 
-- `x`, `y` - Position (e.g., `'-100%'`, `'50px'`)
-- `scale` - Scale value (e.g., `0`, `1.5`)
-- `rotate` - Rotation in degrees (e.g., `180`, `-45`)
-- `opacity` - Opacity value (e.g., `0`, `1`)
-- `duration` - Animation duration in seconds
-- `ease` - GSAP easing function
-- `delay` - Delay before animation starts
-- `repeat` - Number of times to repeat (-1 for infinite)
-- `yoyo` - Reverse animation on repeat
+- **method**: `from` (default), `to`, or `set`
+- **property**: GSAP property (`opacity`, `scale`, `x`, `y`, `rotate`, etc.)
+- **value**: Target value
+- **position**: `>` sequence, `<` simultaneous, `0` start, etc. _(optional)_
+- **props**: GSAP properties like `duration`, `ease` _(optional)_
 
-## 🔧 Advanced Usage
+**Note:** The `set` method instantly sets properties without animation, useful for establishing initial states.
 
-### Event Callbacks
+### Timeline Properties
+
+Apply properties to the entire timeline using `timeline@` or the `timeline` parameter in presets:
+
+```html
+<!-- Raw syntax -->
+<div animateClick="timeline@repeat=3,yoyo=true;to:x:10;to:x:-10;to:x:0">Shake 4 times</div>
+<div animateLoad="timeline@repeat=-1;pulse">Pulse forever</div>
+
+<!-- Preset syntax -->
+<div animateClick="shake({ timeline: { repeat: 1 } })">Shake twice</div>
+<div animateClick="pulse({ opacity: 0, timeline: { repeat: 2, yoyo: true } })">Pulse 3 times</div>
+```
+
+Timeline properties apply to the **entire animation sequence** and can be placed anywhere in the sequence.
+
+### Scroll Properties
+
+Configure scroll-triggered animations using `scroll@` or the `scroll` parameter in presets:
+
+```html
+<!-- Raw syntax -->
+<div animateScroll="fadeIn;scroll@start='top center',scrub=true">Smooth scroll fade</div>
+<div animateScroll="slideIn({ x: '-100%' });scroll@start='top bottom',end='bottom top'">Slide on scroll</div>
+
+<!-- Preset syntax -->
+<div animateScroll="fadeIn({ scroll: { start: 'top center', scrub: true } })">Smooth fade</div>
+<div animateScroll="zoomIn({ scroll: { start: 'top bottom', pin: true, markers: true } })">Pinned zoom</div>
+```
+
+Scroll properties apply to the **entire timeline** and work with `animateScroll` directive.
+
+### Combining Animations
+
+Combine multiple animations using semicolons:
+
+```html
+<!-- Multiple presets -->
+<div animateLoad="fadeIn;rotateIn">Fade and rotate</div>
+<div animateClick="pulse;shake">Pulse then shake</div>
+
+<!-- With parameters -->
+<div animateLoad="fadeIn({ x: '-100%' });bounceIn">Slide and bounce</div>
+
+<!-- Mix presets with raw syntax -->
+<div animateClick="fadeIn;to:scale:1.2:>">Fade then scale</div>
+<div animateLoad="slideIn({ x: '-100%' });rotate:360:>">Slide and rotate</div>
+```
+
+### Dynamic Values
+
+Bind component properties using Angular interpolation:
 
 ```typescript
-import { GsapHostDirective } from 'ngx-gsap';
-
-@Component({
-  template: `
-    <div 
-      animate="fadeIn"
-      (animateStart)="onStart($event)"
-      (animateComplete)="onComplete($event)"
-      (animateUpdate)="onUpdate($event)"
-    >
-      Content
-    </div>
-  `
-})
 export class MyComponent {
-  onStart(directive: GsapHostDirective) {
+  duration = 2;
+}
+```
+
+```html
+<div animateClick="fadeIn({ duration: {{ duration }} })">Dynamic animation</div>
+```
+
+### Animating Child Elements
+
+Use `selector` to animate children instead of the parent:
+
+```html
+<!-- Basic -->
+<div animateLoad="fadeIn({ selector: '.card' })">
+  @for (item of items; track item.id) {
+  <div class="card">{{ item.name }}</div>
+  }
+</div>
+
+<!-- With stagger -->
+<div animateLoad="fadeIn({ selector: '.card', stagger: { amount: 1, from: 'center' } })">
+  @for (item of items; track item.id) {
+  <div class="card">{{ item.name }}</div>
+  }
+</div>
+
+<!-- Raw syntax -->
+<div animate="opacity:0@selector=.card,stagger={amount:1,from:center}">
+  @for (item of items; track item.id) {
+  <div class="card">{{ item }}</div>
+  }
+</div>
+```
+
+## Animation Events
+
+Listen to animation lifecycle events:
+
+```typescript
+export class MyComponent {
+  onStart() {
     console.log('Animation started');
   }
-  
-  onComplete(directive: GsapHostDirective) {
+
+  onComplete() {
     console.log('Animation completed');
   }
-  
-  onUpdate(directive: GsapHostDirective) {
+
+  onUpdate() {
     console.log('Animation updating');
   }
 }
 ```
 
-### Programmatic Control
-
-```typescript
-import { ViewChild } from '@angular/core';
-import { AnimateDirective } from 'ngx-gsap';
-
-@Component({
-  template: `
-    <div #animated animate="fadeIn">Content</div>
-    <button (click)="play()">Play</button>
-    <button (click)="pause()">Pause</button>
-    <button (click)="reverse()">Reverse</button>
-  `
-})
-export class MyComponent {
-  @ViewChild('animated', { read: AnimateDirective }) 
-  animated!: AnimateDirective;
-  
-  play() { this.animated.play(); }
-  pause() { this.animated.pause(); }
-  reverse() { this.animated.reverse(); }
-  restart() { this.animated.restart(); }
-  resume() { this.animated.resume(); }
-}
+```html
+<div
+  animateClick="fadeIn"
+  (animateStart)="onStart()"
+  (animateComplete)="onComplete()"
+  (animateUpdate)="onUpdate()"
+  (animateRepeat)="onRepeat()"
+  (animateReverseComplete)="onReverseComplete()"
+>
+  Animated element
+</div>
 ```
 
-## 📖 Examples
+**Available events:**
 
-Check out the [live demo](https://your-demo-url.com) to see all 69 animations in action!
+- `animateStart` - Fires when animation starts
+- `animateComplete` - Fires when animation completes
+- `animateUpdate` - Fires on each animation frame
+- `animateRepeat` - Fires when animation repeats
+- `animateReverseComplete` - Fires when reverse animation completes
 
-## 🤝 Contributing
+## Programmatic Control
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Control animations programmatically using template references:
 
-## 📄 License
+```html
+<div #animation="animate" animate="fadeIn">Content</div>
 
-MIT © Marcos Velasquez
+<button (click)="animation.play()">Play</button>
+<button (click)="animation.pause()">Pause</button>
+<button (click)="animation.reverse()">Reverse</button>
+<button (click)="animation.resume()">Resume</button>
+<button (click)="animation.restart()">Restart</button>
+```
 
-## 🙏 Credits
+**Available methods:**
 
-Built with [GSAP](https://greensock.com/gsap/) - the industry-leading animation library.
+- `play()` - Play the animation
+- `pause()` - Pause the animation
+- `reverse()` - Reverse the animation direction
+- `resume()` - Resume a paused animation
+- `restart()` - Restart the animation from the beginning
+
+## Important Notes
+
+### ⚠️ CSS Transitions Conflict
+
+**Do not use CSS `transition` properties on elements animated by GSAP.** CSS transitions and GSAP animations will conflict when controlling the same properties, causing unexpected behavior.
+
+```html
+<!-- ❌ BAD: CSS transition conflicts with GSAP -->
+<div animateClick="zoomIn" class="transition-transform duration-300 hover:scale-105">Will not work correctly</div>
+
+<!-- ✅ GOOD: No CSS transitions on animated element -->
+<div animateClick="zoomIn">Works perfectly</div>
+
+<!-- ✅ GOOD: Apply directive to parent, CSS transitions on child -->
+<div animateClick="zoomIn">
+  <div class="transition-transform duration-300 hover:scale-105">
+    Also works - child has transitions, parent is animated
+  </div>
+</div>
+```
+
+**Rule of thumb:** If GSAP animates an element's `transform`, `opacity`, or any other property, don't use CSS transitions/animations on those same properties for that element.
+
+## License
+
+MIT

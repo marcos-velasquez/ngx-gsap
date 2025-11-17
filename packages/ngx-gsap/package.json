@@ -1,7 +1,7 @@
 {
   "name": "ngx-gsap",
   "version": "1.0.0",
-  "description": "Powerful GSAP animations for Angular with 69+ preset animations - highly customizable and easy to use",
+  "description": "Powerful GSAP animations for Angular with 30+ preset animations - highly customizable and easy to use",
   "keywords": [
     "angular",
     "gsap",
