@@ -1,9 +1,7 @@
 import * as ng from '@angular/core';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Timeline, TimelineFactory } from '../models/timeline';
 import { Trigger, TriggerType } from '../models/trigger';
-import { AnimationParser } from '../models/animation-parsing';
+import { AnimationParser, pluginRegister } from '../models/animation-parsing';
 
 @ng.Directive({ selector: '[animate]', exportAs: 'animate' })
 export abstract class AnimateDirective implements ng.OnInit, ng.OnDestroy {
@@ -23,7 +21,7 @@ export abstract class AnimateDirective implements ng.OnInit, ng.OnDestroy {
   public readonly isScroll = ng.computed(() => Trigger.isScroll(this.trigger()));
 
   constructor(public readonly elementRef: ng.ElementRef<HTMLElement>) {
-    ng.effect(() => this.isScroll().true(() => gsap.registerPlugin(ScrollTrigger)));
+    pluginRegister.register();
     ng.effect(() => {
       this.timeline().timeline.eventCallback('onStart', () => this.animateStart.emit(this));
       this.timeline().timeline.eventCallback('onComplete', () => this.animateComplete.emit(this));
