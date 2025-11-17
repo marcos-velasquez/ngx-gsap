@@ -21,7 +21,7 @@ export const animations: Animation[] = [
   {
     name: 'Slide In',
     category: 'entrance',
-    value: 'slideIn({ y: "-200" })',
+    value: 'slideIn({ y: -200 })',
     description: 'Slide in from a specified direction.',
     examples: ['slideIn', "slideIn({ x: '100%' })", "slideIn({ y: '100%' })"],
     gradient: 'from-amber-200 to-amber-400',
