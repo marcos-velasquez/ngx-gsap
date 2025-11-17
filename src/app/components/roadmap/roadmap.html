@@ -1,0 +1,86 @@
+<div class="max-w-6xl mx-auto px-4 py-12">
+  <!-- Header -->
+  <div class="text-center mb-16">
+    <h1 class="text-5xl font-bold text-white mb-4">🗺️ Roadmap</h1>
+    <p class="text-xl text-slate-400 max-w-2xl mx-auto">Upcoming features and improvements for ngx-gsap</p>
+  </div>
+
+  <!-- Features Grid -->
+  <div class="space-y-12">
+    @for (feature of upcomingFeatures; track feature.title) {
+    <div
+      class="bg-slate-900 rounded-2xl p-8 border border-slate-800 hover:border-purple-500 transition-all duration-300"
+    >
+      <!-- Feature Header -->
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <h2 class="text-3xl font-bold text-white mb-2">{{ feature.title }}</h2>
+          <p class="text-slate-400">{{ feature.description }}</p>
+        </div>
+        <span class="px-4 py-2 bg-purple-600/20 text-purple-400 rounded-full text-sm font-semibold whitespace-nowrap">
+          {{ feature.status }}
+        </span>
+      </div>
+
+      <!-- Items Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        @for (item of feature.items; track item.name) {
+        <div
+          class="bg-slate-950 rounded-xl p-5 border border-slate-800 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 group"
+        >
+          <div class="flex items-start gap-3">
+            <span class="text-3xl group-hover:scale-110 transition-transform duration-300"> {{ item.icon }} </span>
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors">
+                {{ item.name }}
+              </h3>
+              <p class="text-sm text-slate-400 leading-relaxed">{{ item.description }}</p>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- GSAP Documentation Link -->
+  <div class="mt-16 text-center">
+    <div class="bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-2xl p-8 border border-purple-500/30">
+      <h3 class="text-2xl font-bold text-white mb-4">📚 GSAP Documentation</h3>
+      <p class="text-slate-300 mb-6 max-w-2xl mx-auto">
+        Explore all plugins and features available in GSAP to create amazing animations
+      </p>
+      <a
+        href="https://gsap.com/docs/v3/Plugins/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+          />
+        </svg>
+        View GSAP Plugins
+      </a>
+    </div>
+  </div>
+
+  <!-- Additional Info -->
+  <div class="mt-12 text-center">
+    <p class="text-slate-500 text-sm">
+      Do you have suggestions or ideas?
+      <a
+        href="https://github.com/marcos-velasquez/angular-animations/issues"
+        target="_blank"
+        class="text-purple-400 hover:text-purple-300 underline"
+      >
+        Share them on GitHub
+      </a>
+    </p>
+  </div>
+</div>
