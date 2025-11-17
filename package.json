@@ -5,8 +5,8 @@
   "scripts": {
     "start": "nx serve angular-animations",
     "build": "nx build angular-animations",
-    "build:prod": "nx build angular-animations --configuration=production --base-href=/angular-animations/",
-    "deploy": "npm run build:prod && npx angular-cli-ghpages --dir=dist/angular-animations/browser",
+    "build:prod": "nx build angular-animations --configuration=production --base-href=/ngx-gsap/",
+    "deploy": "npm run build:prod && npx angular-cli-ghpages --dir=dist/angular-animations/browser --repo=https://github.com/marcos-velasquez/ngx-gsap.git",
     "test": "nx test",
     "lib:build": "nx build ngx-gsap",
     "lib:test": "nx test ngx-gsap",
