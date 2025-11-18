@@ -44,7 +44,7 @@ export abstract class AnimateDirective implements ng.OnInit, ng.OnDestroy {
   public registerAnimation() {
     const { animations, timelineVars, scrollVars } = new AnimationParser(this.sequence()).parse();
     this.timeline().configure(timelineVars);
-    this.isScroll().true(() => this.timeline().scroll(scrollVars));
+    this.isScroll().whenTrue(() => this.timeline().scroll(scrollVars));
     animations.forEach((anim) => this.timeline()[anim.method](anim.selector, anim.vars, anim.position));
   }
 

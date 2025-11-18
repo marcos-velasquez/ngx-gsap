@@ -5,13 +5,13 @@ export class Condition {
     return this.fn();
   }
 
-  public true(fn: () => void): void {
+  public whenTrue(fn: () => void): void {
     if (this.evaluate()) {
       fn();
     }
   }
 
-  public false(fn: () => void): void {
+  public whenFalse(fn: () => void): void {
     if (!this.evaluate()) {
       fn();
     }
