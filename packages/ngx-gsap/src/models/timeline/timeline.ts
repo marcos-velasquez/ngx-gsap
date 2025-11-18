@@ -104,6 +104,11 @@ export class Timeline {
     return this;
   }
 
+  public invalidate(): Timeline {
+    this.gsapTimeline.invalidate();
+    return this;
+  }
+
   public kill(): Timeline {
     this.gsapTimeline.kill();
     return this;

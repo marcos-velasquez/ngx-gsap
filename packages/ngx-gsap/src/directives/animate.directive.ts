@@ -96,6 +96,16 @@ export abstract class AnimateDirective implements ng.OnInit, ng.OnDestroy {
     return this;
   }
 
+  public invalidate(): AnimateDirective {
+    this.timeline().invalidate();
+    return this;
+  }
+
+  public kill(): AnimateDirective {
+    this.timeline().kill();
+    return this;
+  }
+
   ngOnDestroy(): void {
     this.timeline().disconnect().kill();
   }
