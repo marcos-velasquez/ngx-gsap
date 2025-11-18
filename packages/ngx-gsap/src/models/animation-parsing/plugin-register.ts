@@ -4,8 +4,7 @@ import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin';
 
 export class PluginRegister {
   public register() {
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.registerPlugin(MorphSVGPlugin);
+    gsap.registerPlugin(ScrollTrigger, MorphSVGPlugin);
   }
 }
 
