@@ -65,7 +65,9 @@ describe('PresetResolver', () => {
     });
 
     it('should handle complex nested stagger object', () => {
-      const resolver = new PresetResolver('slideIn({ stagger: { amount: 1, from: "center", grid: "auto", ease: "power2.inOut" } })');
+      const resolver = new PresetResolver(
+        'slideIn({ stagger: { amount: 1, from: "center", grid: "auto", ease: "power2.inOut" } })'
+      );
       const result = resolver.resolve();
 
       expect(result).toContain('stagger={amount:1,from:"center",grid:"auto",ease:"power2.inOut"}');
@@ -179,7 +181,7 @@ describe('PresetResolver', () => {
     });
 
     it('should handle selector with preset params and customVars', () => {
-      const resolver = new PresetResolver('slideIn({ selector: ".item", x: "-200%", duration: 2 })');
+      const resolver = new PresetResolver('slideIn({ selector: ".item", axis: "x", distance: "-200%", duration: 2 })');
       const result = resolver.resolve();
 
       expect(result).toContain('x:-200%');

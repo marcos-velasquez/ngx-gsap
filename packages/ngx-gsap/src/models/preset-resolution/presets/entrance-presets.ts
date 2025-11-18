@@ -44,7 +44,7 @@ export class EntrancePresets {
    */
   public static slideIn({ axis = 'x', distance = '0' } = {}): string {
     const property = axis === 'y' ? `y` : `x`;
-    return `${property}:${distance}`;
+    return `${property}:${distance}:0`;
   }
 
   /**

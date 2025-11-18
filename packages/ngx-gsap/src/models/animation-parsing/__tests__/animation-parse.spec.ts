@@ -93,7 +93,12 @@ describe('AnimationParser', () => {
       const result = new AnimationParser('opacity:0:>;to:scale:2:>').parse();
 
       expect(result.animations.length).toBe(2);
-      expect(result.animations[0]).toEqual({ method: 'from', selector: undefined, vars: { opacity: 0 }, position: '>' });
+      expect(result.animations[0]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { opacity: 0 },
+        position: '>',
+      });
       expect(result.animations[1]).toEqual({ method: 'to', selector: undefined, vars: { scale: 2 }, position: '>' });
     });
 
@@ -110,7 +115,12 @@ describe('AnimationParser', () => {
       expect(result.animations.length).toBe(3);
       expect(result.animations[0]).toEqual({ method: 'from', selector: undefined, vars: { x: 0 }, position: '0' });
       expect(result.animations[1]).toEqual({ method: 'from', selector: undefined, vars: { y: 0 }, position: '0' });
-      expect(result.animations[2]).toEqual({ method: 'from', selector: undefined, vars: { opacity: 0 }, position: '<' });
+      expect(result.animations[2]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { opacity: 0 },
+        position: '<',
+      });
     });
 
     it('should filter out invalid animations', () => {
@@ -251,7 +261,12 @@ describe('AnimationParser', () => {
       expect(result.animations.length).toBe(3);
       expect(result.animations[0]).toEqual({ method: 'from', selector: undefined, vars: { x: 0 }, position: '0' });
       expect(result.animations[1]).toEqual({ method: 'from', selector: undefined, vars: { y: 0 }, position: '0' });
-      expect(result.animations[2]).toEqual({ method: 'from', selector: undefined, vars: { opacity: 0 }, position: '<' });
+      expect(result.animations[2]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { opacity: 0 },
+        position: '<',
+      });
     });
 
     it('should resolve fadeIn preset without parentheses', () => {
@@ -260,15 +275,24 @@ describe('AnimationParser', () => {
       expect(result.animations.length).toBe(3);
       expect(result.animations[0]).toEqual({ method: 'from', selector: undefined, vars: { x: 0 }, position: '0' });
       expect(result.animations[1]).toEqual({ method: 'from', selector: undefined, vars: { y: 0 }, position: '0' });
-      expect(result.animations[2]).toEqual({ method: 'from', selector: undefined, vars: { opacity: 0 }, position: '<' });
+      expect(result.animations[2]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { opacity: 0 },
+        position: '<',
+      });
     });
 
     it('should resolve preset with multiple animations', () => {
-      const result = new AnimationParser('slideIn({ x: "-100%" })').parse();
+      const result = new AnimationParser('slideIn({ axis: "x", distance: "-100%" })').parse();
 
-      expect(result.animations.length).toBe(2);
-      expect(result.animations[0]).toEqual({ method: 'from', selector: undefined, vars: { x: '-100%' }, position: '0' });
-      expect(result.animations[1]).toEqual({ method: 'from', selector: undefined, vars: { y: 0 }, position: '0' });
+      expect(result.animations.length).toBe(1);
+      expect(result.animations[0]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { x: '-100%' },
+        position: '0',
+      });
     });
 
     it('should use sequence as-is if preset does not exist', () => {
@@ -284,23 +308,36 @@ describe('AnimationParser', () => {
       expect(result.animations.length).toBe(3);
       expect(result.animations[0]).toEqual({ method: 'from', selector: undefined, vars: { x: 0 }, position: '0' });
       expect(result.animations[1]).toEqual({ method: 'from', selector: undefined, vars: { y: 0 }, position: '0' });
-      expect(result.animations[2]).toEqual({ method: 'from', selector: undefined, vars: { opacity: 0.1 }, position: '<' });
+      expect(result.animations[2]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { opacity: 0.1 },
+        position: '<',
+      });
     });
 
     it('should resolve preset with object syntax and custom x', () => {
-      const result = new AnimationParser('slideIn({ x: "-200%" })').parse();
+      const result = new AnimationParser('slideIn({ axis: "x", distance: "-200%" })').parse();
 
-      expect(result.animations.length).toBe(2);
-      expect(result.animations[0]).toEqual({ method: 'from', selector: undefined, vars: { x: '-200%' }, position: '0' });
-      expect(result.animations[1]).toEqual({ method: 'from', selector: undefined, vars: { y: 0 }, position: '0' });
+      expect(result.animations.length).toBe(1);
+      expect(result.animations[0]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { x: '-200%' },
+        position: '0',
+      });
     });
 
     it('should resolve preset with object syntax and multiple parameters', () => {
-      const result = new AnimationParser('slideIn({ x: "-300%", opacity: 0.3 })').parse();
+      const result = new AnimationParser('slideIn({ axis: "y", distance: "-300%" })').parse();
 
-      expect(result.animations.length).toBe(2);
-      expect(result.animations[0]).toEqual({ method: 'from', selector: undefined, vars: { x: '-300%', opacity: 0.3 }, position: '0' });
-      expect(result.animations[1]).toEqual({ method: 'from', selector: undefined, vars: { y: 0, opacity: 0.3 }, position: '0' });
+      expect(result.animations.length).toBe(1);
+      expect(result.animations[0]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { y: '-300%' },
+        position: '0',
+      });
     });
   });
 
@@ -548,9 +585,9 @@ describe('AnimationParser', () => {
     });
 
     it('should extract selector with custom preset params', () => {
-      const result = new AnimationParser('slideIn({ selector: "> div", x: "-200%" })').parse();
+      const result = new AnimationParser('slideIn({ selector: "> div", axis: "x", distance: "-200%" })').parse();
 
-      expect(result.animations.length).toBe(2);
+      expect(result.animations.length).toBe(1);
       expect(result.animations[0].selector).toBe('> div');
       expect(result.animations[0].vars.x).toBe('-200%');
       expect(result.animations[0].vars).not.toHaveProperty('selector');

@@ -1,28 +1,27 @@
-import { TypeConverter, ObjectParser } from '../../utils';
+import { TypeConverter, ObjectParser, BaseParser } from '../../utils';
 
-export class PropsParser {
-  private index = 0;
-  private depth = 0;
-
-  constructor(private readonly propsString: string) {}
+export class PropsParser extends BaseParser {
+  constructor(propsString: string) {
+    super(propsString);
+  }
 
   public parse(): Record<string, unknown> {
     const props: Record<string, unknown> = {};
     let currentKey = '';
     let currentValue = '';
 
-    while (this.index < this.propsString.length) {
+    while (!this.isAtEnd()) {
       const char = this.current();
 
       if (this.isOpenBrace(char)) {
-        this.depth++;
+        this.enterNested();
         currentValue += char;
         this.next();
         continue;
       }
 
       if (this.isCloseBrace(char)) {
-        this.depth--;
+        this.exitNested();
         currentValue += char;
         this.next();
         continue;
@@ -56,28 +55,12 @@ export class PropsParser {
     return props;
   }
 
-  private current(): string {
-    return this.propsString[this.index];
-  }
-
-  private next(): void {
-    this.index++;
-  }
-
-  private isOpenBrace(char: string): boolean {
-    return char === '{';
-  }
-
-  private isCloseBrace(char: string): boolean {
-    return char === '}';
-  }
-
   private isAssignment(char: string, currentKey: string): boolean {
-    return char === '=' && this.depth === 0 && !currentKey;
+    return char === '=' && this.isAtRootLevel() && !currentKey;
   }
 
   private isSeparator(char: string): boolean {
-    return char === ',' && this.depth === 0;
+    return char === ',' && this.isAtRootLevel();
   }
 
   private parseValue(value: string): unknown {

@@ -44,7 +44,7 @@ export class ExitPresets {
    */
   public static slideOut({ axis = 'x', distance = '0' } = {}): string {
     const property = axis === 'y' ? `y` : `x`;
-    return `to:${property}:${distance}`;
+    return `to:${property}:${distance}:0`;
   }
 
   /**

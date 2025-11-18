@@ -9,3 +9,4 @@ export * from './object-parser';
 export * from './object-serializer';
 export * from './type-checker';
 export * from './property-invoker';
+export * from './base-parser';
