@@ -1,23 +1,16 @@
 import { PresetMatcher } from './preset-matcher';
 import { PresetExpander } from './preset-expander';
-import { VarsAppender } from './__shared__';
-import { CustomVarsExtractor } from './custom';
-import { TimelineVarsExtractor } from './timeline';
-import { ScrollVarsExtractor } from './scroll';
+import { PresetResolverChain } from './preset-resolver-chain';
 
 export class PresetResolver {
   private readonly presetMatcher: PresetMatcher;
   private readonly presetExpander: PresetExpander;
-  private readonly customVarsExtractor: CustomVarsExtractor;
-  private readonly timelineVarsExtractor: TimelineVarsExtractor;
-  private readonly scrollVarsExtractor: ScrollVarsExtractor;
+  private readonly resolverChain: PresetResolverChain;
 
   constructor(private readonly sequence: string) {
     this.presetMatcher = new PresetMatcher(sequence);
     this.presetExpander = new PresetExpander(this.presetMatcher);
-    this.customVarsExtractor = new CustomVarsExtractor(this.presetMatcher);
-    this.timelineVarsExtractor = new TimelineVarsExtractor(this.presetMatcher);
-    this.scrollVarsExtractor = new ScrollVarsExtractor(this.presetMatcher);
+    this.resolverChain = new PresetResolverChain();
   }
 
   public isPreset(): boolean {
@@ -27,11 +20,7 @@ export class PresetResolver {
   public resolve(): string {
     if (!this.isPreset()) return this.sequence;
 
-    const sequence = this.presetExpander.expand();
-    const customVars = this.customVarsExtractor.extract();
-    const timelineVars = this.timelineVarsExtractor.extract();
-    const scrollVars = this.scrollVarsExtractor.extract();
-
-    return new VarsAppender(sequence).append(customVars, timelineVars, scrollVars);
+    const expandedSequence = this.presetExpander.expand();
+    return this.resolverChain.resolve(this.presetMatcher, expandedSequence);
   }
 }
