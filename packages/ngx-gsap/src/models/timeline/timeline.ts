@@ -37,17 +37,17 @@ export class Timeline {
   }
 
   public from(selector: string | undefined, vars: gsap.TweenVars, position?: gsap.Position): Timeline {
-    this.gsapTimeline.from(this.getTarget(selector), vars, position);
+    this.gsapTimeline.from(this.getTarget(selector), { ...vars, data: { method: 'from' } }, position);
     return this;
   }
 
   public to(selector: string | undefined, vars: gsap.TweenVars, position?: gsap.Position): Timeline {
-    this.gsapTimeline.to(this.getTarget(selector), vars, position);
+    this.gsapTimeline.to(this.getTarget(selector), { ...vars, data: { method: 'to' } }, position);
     return this;
   }
 
   public set(selector: string | undefined, vars: gsap.TweenVars): Timeline {
-    this.gsapTimeline.set(this.getTarget(selector), vars);
+    this.gsapTimeline.set(this.getTarget(selector), { ...vars, data: { method: 'set' } });
     return this;
   }
 
@@ -55,8 +55,24 @@ export class Timeline {
     return ScrollTrigger.create({ trigger: this.element, animation: this.gsapTimeline, ...vars });
   }
 
-  public splitText(vars: SplitText.Vars = { type: 'chars,words,lines', autoSplit: true }): SplitText {
-    return SplitText.create(this.element, { ...vars });
+  public splitText(
+    vars: SplitText.Vars & { target?: 'chars' | 'words' | 'lines' } = {
+      target: 'chars',
+      type: 'chars,words,lines',
+      autoSplit: true,
+    }
+  ): SplitText {
+    return SplitText.create(this.element, {
+      ...vars,
+      onSplit: (self) => {
+        const children = this.timeline.getChildren();
+        this.timeline.clear();
+        children.forEach((child) => {
+          this.timeline[child.data.method](self[vars.target as 'chars' | 'words' | 'lines'], { ...child.vars });
+        });
+        return this.timeline;
+      },
+    });
   }
 
   private getTarget(selector?: string): gsap.DOMTarget {
