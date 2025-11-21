@@ -16,7 +16,10 @@
     "lib:link": "npm run lib:build && cd dist/packages/ngx-gsap && npm link",
     "lib:version:patch": "cd packages/ngx-gsap && npm version patch",
     "lib:version:minor": "cd packages/ngx-gsap && npm version minor",
-    "lib:version:major": "cd packages/ngx-gsap && npm version major"
+    "lib:version:major": "cd packages/ngx-gsap && npm version major",
+    "deps:validate": "depcruise packages/ngx-gsap/src",
+    "deps:graph": "depcruise packages/ngx-gsap/src --output-type dot | dot -T svg > dependency-graph.svg",
+    "deps:archi": "depcruise packages/ngx-gsap/src --output-type archi | dot -T svg > architecture-graph.svg"
   },
   "private": true,
   "dependencies": {
@@ -65,6 +68,7 @@
     "angular-cli-ghpages": "^2.0.3",
     "angular-eslint": "^20.3.0",
     "autoprefixer": "^10.4.0",
+    "dependency-cruiser": "^17.3.1",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-playwright": "^1.6.2",
