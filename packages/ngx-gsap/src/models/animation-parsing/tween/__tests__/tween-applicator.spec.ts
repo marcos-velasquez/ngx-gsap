@@ -1,6 +1,7 @@
 import { Timeline } from '../../../timeline';
 import { AnimationParserResult } from '../../animation-parser';
 import { TweenApplicator } from '../tween-applicator';
+import { TimelineMockBuilder } from '../../__tests__/__helpers__';
 
 describe('TweenApplicator', () => {
   let applicator: TweenApplicator;
@@ -8,11 +9,7 @@ describe('TweenApplicator', () => {
 
   beforeEach(() => {
     applicator = new TweenApplicator();
-    mockTimeline = {
-      to: jest.fn(),
-      from: jest.fn(),
-      set: jest.fn(),
-    } as unknown as jest.Mocked<Timeline>;
+    mockTimeline = TimelineMockBuilder.mock();
   });
 
   describe('apply()', () => {

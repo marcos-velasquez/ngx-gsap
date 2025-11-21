@@ -1,6 +1,7 @@
 import { Timeline } from '../../../timeline';
 import { AnimationParserResult } from '../../animation-parser';
 import { ScrollApplicator } from '../../scroll/scroll-applicator';
+import { TimelineMockBuilder } from '../../__tests__/__helpers__';
 
 describe('ScrollApplicator', () => {
   let applicator: ScrollApplicator;
@@ -8,12 +9,7 @@ describe('ScrollApplicator', () => {
 
   beforeEach(() => {
     applicator = new ScrollApplicator();
-    mockTimeline = {
-      isScroll: jest.fn().mockReturnValue({
-        whenTrue: jest.fn((callback) => callback()),
-      }),
-      scroll: jest.fn(),
-    } as unknown as jest.Mocked<Timeline>;
+    mockTimeline = TimelineMockBuilder.mock({ isScroll: true });
   });
 
   describe('apply()', () => {
@@ -30,9 +26,7 @@ describe('ScrollApplicator', () => {
     });
 
     it('should not apply scroll vars when timeline is not scroll', () => {
-      mockTimeline.isScroll = jest.fn().mockReturnValue({
-        whenTrue: jest.fn(),
-      });
+      mockTimeline = TimelineMockBuilder.mock({ isScroll: false });
 
       const context: AnimationParserResult = {
         sequence: 'to:.box:x:100',

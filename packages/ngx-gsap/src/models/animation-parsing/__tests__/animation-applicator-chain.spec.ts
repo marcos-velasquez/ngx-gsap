@@ -1,21 +1,13 @@
 import { Timeline } from '../../timeline';
 import { AnimationApplicatorChain } from '../timeline-applicator';
+import { TimelineMockBuilder } from './__helpers__';
 
 describe('AnimationApplicatorChain', () => {
   let chain: AnimationApplicatorChain;
   let mockTimeline: jest.Mocked<Timeline>;
 
   beforeEach(() => {
-    mockTimeline = {
-      configure: jest.fn(),
-      to: jest.fn(),
-      from: jest.fn(),
-      set: jest.fn(),
-      isScroll: jest.fn().mockReturnValue({
-        whenTrue: jest.fn(),
-      }),
-      scroll: jest.fn(),
-    } as unknown as jest.Mocked<Timeline>;
+    mockTimeline = TimelineMockBuilder.mock();
   });
 
   describe('apply()', () => {

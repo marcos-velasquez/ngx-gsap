@@ -1,6 +1,7 @@
 import { Timeline } from '../../../timeline';
 import { AnimationParserResult } from '../../animation-parser';
 import { SplitTextApplicator } from '../split-text-applicator';
+import { TimelineMockBuilder } from '../../__tests__/__helpers__';
 
 describe('SplitTextApplicator', () => {
   let applicator: SplitTextApplicator;
@@ -8,9 +9,7 @@ describe('SplitTextApplicator', () => {
 
   beforeEach(() => {
     applicator = new SplitTextApplicator();
-    mockTimeline = {
-      splitText: jest.fn(),
-    } as unknown as jest.Mocked<Timeline>;
+    mockTimeline = TimelineMockBuilder.mock();
   });
 
   describe('apply()', () => {
