@@ -1,4 +1,4 @@
-import { TypeConverter, ObjectParser, BaseParser } from '../../utils';
+import { TypeConverter, ObjectParser, BaseParser } from '../../../../utils';
 
 export class PropsParser extends BaseParser {
   constructor(propsString: string) {

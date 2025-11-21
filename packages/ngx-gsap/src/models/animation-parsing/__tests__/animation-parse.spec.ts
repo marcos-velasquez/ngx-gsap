@@ -1,6 +1,5 @@
 import { AnimationParser } from '../animation-parser';
-import { TimelinePropsExtractor, ScrollPropsExtractor } from '../extractors';
-import { SequenceParser } from '../sequence-parser';
+import { TimelinePropsExtractor, ScrollPropsExtractor, SequenceParser } from '../features';
 
 // Helper function to parse animations from result
 const parseAnimations = (result: ReturnType<AnimationParser['parse']>) => {
@@ -254,9 +253,24 @@ describe('AnimationParser', () => {
       const result = new AnimationParser('set:scale:0;set:opacity:0;set:x:100%').parse();
 
       expect(parseAnimations(result).length).toBe(3);
-      expect(parseAnimations(result)[0]).toEqual({ method: 'set', selector: undefined, vars: { scale: 0 }, position: '>' });
-      expect(parseAnimations(result)[1]).toEqual({ method: 'set', selector: undefined, vars: { opacity: 0 }, position: '>' });
-      expect(parseAnimations(result)[2]).toEqual({ method: 'set', selector: undefined, vars: { x: '100%' }, position: '>' });
+      expect(parseAnimations(result)[0]).toEqual({
+        method: 'set',
+        selector: undefined,
+        vars: { scale: 0 },
+        position: '>',
+      });
+      expect(parseAnimations(result)[1]).toEqual({
+        method: 'set',
+        selector: undefined,
+        vars: { opacity: 0 },
+        position: '>',
+      });
+      expect(parseAnimations(result)[2]).toEqual({
+        method: 'set',
+        selector: undefined,
+        vars: { x: '100%' },
+        position: '>',
+      });
     });
 
     it('should parse set followed by to animations', () => {
@@ -279,8 +293,18 @@ describe('AnimationParser', () => {
       const result = new AnimationParser('fadeIn()').parse();
 
       expect(parseAnimations(result).length).toBe(3);
-      expect(parseAnimations(result)[0]).toEqual({ method: 'from', selector: undefined, vars: { x: 0 }, position: '0' });
-      expect(parseAnimations(result)[1]).toEqual({ method: 'from', selector: undefined, vars: { y: 0 }, position: '0' });
+      expect(parseAnimations(result)[0]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { x: 0 },
+        position: '0',
+      });
+      expect(parseAnimations(result)[1]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { y: 0 },
+        position: '0',
+      });
       expect(parseAnimations(result)[2]).toEqual({
         method: 'from',
         selector: undefined,
@@ -293,8 +317,18 @@ describe('AnimationParser', () => {
       const result = new AnimationParser('fadeIn').parse();
 
       expect(parseAnimations(result).length).toBe(3);
-      expect(parseAnimations(result)[0]).toEqual({ method: 'from', selector: undefined, vars: { x: 0 }, position: '0' });
-      expect(parseAnimations(result)[1]).toEqual({ method: 'from', selector: undefined, vars: { y: 0 }, position: '0' });
+      expect(parseAnimations(result)[0]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { x: 0 },
+        position: '0',
+      });
+      expect(parseAnimations(result)[1]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { y: 0 },
+        position: '0',
+      });
       expect(parseAnimations(result)[2]).toEqual({
         method: 'from',
         selector: undefined,
@@ -326,8 +360,18 @@ describe('AnimationParser', () => {
       const result = new AnimationParser('fadeIn({ opacity: 0.1 })').parse();
 
       expect(parseAnimations(result).length).toBe(3);
-      expect(parseAnimations(result)[0]).toEqual({ method: 'from', selector: undefined, vars: { x: 0 }, position: '0' });
-      expect(parseAnimations(result)[1]).toEqual({ method: 'from', selector: undefined, vars: { y: 0 }, position: '0' });
+      expect(parseAnimations(result)[0]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { x: 0 },
+        position: '0',
+      });
+      expect(parseAnimations(result)[1]).toEqual({
+        method: 'from',
+        selector: undefined,
+        vars: { y: 0 },
+        position: '0',
+      });
       expect(parseAnimations(result)[2]).toEqual({
         method: 'from',
         selector: undefined,

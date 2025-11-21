@@ -1,4 +1,4 @@
-import { TimelinePropsExtractor } from '../extractors/timeline-props-extractor';
+import { TimelinePropsExtractor } from '../features/timeline';
 
 describe('TimelinePropsExtractor', () => {
   it('should extract from beginning', () => {

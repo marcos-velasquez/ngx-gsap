@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
-import { RegexPatterns } from '../@constants';
-import { PropsParser } from './props-parser';
+import { RegexPatterns } from '../../../@constants';
+import { PropsParser } from '../__shared__';
 
 export type Method = 'to' | 'from' | 'set';
 export type ParsedAnimation = { method: Method; selector?: string; vars: gsap.TweenVars; position: gsap.Position };

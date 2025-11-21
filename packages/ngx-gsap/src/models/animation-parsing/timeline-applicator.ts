@@ -1,6 +1,6 @@
 import { Timeline } from '../timeline';
 import { AnimationParser } from './animation-parser';
-import * as _ from './applicators';
+import * as _ from './features';
 
 export class AnimationApplicatorChain {
   private readonly applicators: _.AnimationApplicator[] = [

@@ -1,6 +1,6 @@
-import { Timeline } from '../../timeline';
-import { AnimationParserResult } from '../animation-parser';
-import { AnimationApplicator } from './animation-applicator';
+import { Timeline } from '../../../timeline';
+import { AnimationParserResult } from '../../animation-parser';
+import { AnimationApplicator } from '../__shared__';
 
 export class SplitTextApplicator implements AnimationApplicator {
   public apply(_timeline: Timeline, _context: AnimationParserResult): void {

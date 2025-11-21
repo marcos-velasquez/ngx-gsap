@@ -1,7 +1,7 @@
-import { Timeline } from '../../timeline';
-import { AnimationParserResult } from '../animation-parser';
-import { SequenceParser } from '../sequence-parser';
-import { AnimationApplicator } from './animation-applicator';
+import { Timeline } from '../../../timeline';
+import { AnimationParserResult } from '../../animation-parser';
+import { AnimationApplicator } from '../__shared__';
+import { SequenceParser } from './sequence-parser';
 
 export class TweenApplicator implements AnimationApplicator {
   public apply(timeline: Timeline, context: AnimationParserResult): void {

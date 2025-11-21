@@ -1,7 +1,7 @@
-import { Timeline } from '../../timeline';
-import { AnimationParserResult } from '../animation-parser';
-import { ScrollPropsExtractor } from '../extractors';
-import { AnimationApplicator } from './animation-applicator';
+import { Timeline } from '../../../timeline';
+import { AnimationParserResult } from '../../animation-parser';
+import { AnimationApplicator } from '../__shared__';
+import { ScrollPropsExtractor } from './scroll-props-extractor';
 
 export class ScrollApplicator implements AnimationApplicator {
   public apply(timeline: Timeline, context: AnimationParserResult): void {

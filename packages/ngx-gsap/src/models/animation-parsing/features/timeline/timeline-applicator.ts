@@ -1,8 +1,8 @@
-import { Condition } from '../../../utils';
-import { Timeline } from '../../timeline';
-import { AnimationParserResult } from '../animation-parser';
-import { TimelinePropsExtractor } from '../extractors';
-import { AnimationApplicator } from './animation-applicator';
+import { Condition } from '../../../../utils';
+import { Timeline } from '../../../timeline';
+import { AnimationParserResult } from '../../animation-parser';
+import { AnimationApplicator } from '../__shared__';
+import { TimelinePropsExtractor } from './timeline-props-extractor';
 
 export class TimelineApplicator implements AnimationApplicator {
   public apply(timeline: Timeline, context: AnimationParserResult): void {
