@@ -1,4 +1,4 @@
-import { SequenceParser } from '../features/tween';
+import { SequenceParser } from '../tween';
 
 describe('SequenceParser', () => {
   describe('parse()', () => {

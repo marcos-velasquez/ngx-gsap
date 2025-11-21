@@ -1,5 +1,5 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { RegexPatterns } from '../../../@constants';
+import { RegexPatterns } from '../../@constants';
 import { PropsExtractor } from '../__shared__';
 
 export class ScrollPropsExtractor extends PropsExtractor<ScrollTrigger.StaticVars> {

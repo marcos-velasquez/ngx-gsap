@@ -1,5 +1,5 @@
-import { Timeline } from '../../../timeline';
-import { AnimationParserResult } from '../../animation-parser';
+import { Timeline } from '../../timeline';
+import { AnimationParserResult } from '../animation-parser';
 import { AnimationApplicator } from '../__shared__';
 import { ScrollPropsExtractor } from './scroll-props-extractor';
 
