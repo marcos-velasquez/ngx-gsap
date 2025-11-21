@@ -24,12 +24,6 @@ export class RegexPatterns {
   public static readonly DESTRUCTURED_PARAMS = /\{([^}]+)\}/;
 
   /**
-   * Matches quoted strings (single or double quotes)
-   * Used to remove quotes from string values
-   */
-  public static readonly QUOTED_STRING = /^['"]|['"]$/g;
-
-  /**
    * Matches timeline properties syntax: timeline@props
    * Example: "timeline@repeat=3,yoyo=true"
    * Groups: [1] = props string

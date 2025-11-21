@@ -1,23 +1,23 @@
-import { AnimateDirective } from '../../directives/animate.directive';
+import { Trigger, TriggerType } from '../trigger';
 import { Timeline } from './timeline';
 
-const cache = new WeakMap<AnimateDirective, Timeline>();
+const cache = new WeakMap<HTMLElement, Timeline>();
 
 export class TimelineFactory {
-  constructor(private readonly host: AnimateDirective) {
-    if (!cache.has(this.host)) {
-      cache.set(this.host, this._create());
+  constructor(private readonly element: HTMLElement, private readonly trigger: TriggerType) {
+    if (!cache.has(this.element)) {
+      cache.set(this.element, this._create());
     }
   }
 
   private _create(): Timeline {
-    return new Timeline(this.host.element, { immediateRender: this.host.isScroll().evaluate() }).with(
-      this.host.trigger()
+    return new Timeline(this.element, { immediateRender: Trigger.isScroll(this.trigger).evaluate() }).with(
+      this.trigger
     );
   }
 
   public create(): Timeline {
-    return cache.get(this.host) as Timeline;
+    return cache.get(this.element) as Timeline;
   }
 
   public static empty(): Timeline {

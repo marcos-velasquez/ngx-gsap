@@ -1,6 +1,6 @@
-import { RegexPatterns } from '../models/@constants/regex-patterns';
-
 export class TypeConverter {
+  private static readonly QUOTED_STRING = /^['"]|['"]$/g;
+
   constructor(private readonly value: string) {}
 
   public convert(): unknown {
@@ -12,6 +12,6 @@ export class TypeConverter {
     if (value === 'undefined') return undefined;
     if (!isNaN(Number(value))) return Number(value);
 
-    return value.replace(RegexPatterns.QUOTED_STRING, '');
+    return value.replace(TypeConverter.QUOTED_STRING, '');
   }
 }
