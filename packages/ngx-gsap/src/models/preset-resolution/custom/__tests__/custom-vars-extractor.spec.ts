@@ -1,7 +1,7 @@
 import { CustomVarsExtractor } from '../custom';
 import { PresetMatcher } from '../preset-matcher';
 
-describe('PresetCustomVarsExtractor', () => {
+describe('CustomVarsExtractor', () => {
   describe('extract()', () => {
     it('should extract customVars and exclude preset params', () => {
       const matcher = new PresetMatcher('fadeIn({ x: "100%", duration: 2, ease: "power2.out" })');
