@@ -1,9 +1,9 @@
-import { SequenceParser } from '../tween';
+import { TweenPropsExtractor } from '../tween-props-extractor';
 
-describe('SequenceParser', () => {
+describe('TweenPropsExtractor', () => {
   describe('parse()', () => {
     it('should parse basic animation', () => {
-      const result = new SequenceParser('x:100%:>').parse();
+      const result = new TweenPropsExtractor('x:100%:>').parse();
 
       expect(result).toEqual({
         method: 'from',
@@ -14,7 +14,7 @@ describe('SequenceParser', () => {
     });
 
     it('should parse animation with numeric value', () => {
-      const result = new SequenceParser('opacity:0:<').parse();
+      const result = new TweenPropsExtractor('opacity:0:<').parse();
 
       expect(result).toEqual({
         method: 'from',
@@ -25,7 +25,7 @@ describe('SequenceParser', () => {
     });
 
     it('should parse animation with to method', () => {
-      const result = new SequenceParser('to:x:100%:>').parse();
+      const result = new TweenPropsExtractor('to:x:100%:>').parse();
 
       expect(result).toEqual({
         method: 'to',
@@ -36,7 +36,7 @@ describe('SequenceParser', () => {
     });
 
     it('should parse animation with from method', () => {
-      const result = new SequenceParser('from:y:-50%:0').parse();
+      const result = new TweenPropsExtractor('from:y:-50%:0').parse();
 
       expect(result).toEqual({
         method: 'from',
@@ -47,7 +47,7 @@ describe('SequenceParser', () => {
     });
 
     it('should parse animation with props syntax', () => {
-      const result = new SequenceParser('x:100%:>@duration:2').parse();
+      const result = new TweenPropsExtractor('x:100%:>@duration:2').parse();
 
       expect(result?.method).toBe('from');
       expect(result?.vars.x).toBe('100%');
@@ -55,25 +55,25 @@ describe('SequenceParser', () => {
     });
 
     it('should use default method when not specified', () => {
-      const result = new SequenceParser('x:100%:>').parse();
+      const result = new TweenPropsExtractor('x:100%:>').parse();
 
       expect(result?.method).toBe('from');
     });
 
     it('should use default position when not specified', () => {
-      const result = new SequenceParser('x:100%').parse();
+      const result = new TweenPropsExtractor('x:100%').parse();
 
       expect(result?.position).toBe('>');
     });
 
     it('should return null for invalid sequence', () => {
-      const result = new SequenceParser('invalid').parse();
+      const result = new TweenPropsExtractor('invalid').parse();
 
       expect(result).toBeNull();
     });
 
     it('should handle whitespace', () => {
-      const result = new SequenceParser('  x:100%:>  ').parse();
+      const result = new TweenPropsExtractor('  x:100%:>  ').parse();
 
       expect(result).toEqual({
         method: 'from',
@@ -84,7 +84,7 @@ describe('SequenceParser', () => {
     });
 
     it('should parse negative numbers', () => {
-      const result = new SequenceParser('y:-100:>').parse();
+      const result = new TweenPropsExtractor('y:-100:>').parse();
 
       expect(result).toEqual({
         method: 'from',
@@ -95,7 +95,7 @@ describe('SequenceParser', () => {
     });
 
     it('should extract selector from vars', () => {
-      const result = new SequenceParser('opacity:0@selector=.card').parse();
+      const result = new TweenPropsExtractor('opacity:0@selector=.card').parse();
 
       expect(result).toEqual({
         method: 'from',
@@ -106,7 +106,7 @@ describe('SequenceParser', () => {
     });
 
     it('should extract selector with multiple props', () => {
-      const result = new SequenceParser('opacity:0@selector=.card,duration=2').parse();
+      const result = new TweenPropsExtractor('opacity:0@selector=.card,duration=2').parse();
 
       expect(result?.method).toBe('from');
       expect(result?.selector).toBe('.card');
@@ -116,14 +116,14 @@ describe('SequenceParser', () => {
     });
 
     it('should extract selector with child combinator', () => {
-      const result = new SequenceParser('x:100@selector=> div').parse();
+      const result = new TweenPropsExtractor('x:100@selector=> div').parse();
 
       expect(result?.selector).toBe('> div');
       expect(result?.vars.x).toBe(100);
     });
 
     it('should parse set method with basic property', () => {
-      const result = new SequenceParser('set:scale:0').parse();
+      const result = new TweenPropsExtractor('set:scale:0').parse();
 
       expect(result).toEqual({
         method: 'set',

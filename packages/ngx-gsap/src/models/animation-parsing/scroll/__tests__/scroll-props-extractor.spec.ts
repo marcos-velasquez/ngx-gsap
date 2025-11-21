@@ -1,4 +1,4 @@
-import { ScrollPropsExtractor } from '../scroll';
+import { ScrollPropsExtractor } from '../scroll-props-extractor';
 
 describe('ScrollPropsExtractor', () => {
   it('should extract from beginning', () => {

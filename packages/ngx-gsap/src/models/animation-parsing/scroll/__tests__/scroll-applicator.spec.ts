@@ -1,6 +1,6 @@
-import { Timeline } from '../../timeline';
-import { AnimationParserResult } from '../animation-parser';
-import { ScrollApplicator } from '../scroll/scroll-applicator';
+import { Timeline } from '../../../timeline';
+import { AnimationParserResult } from '../../animation-parser';
+import { ScrollApplicator } from '../../scroll/scroll-applicator';
 
 describe('ScrollApplicator', () => {
   let applicator: ScrollApplicator;

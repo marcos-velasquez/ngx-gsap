@@ -1,5 +1,5 @@
-import { ScrollVarsResolver } from '../scroll/scroll-vars-resolver';
-import { PresetMatcher } from '../preset-matcher';
+import { ScrollVarsResolver } from '../../scroll/scroll-vars-resolver';
+import { PresetMatcher } from '../../preset-matcher';
 
 describe('ScrollVarsResolver', () => {
   let resolver: ScrollVarsResolver;

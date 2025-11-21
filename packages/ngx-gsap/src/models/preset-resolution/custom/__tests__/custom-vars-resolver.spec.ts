@@ -1,5 +1,5 @@
-import { CustomVarsResolver } from '../custom/custom-vars-resolver';
-import { PresetMatcher } from '../preset-matcher';
+import { CustomVarsResolver } from '../../custom/custom-vars-resolver';
+import { PresetMatcher } from '../../preset-matcher';
 
 describe('CustomVarsResolver', () => {
   let resolver: CustomVarsResolver;

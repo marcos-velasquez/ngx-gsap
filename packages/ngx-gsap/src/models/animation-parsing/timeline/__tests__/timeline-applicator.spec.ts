@@ -1,6 +1,6 @@
-import { Timeline } from '../../timeline';
-import { AnimationParserResult } from '../animation-parser';
-import { TimelineApplicator } from '../timeline/timeline-applicator';
+import { Timeline } from '../../../timeline';
+import { AnimationParserResult } from '../../animation-parser';
+import { TimelineApplicator } from '../timeline-applicator';
 
 describe('TimelineApplicator', () => {
   let applicator: TimelineApplicator;

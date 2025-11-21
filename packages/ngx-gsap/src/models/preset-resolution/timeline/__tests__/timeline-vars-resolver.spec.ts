@@ -1,5 +1,5 @@
-import { TimelineVarsResolver } from '../timeline/timeline-vars-resolver';
-import { PresetMatcher } from '../preset-matcher';
+import { TimelineVarsResolver } from '../../timeline/timeline-vars-resolver';
+import { PresetMatcher } from '../../preset-matcher';
 
 describe('TimelineVarsResolver', () => {
   let resolver: TimelineVarsResolver;
