@@ -1,11 +1,11 @@
 import { AnimationParser } from '../animation-parser';
 import { TimelinePropsExtractor } from '../timeline';
 import { ScrollPropsExtractor } from '../scroll';
-import { SequenceParser } from '../tween';
+import { TweenPropsExtractor } from '../tween';
 
 // Helper function to parse animations from result
 const parseAnimations = (result: ReturnType<AnimationParser['parse']>) => {
-  return result.sequences.map((s) => new SequenceParser(s).parse()).filter((anim) => anim !== null);
+  return result.sequences.map((s) => new TweenPropsExtractor(s).parse()).filter((anim) => anim !== null);
 };
 
 describe('AnimationParser', () => {
@@ -91,10 +91,12 @@ describe('AnimationParser', () => {
     });
   });
 
-  describe('Animation parsing (via SequenceParser)', () => {
+  describe('Animation parsing (via TweenPropsExtractor)', () => {
     it('should parse single animation with from (default)', () => {
       const result = new AnimationParser('opacity:0:>').parse();
-      const animations = result.sequences.map((s) => new SequenceParser(s).parse()).filter((anim) => anim !== null);
+      const animations = result.sequences
+        .map((s) => new TweenPropsExtractor(s).parse())
+        .filter((anim) => anim !== null);
 
       expect(animations.length).toBe(1);
       expect(animations[0]).toEqual({
@@ -107,7 +109,9 @@ describe('AnimationParser', () => {
 
     it('should parse multiple animations', () => {
       const result = new AnimationParser('opacity:0:>;to:scale:2:>').parse();
-      const animations = result.sequences.map((s) => new SequenceParser(s).parse()).filter((anim) => anim !== null);
+      const animations = result.sequences
+        .map((s) => new TweenPropsExtractor(s).parse())
+        .filter((anim) => anim !== null);
 
       expect(animations.length).toBe(2);
       expect(animations[0]).toEqual({
@@ -121,7 +125,9 @@ describe('AnimationParser', () => {
 
     it('should handle to method', () => {
       const result = new AnimationParser('to:opacity:1:>').parse();
-      const animations = result.sequences.map((s) => new SequenceParser(s).parse()).filter((anim) => anim !== null);
+      const animations = result.sequences
+        .map((s) => new TweenPropsExtractor(s).parse())
+        .filter((anim) => anim !== null);
 
       expect(animations[0].method).toBe('to');
       expect(animations[0].vars).toEqual({ opacity: 1 });
@@ -129,7 +135,9 @@ describe('AnimationParser', () => {
 
     it('should resolve presets', () => {
       const result = new AnimationParser('fadeIn()').parse();
-      const animations = result.sequences.map((s) => new SequenceParser(s).parse()).filter((anim) => anim !== null);
+      const animations = result.sequences
+        .map((s) => new TweenPropsExtractor(s).parse())
+        .filter((anim) => anim !== null);
 
       expect(animations.length).toBe(3);
       expect(animations[0]).toEqual({ method: 'from', selector: undefined, vars: { x: 0 }, position: '0' });
@@ -144,7 +152,9 @@ describe('AnimationParser', () => {
 
     it('should filter out invalid animations', () => {
       const result = new AnimationParser('opacity:0:>;invalid;scale:2:>').parse();
-      const animations = result.sequences.map((s) => new SequenceParser(s).parse()).filter((anim) => anim !== null);
+      const animations = result.sequences
+        .map((s) => new TweenPropsExtractor(s).parse())
+        .filter((anim) => anim !== null);
 
       expect(animations.length).toBe(2);
       expect(animations[0].vars).toEqual({ opacity: 0 });
@@ -153,7 +163,9 @@ describe('AnimationParser', () => {
 
     it('should handle whitespace correctly', () => {
       const result = new AnimationParser('  opacity : 0 : > ; scale : 2 : >  ').parse();
-      const animations = result.sequences.map((s) => new SequenceParser(s).parse()).filter((anim) => anim !== null);
+      const animations = result.sequences
+        .map((s) => new TweenPropsExtractor(s).parse())
+        .filter((anim) => anim !== null);
 
       expect(animations.length).toBe(2);
       expect(animations[0].vars).toHaveProperty('opacity ');
