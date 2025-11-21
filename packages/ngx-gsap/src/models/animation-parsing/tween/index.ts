@@ -1,2 +1,2 @@
 export * from './tween-applicator';
-export * from './sequence-parser';
+export * from './tween-props-extractor';

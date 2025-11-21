@@ -5,7 +5,7 @@ import { PropsParser } from '../__shared__';
 export type Method = 'to' | 'from' | 'set';
 export type ParsedAnimation = { method: Method; selector?: string; vars: gsap.TweenVars; position: gsap.Position };
 
-export class SequenceParser {
+export class TweenPropsExtractor {
   constructor(private readonly sequence: string) {}
 
   public parse(): ParsedAnimation | null {
