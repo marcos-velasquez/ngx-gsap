@@ -10,7 +10,7 @@ export class PresetResolver {
   constructor(private readonly sequence: string) {
     this.presetMatcher = new PresetMatcher(sequence);
     this.presetExpander = new PresetExpander(this.presetMatcher);
-    this.resolverChain = new PresetResolverChain();
+    this.resolverChain = new PresetResolverChain(this.presetMatcher);
   }
 
   public isPreset(): boolean {
@@ -19,8 +19,6 @@ export class PresetResolver {
 
   public resolve(): string {
     if (!this.isPreset()) return this.sequence;
-
-    const expandedSequence = this.presetExpander.expand();
-    return this.resolverChain.resolve(this.presetMatcher, expandedSequence);
+    return this.resolverChain.resolve(this.presetExpander.expand());
   }
 }
