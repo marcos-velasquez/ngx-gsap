@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { PropertyInvoker } from '../../utils';
+import { Condition, PropertyInvoker } from '../../utils';
 import { Trigger, TriggerRef, TriggerType } from '../trigger';
 
 export class Timeline {
@@ -25,6 +25,10 @@ export class Timeline {
   public with(triggerType: TriggerType): Timeline {
     this.triggerRef = new Trigger(this.element).when(triggerType).then(() => this.play());
     return this;
+  }
+
+  public isScroll(): Condition {
+    return this.triggerRef.trigger.isScroll();
   }
 
   public configure(vars: gsap.TimelineVars): Timeline {

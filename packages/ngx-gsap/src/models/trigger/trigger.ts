@@ -1,10 +1,12 @@
 import { Condition } from '../../utils';
 
 export type TriggerType = 'enter' | 'leave' | 'click' | 'load' | 'scroll' | 'none';
-export type TriggerRef = { connect: () => void; disconnect: () => void };
+export type TriggerRef = { trigger: Trigger; connect: () => void; disconnect: () => void };
 
 export class Trigger {
   public static readonly default = 'none';
+
+  private triggerType: TriggerType = Trigger.default;
 
   constructor(private readonly el: HTMLElement) {}
 
@@ -12,44 +14,52 @@ export class Trigger {
     return new Condition(() => type === 'scroll');
   }
 
-  public onEnter(callback: () => void): TriggerRef {
+  public isScroll(): Condition {
+    return Trigger.isScroll(this.triggerType);
+  }
+
+  private onEnter(callback: () => void): TriggerRef {
     this.el.addEventListener('mouseenter', callback);
     return {
+      trigger: this,
       connect: () => this.onEnter(callback),
       disconnect: () => this.el.removeEventListener('mouseenter', callback),
     };
   }
 
-  public onLeave(callback: () => void): TriggerRef {
+  private onLeave(callback: () => void): TriggerRef {
     this.el.addEventListener('mouseleave', callback);
     return {
+      trigger: this,
       connect: () => this.onLeave(callback),
       disconnect: () => this.el.removeEventListener('mouseleave', callback),
     };
   }
 
-  public onClick(callback: () => void): TriggerRef {
+  private onClick(callback: () => void): TriggerRef {
     this.el.addEventListener('click', callback);
     return {
+      trigger: this,
       connect: () => this.onClick(callback),
       disconnect: () => this.el.removeEventListener('click', callback),
     };
   }
 
-  public onLoad(callback: () => void): TriggerRef {
+  private onLoad(callback: () => void): TriggerRef {
     callback();
-    return Trigger.empty();
+    return Trigger.empty(this);
   }
 
-  public onScroll(callback: () => void): TriggerRef {
+  private onScroll(callback: () => void): TriggerRef {
     callback();
-    return Trigger.empty();
+    return Trigger.empty(this);
   }
 
   public when(triggerType: TriggerType): { then: (callback: VoidFunction) => TriggerRef } {
+    this.triggerType = triggerType;
     return {
       then: (callback: () => void) => {
-        switch (triggerType) {
+        switch (this.triggerType) {
           case 'enter':
             return this.onEnter(callback);
           case 'leave':
@@ -61,14 +71,14 @@ export class Trigger {
           case 'scroll':
             return this.onScroll(callback);
           default:
-            return Trigger.empty();
+            return Trigger.empty(this);
         }
       },
     };
   }
 
-  public static empty(): TriggerRef {
+  private static empty(trigger: Trigger): TriggerRef {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    return { connect: () => {}, disconnect: () => {} };
+    return { trigger, connect: () => {}, disconnect: () => {} };
   }
 }
