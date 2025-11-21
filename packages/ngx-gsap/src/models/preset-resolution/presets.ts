@@ -3,7 +3,6 @@ import { ExitPresets } from './presets/exit-presets';
 import { AttentionPresets } from './presets/attention-presets';
 import { EffectPresets } from './presets/effect-presets';
 
-export { EntrancePresets, ExitPresets, AttentionPresets, EffectPresets };
 export type Preset = (params?: Record<string, unknown>) => string;
 
 export class Presets {
