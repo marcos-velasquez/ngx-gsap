@@ -1,4 +1,4 @@
-import { CustomVarsExtractor } from '../extractors/custom-vars-extractor';
+import { CustomVarsExtractor } from '../custom';
 import { PresetMatcher } from '../preset-matcher';
 
 describe('PresetCustomVarsExtractor', () => {

@@ -1,8 +1,8 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CustomVarsAppender } from './custom-vars-appender';
-import { TimelineVarsAppender } from './timeline-vars-appender';
-import { ScrollVarsAppender } from './scroll-vars-appender';
+import { CustomVarsAppender } from '../custom';
+import { TimelineVarsAppender } from '../timeline';
+import { ScrollVarsAppender } from '../scroll';
 
 export class VarsAppender {
   constructor(private readonly sequence: string) {}

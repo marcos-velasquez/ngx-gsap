@@ -1,5 +1,7 @@
 import { AnimationParser } from '../animation-parser';
-import { TimelinePropsExtractor, ScrollPropsExtractor, SequenceParser } from '../features';
+import { TimelinePropsExtractor } from '../timeline';
+import { ScrollPropsExtractor } from '../scroll';
+import { SequenceParser } from '../tween';
 
 // Helper function to parse animations from result
 const parseAnimations = (result: ReturnType<AnimationParser['parse']>) => {

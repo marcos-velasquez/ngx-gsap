@@ -1,4 +1,4 @@
-import { CustomVarsAppender } from '../appenders/custom-vars-appender';
+import { CustomVarsAppender } from '../custom';
 
 describe('CustomVarsAppender', () => {
   describe('append()', () => {

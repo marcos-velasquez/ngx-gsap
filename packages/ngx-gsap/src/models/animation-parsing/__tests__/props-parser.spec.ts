@@ -1,4 +1,4 @@
-import { PropsParser } from '../shared';
+import { PropsParser } from '../__shared__';
 
 describe('PropsParser', () => {
   describe('parse()', () => {

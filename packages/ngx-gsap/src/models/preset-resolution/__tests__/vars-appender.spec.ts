@@ -1,4 +1,4 @@
-import { VarsAppender } from '../appenders/vars-appender';
+import { VarsAppender } from '../__shared__';
 
 describe('VarsAppender', () => {
   it('should append both custom vars and timeline vars', () => {

@@ -1,4 +1,4 @@
-import { TypeSerializer } from '../../utils';
+import { TypeSerializer } from '../../../utils';
 
 export abstract class PresetAppender<T extends object = object> {
   constructor(
