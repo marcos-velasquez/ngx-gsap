@@ -1,7 +1,7 @@
 import * as ng from '@angular/core';
 import { Timeline, TimelineFactory } from '../models/timeline';
 import { Trigger, TriggerType } from '../models/trigger';
-import { AnimationParser, pluginRegister } from '../models/animation-parsing';
+import { pluginRegister, TimelineApplicatorChain } from '../models/animation-parsing';
 
 @ng.Directive({ selector: '[animate]', exportAs: 'animate' })
 export abstract class AnimateDirective implements ng.OnInit, ng.OnDestroy {
@@ -34,7 +34,7 @@ export abstract class AnimateDirective implements ng.OnInit, ng.OnDestroy {
   ngOnInit(): void {
     ng.afterNextRender(
       () => {
-        this.timeline.set(new TimelineFactory(this).create());
+        this.timeline.set(new TimelineFactory(this.element, this.trigger()).create());
         this.registerAnimation();
       },
       { injector: this.injector }
@@ -42,10 +42,7 @@ export abstract class AnimateDirective implements ng.OnInit, ng.OnDestroy {
   }
 
   public registerAnimation() {
-    const { animations, timelineVars, scrollVars } = new AnimationParser(this.sequence()).parse();
-    this.timeline().configure(timelineVars);
-    this.isScroll().whenTrue(() => this.timeline().scroll(scrollVars));
-    animations.forEach((anim) => this.timeline()[anim.method](anim.selector, anim.vars, anim.position));
+    TimelineApplicatorChain.execute(this.timeline(), this.sequence());
   }
 
   public get element(): HTMLElement {
