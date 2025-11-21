@@ -4,7 +4,7 @@ import * as _ from './applicators';
 
 export class AnimationApplicatorChain {
   private readonly applicators: _.AnimationApplicator[] = [
-    new _.TimelineConfigApplicator(),
+    new _.TimelineApplicator(),
     new _.TweenApplicator(),
     new _.ScrollApplicator(),
     new _.SplitTextApplicator(),
