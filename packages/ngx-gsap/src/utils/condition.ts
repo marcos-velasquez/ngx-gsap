@@ -16,4 +16,10 @@ export class Condition {
       fn();
     }
   }
+
+  public throw(message: string): void {
+    if (!this.evaluate()) {
+      throw new Error(message);
+    }
+  }
 }

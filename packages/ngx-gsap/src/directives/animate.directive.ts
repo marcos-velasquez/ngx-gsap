@@ -1,7 +1,7 @@
 import * as ng from '@angular/core';
 import { Timeline, TimelineFactory } from '../models/timeline';
 import { Trigger, TriggerType } from '../models/trigger';
-import { pluginRegister, TimelineApplicatorChain } from '../models/animation-parsing';
+import { pluginRegister, AnimationApplicatorChain } from '../models/animation-parsing';
 
 @ng.Directive({ selector: '[animate]', exportAs: 'animate' })
 export abstract class AnimateDirective implements ng.OnInit, ng.OnDestroy {
@@ -35,14 +35,14 @@ export abstract class AnimateDirective implements ng.OnInit, ng.OnDestroy {
     ng.afterNextRender(
       () => {
         this.timeline.set(new TimelineFactory(this.element, this.trigger()).create());
-        this.registerAnimation();
+        this.applyAnimation();
       },
       { injector: this.injector }
     );
   }
 
-  public registerAnimation() {
-    TimelineApplicatorChain.execute(this.timeline(), this.sequence());
+  public applyAnimation() {
+    new AnimationApplicatorChain(this.timeline(), this.sequence()).apply();
   }
 
   public get element(): HTMLElement {

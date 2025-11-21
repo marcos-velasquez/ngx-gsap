@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import { PropertyInvoker } from '../../utils';
 import { Trigger, TriggerRef, TriggerType } from '../trigger';
 
@@ -48,6 +49,10 @@ export class Timeline {
 
   public scroll(vars: ScrollTrigger.StaticVars = {}): ScrollTrigger {
     return ScrollTrigger.create({ trigger: this.element, animation: this.gsapTimeline, ...vars });
+  }
+
+  public splitText(vars: SplitText.Vars = { type: 'chars,words,lines', autoSplit: true }): SplitText {
+    return SplitText.create(this.element, { ...vars });
   }
 
   private getTarget(selector?: string): gsap.DOMTarget {
