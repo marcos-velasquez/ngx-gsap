@@ -1,8 +1,8 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from 'gsap/SplitText';
 import { Condition, PropertyInvoker } from '../../utils';
 import { Trigger, TriggerRef, TriggerType } from '../trigger';
+import { SplitTextTimeline, SplitText, SplitTextVars } from './split-text';
 
 export class Timeline {
   private readonly gsapTimeline: gsap.core.Timeline;
@@ -55,24 +55,8 @@ export class Timeline {
     return ScrollTrigger.create({ trigger: this.element, animation: this.gsapTimeline, ...vars });
   }
 
-  public splitText(
-    vars: SplitText.Vars & { target?: 'chars' | 'words' | 'lines' } = {
-      target: 'chars',
-      type: 'chars,words,lines',
-      autoSplit: true,
-    }
-  ): SplitText {
-    return SplitText.create(this.element, {
-      ...vars,
-      onSplit: (self) => {
-        const children = this.timeline.getChildren();
-        this.timeline.clear();
-        children.forEach((child) => {
-          this.timeline[child.data.method](self[vars.target as 'chars' | 'words' | 'lines'], { ...child.vars });
-        });
-        return this.timeline;
-      },
-    });
+  public splitText(vars: SplitTextVars = {}): SplitText {
+    return new SplitTextTimeline(this.element, this.timeline).create(vars);
   }
 
   private getTarget(selector?: string): gsap.DOMTarget {
