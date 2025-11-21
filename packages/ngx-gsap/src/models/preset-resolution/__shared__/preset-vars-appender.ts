@@ -1,6 +1,6 @@
 import { TypeSerializer } from '../../../utils';
 
-export abstract class PresetAppender<T extends object = object> {
+export abstract class PresetVarsAppender<T extends object = object> {
   constructor(
     private readonly sequence: string,
     private readonly prefix: string,
