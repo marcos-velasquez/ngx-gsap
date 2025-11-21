@@ -1,5 +1,5 @@
-import { AnimationParser } from '../animation-parser';
-import { TimelinePropsExtractor } from '../timeline';
+import { AnimationParser } from '../../animation-parser';
+import { TimelinePropsExtractor } from '..';
 
 describe('Timeline Properties Extraction', () => {
   it('should extract timeline properties from sequence', () => {

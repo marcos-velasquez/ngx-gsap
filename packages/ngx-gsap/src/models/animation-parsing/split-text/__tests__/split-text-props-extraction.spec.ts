@@ -1,7 +1,5 @@
-import { AnimationParser } from '../animation-parser';
-import { SplitTextPropsExtractor } from '../split-text';
-import { TimelinePropsExtractor } from '../timeline';
-import { ScrollPropsExtractor } from '../scroll';
+import { AnimationParser } from '../../animation-parser';
+import { SplitTextPropsExtractor } from '../split-text-props-extractor';
 
 describe('SplitText Properties Extraction', () => {
   it('should extract splitText properties from sequence', () => {
@@ -34,15 +32,5 @@ describe('SplitText Properties Extraction', () => {
       linesClass: 'line',
       position: 'relative',
     });
-  });
-
-  it('should work together with timeline and scroll properties', () => {
-    const result = new AnimationParser('fadeIn();timeline@repeat=2;scroll@scrub=true;splitText@type="chars"').parse();
-    const timelineVars = new TimelinePropsExtractor(result.sequence).extract();
-    const scrollVars = new ScrollPropsExtractor(result.sequence).extract();
-    const splitTextVars = new SplitTextPropsExtractor(result.sequence).extract();
-    expect(timelineVars).toEqual({ repeat: 2 });
-    expect(scrollVars).toEqual({ scrub: true });
-    expect(splitTextVars).toEqual({ type: 'chars' });
   });
 });

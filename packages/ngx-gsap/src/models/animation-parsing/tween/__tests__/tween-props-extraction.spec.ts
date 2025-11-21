@@ -1,5 +1,5 @@
-import { AnimationParser } from '../animation-parser';
-import { parseAnimations } from './__helpers__';
+import { AnimationParser } from '../../animation-parser';
+import { parseAnimations } from '../../__tests__/__helpers__';
 
 describe('Tween Parsing', () => {
   describe('Basic parsing', () => {

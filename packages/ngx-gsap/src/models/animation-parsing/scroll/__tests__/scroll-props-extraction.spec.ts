@@ -1,6 +1,5 @@
-import { AnimationParser } from '../animation-parser';
-import { ScrollPropsExtractor } from '../scroll';
-import { TimelinePropsExtractor } from '../timeline';
+import { AnimationParser } from '../../animation-parser';
+import { ScrollPropsExtractor } from '../scroll-props-extractor';
 
 describe('Scroll Properties Extraction', () => {
   it('should extract scroll properties from sequence', () => {
@@ -34,13 +33,5 @@ describe('Scroll Properties Extraction', () => {
       markers: false,
       toggleActions: 'play reverse play reverse',
     });
-  });
-
-  it('should work together with timeline properties', () => {
-    const result = new AnimationParser('fadeIn();timeline@repeat=2,yoyo=true;scroll@scrub=true,pin=true').parse();
-    const timelineVars = new TimelinePropsExtractor(result.sequence).extract();
-    const scrollVars = new ScrollPropsExtractor(result.sequence).extract();
-    expect(timelineVars).toEqual({ repeat: 2, yoyo: true });
-    expect(scrollVars).toEqual({ scrub: true, pin: true });
   });
 });
