@@ -36,4 +36,11 @@ export class RegexPatterns {
    * Groups: [1] = props string
    */
   public static readonly SCROLL_PROPS = /scroll@([^;]+)/;
+
+  /**
+   * Matches split text properties syntax: splitText@props
+   * Example: "splitText@type='chars,words',charsClass='char'"
+   * Groups: [1] = props string
+   */
+  public static readonly SPLIT_TEXT_PROPS = /splitText@([^;]+)/;
 }

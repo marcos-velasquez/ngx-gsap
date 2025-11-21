@@ -179,6 +179,21 @@ Configure scroll-triggered animations using `scroll@` or the `scroll` parameter 
 
 Scroll properties apply to the **entire timeline** and work with `animateScroll` directive.
 
+### SplitText Properties
+
+Configure text splitting animations using `splitText@` syntax with the GSAP SplitText plugin:
+
+```html
+<!-- With presets -->
+<div animateLoad="fadeIn;splitText@type='chars'">Animate each character</div>
+<div animateLoad="slideIn;splitText@type='words,lines',wordsClass='word'">Split text</div>
+<div animateClick="rotateIn;splitText@type='chars',charsClass='char',position='relative'">Custom split</div>
+
+<!-- Raw syntax -->
+<div animateLoad="from:opacity:0:>;from:y:-20:0.1;splitText@type='chars'">Fade and slide chars</div>
+<div animateClick="to:scale:1.2:>;to:rotate:360:>;splitText@type='words'">Scale and rotate words</div>
+```
+
 ### Combining Animations
 
 Combine multiple animations using semicolons:
