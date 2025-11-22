@@ -3,12 +3,14 @@ import { PresetMatcher } from './preset-matcher';
 import { CustomVarsResolver } from './custom';
 import { TimelineVarsResolver } from './timeline';
 import { ScrollVarsResolver } from './scroll';
+import { SplitTextVarsResolver } from './split-text';
 
 export class PresetVarsResolverChain {
   private readonly resolvers: PresetVarsResolver[] = [
     new CustomVarsResolver(),
     new TimelineVarsResolver(),
     new ScrollVarsResolver(),
+    new SplitTextVarsResolver(),
   ];
 
   constructor(private readonly matcher: PresetMatcher) {}

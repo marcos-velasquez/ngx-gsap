@@ -63,5 +63,17 @@ describe('CustomVarsAppender', () => {
 
       expect(result).toBe('@duration=2');
     });
+
+    it('should merge customVars with existing props using comma', () => {
+      const result = new CustomVarsAppender('to:x:100:>@duration=2').append({ selector: '.card' });
+
+      expect(result).toBe('to:x:100:>@duration=2,selector=.card');
+    });
+
+    it('should handle sequences with and without existing props', () => {
+      const result = new CustomVarsAppender('set:opacity:0;to:x:100@duration=2').append({ selector: '.target' });
+
+      expect(result).toBe('set:opacity:0@selector=.target;to:x:100@duration=2,selector=.target');
+    });
   });
 });
