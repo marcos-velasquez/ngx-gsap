@@ -1,5 +1,3 @@
-export type Preset = (params?: Record<string, unknown>) => string;
-
 export class AttentionPresets {
   /**
    * Pulse animation that scales up and down with optional fade.

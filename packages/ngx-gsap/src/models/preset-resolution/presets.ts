@@ -2,6 +2,7 @@ import { EntrancePresets } from './presets/entrance-presets';
 import { ExitPresets } from './presets/exit-presets';
 import { AttentionPresets } from './presets/attention-presets';
 import { EffectPresets } from './presets/effect-presets';
+import { TextPresets } from './presets/text-presets';
 
 export type Preset = (params?: Record<string, unknown>) => string;
 
@@ -53,4 +54,7 @@ export class Presets {
   public static float = EffectPresets.float;
   public static pop = EffectPresets.pop;
   public static glow = EffectPresets.glow;
+
+  // Text animations - delegated to TextPresets
+  public static screenReader = TextPresets.screenReader;
 }

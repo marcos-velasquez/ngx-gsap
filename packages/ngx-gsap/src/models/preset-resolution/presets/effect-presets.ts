@@ -1,5 +1,3 @@
-export type Preset = (params?: Record<string, unknown>) => string;
-
 export class EffectPresets {
   /**
    * Blur animation - transitions from blurred to focused state.

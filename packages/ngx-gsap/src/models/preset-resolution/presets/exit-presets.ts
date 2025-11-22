@@ -1,5 +1,3 @@
-export type Preset = (params?: Record<string, unknown>) => string;
-
 export class ExitPresets {
   /**
    * Fade out animation - element fades from opaque to transparent.
