@@ -1,6 +1,0 @@
-svg-animations/         ← SVG animations (nueva)
-physics-animations/     ← Physics (nueva)
-scroll-triggered/       ← Scroll triggered animations (nueva)
-text-animations/        ← Text animations (nueva)
-
-Publicar como npm package
