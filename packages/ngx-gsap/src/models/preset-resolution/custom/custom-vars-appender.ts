@@ -13,7 +13,9 @@ export class CustomVarsAppender {
 
     return this.sequence
       .split(';')
-      .map((seq) => `${seq}@${customVarsString}`)
+      .map((seq) => {
+        return seq.includes('@') ? `${seq},${customVarsString}` : `${seq}@${customVarsString}`;
+      })
       .join(';');
   }
 }
