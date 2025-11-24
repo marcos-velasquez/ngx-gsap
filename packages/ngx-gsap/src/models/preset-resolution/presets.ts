@@ -57,4 +57,5 @@ export class Presets {
 
   // Text animations - delegated to TextPresets
   public static screenReader = TextPresets.screenReader;
+  public static randomReveal = TextPresets.randomReveal;
 }

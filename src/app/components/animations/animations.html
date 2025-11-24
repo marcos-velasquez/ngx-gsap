@@ -71,6 +71,14 @@
     >
       Shadow <span class="text-purple-300">({{ categoryCounts().shadow }})</span>
     </button>
+    <button
+      (click)="setCategory('text')"
+      [class.bg-purple-600]="selectedCategory() === 'text'"
+      [class.bg-slate-800]="selectedCategory() !== 'text'"
+      class="px-6 py-2 rounded-full font-medium text-white transition-all hover:scale-105"
+    >
+      Text <span class="text-purple-300">({{ categoryCounts().text }})</span>
+    </button>
   </div>
 
   <!-- Animations Grid -->
@@ -85,7 +93,7 @@
         [class]="
                   'bg-gradient-to-br ' +
                   animation.gradient +
-                  ' aspect-square rounded-2xl cursor-pointer shadow-xl flex items-center justify-center'
+                  ' aspect-square rounded-2xl cursor-pointer shadow-xl flex items-center justify-center px-4'
                 "
         [innerHTML]="animation.content || ''"
       ></div>

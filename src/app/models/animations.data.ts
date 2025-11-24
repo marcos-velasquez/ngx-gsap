@@ -1,6 +1,6 @@
 export interface Animation {
   name: string;
-  category: 'entrance' | 'exit' | 'attention' | 'special' | 'shadow';
+  category: 'entrance' | 'exit' | 'attention' | 'special' | 'shadow' | 'text';
   value: string;
   description: string;
   examples: string[];
@@ -309,5 +309,26 @@ export const animations: Animation[] = [
     description: 'Glow effect animation.',
     examples: ['glow', "glow({ boxShadow: '0 0 20px rgba(255, 255, 255, 0.8)' })"],
     gradient: 'from-amber-400 to-yellow-500',
+  },
+  // TEXT ANIMATIONS
+  {
+    name: 'Screen Reader',
+    category: 'text',
+    value: 'screenReader',
+    description: 'Words fade in sequentially with stagger effect.',
+    examples: ['screenReader', 'screenReader({ stagger: 0.2 })', 'screenReader({ opacity: 0.5, stagger: 0.05 })'],
+    gradient: 'from-indigo-400 to-purple-600',
+    content:
+      '<div>"Life is a sequence of moments, each one different but unique. Each moment is a small part of the whole, and together they form a beautiful and intricate tapestry that is the fabric of our lives."</div>',
+  },
+  {
+    name: 'Random Reveal',
+    category: 'text',
+    value: 'randomReveal',
+    description: 'Characters appear from random positions with stagger.',
+    examples: ['randomReveal', 'randomReveal({ duration: 1, stagger: 1 })', 'randomReveal({ yPercent: "[-200,200]" })'],
+    gradient: 'from-violet-400 to-fuchsia-600',
+    content:
+      '<div>"Chaos becomes order, scattered pieces find their place, and meaning emerges from randomness."</div>',
   },
 ];
