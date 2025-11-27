@@ -95,8 +95,9 @@
                   animation.gradient +
                   ' aspect-square rounded-2xl cursor-pointer shadow-xl flex items-center justify-center px-4'
                 "
-        [innerHTML]="animation.content || ''"
-      ></div>
+      >
+        <div [innerHTML]="animation.content || ''"></div>
+      </div>
       <h3 class="text-white font-semibold mt-4 text-lg">{{ animation.name }}</h3>
       <p class="text-slate-400 text-sm">{{ animation.description }}</p>
       @for (example of animation.examples; track example) {

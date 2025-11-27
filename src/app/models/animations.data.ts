@@ -321,14 +321,4 @@ export const animations: Animation[] = [
     content:
       '<div>"Life is a sequence of moments, each one different but unique. Each moment is a small part of the whole, and together they form a beautiful and intricate tapestry that is the fabric of our lives."</div>',
   },
-  {
-    name: 'Random Reveal',
-    category: 'text',
-    value: 'randomReveal',
-    description: 'Characters appear from random positions with stagger.',
-    examples: ['randomReveal', 'randomReveal({ duration: 1, stagger: 1 })', 'randomReveal({ yPercent: "[-200,200]" })'],
-    gradient: 'from-violet-400 to-fuchsia-600',
-    content:
-      '<div>"Chaos becomes order, scattered pieces find their place, and meaning emerges from randomness."</div>',
-  },
 ];
