@@ -321,4 +321,17 @@ export const animations: Animation[] = [
     content:
       '<div>"Life is a sequence of moments, each one different but unique. Each moment is a small part of the whole, and together they form a beautiful and intricate tapestry that is the fabric of our lives."</div>',
   },
+  {
+    name: 'Slide Reveal',
+    category: 'text',
+    value: 'slideReveal({ axis: "x", distance: "150" })',
+    description: 'Characters slide in with fade and stagger from any direction.',
+    examples: [
+      'slideReveal({ axis: "x", distance: "150" })',
+      'slideReveal({ axis: "x", distance: "-150" })',
+      'slideReveal({ axis: "y", distance: "150" })',
+    ],
+    gradient: 'from-cyan-400 to-blue-600',
+    content: '<div>"Each letter glides into view, painting words across the canvas of imagination."</div>',
+  },
 ];
