@@ -169,7 +169,7 @@ Configure scroll-triggered animations using `scroll@` or the `scroll` parameter 
 
 ```html
 <!-- Raw syntax -->
-<div animateScroll="fadeIn;scroll@start='top center',scrub=true">Smooth scroll fade</div>
+<div animateScroll="x:100%:>;scroll@start='top center',scrub=true">Smooth scroll fade</div>
 <div animateScroll="slideIn({ x: '-100%' });scroll@start='top bottom',end='bottom top'">Slide on scroll</div>
 
 <!-- Preset syntax -->
@@ -184,14 +184,14 @@ Scroll properties apply to the **entire timeline** and work with `animateScroll`
 Configure text splitting animations using `splitText@` syntax with the GSAP SplitText plugin:
 
 ```html
-<!-- With presets -->
-<div animateLoad="fadeIn;splitText@type='chars'">Animate each character</div>
-<div animateLoad="slideIn;splitText@type='words,lines',wordsClass='word'">Split text</div>
-<div animateClick="rotateIn;splitText@type='chars',charsClass='char',position='relative'">Custom split</div>
-
 <!-- Raw syntax -->
 <div animateLoad="from:opacity:0:>;from:y:-20:0.1;splitText@type='chars'">Fade and slide chars</div>
 <div animateClick="to:scale:1.2:>;to:rotate:360:>;splitText@type='words'">Scale and rotate words</div>
+
+<!-- Preset syntax -->
+<div animateLoad="fadeIn;splitText@type='chars'">Animate each character</div>
+<div animateLoad="slideIn;splitText@type='words,lines',wordsClass='word'">Split text</div>
+<div animateClick="rotateIn;splitText@type='chars',charsClass='char',position='relative'">Custom split</div>
 ```
 
 ### Combining Animations
