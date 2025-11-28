@@ -9,11 +9,11 @@ import { TweenApplicator } from './tween';
 
 export class AnimationApplicatorChain {
   private readonly applicators: AnimationApplicator[] = [
-    new TimelineApplicator(),
     new TweenApplicator(),
+    new SplitTextApplicator(),
+    new TimelineApplicator(),
     new ElementApplicator(),
     new ScrollApplicator(),
-    new SplitTextApplicator(),
   ];
 
   constructor(private readonly timeline: Timeline, private readonly sequence: string) {}

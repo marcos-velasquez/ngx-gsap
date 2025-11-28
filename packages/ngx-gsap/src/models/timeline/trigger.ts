@@ -19,40 +19,31 @@ export class Trigger {
   }
 
   private onEnter(callback: () => void): TriggerRef {
-    this.el.addEventListener('mouseenter', callback);
     return {
       trigger: this,
-      connect: () => this.onEnter(callback),
+      connect: () => this.el.addEventListener('mouseenter', callback),
       disconnect: () => this.el.removeEventListener('mouseenter', callback),
     };
   }
 
   private onLeave(callback: () => void): TriggerRef {
-    this.el.addEventListener('mouseleave', callback);
     return {
       trigger: this,
-      connect: () => this.onLeave(callback),
+      connect: () => this.el.addEventListener('mouseleave', callback),
       disconnect: () => this.el.removeEventListener('mouseleave', callback),
     };
   }
 
   private onClick(callback: () => void): TriggerRef {
-    this.el.addEventListener('click', callback);
     return {
       trigger: this,
-      connect: () => this.onClick(callback),
+      connect: () => this.el.addEventListener('click', callback),
       disconnect: () => this.el.removeEventListener('click', callback),
     };
   }
 
   private onLoad(callback: () => void): TriggerRef {
-    callback();
-    return Trigger.empty(this);
-  }
-
-  private onScroll(callback: () => void): TriggerRef {
-    callback();
-    return Trigger.empty(this);
+    return { ...Trigger.empty(this), connect: () => callback() };
   }
 
   public when(triggerType: TriggerType): { then: (callback: VoidFunction) => TriggerRef } {
@@ -69,7 +60,6 @@ export class Trigger {
           case 'load':
             return this.onLoad(callback);
           case 'scroll':
-            return this.onScroll(callback);
           default:
             return Trigger.empty(this);
         }

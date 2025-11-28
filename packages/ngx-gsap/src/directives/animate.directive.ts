@@ -35,6 +35,7 @@ export abstract class AnimateDirective implements ng.OnInit, ng.OnDestroy {
       () => {
         this.timeline.set(new TimelineFactory(this.element, this.trigger()).create());
         this.applyAnimation();
+        this.timeline().connect();
       },
       { injector: this.injector }
     );
