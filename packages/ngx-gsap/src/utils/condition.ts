@@ -5,6 +5,18 @@ export class Condition {
     return this.fn();
   }
 
+  public and(other: Condition): Condition {
+    return new Condition(() => this.evaluate() && other.evaluate());
+  }
+
+  public or(other: Condition): Condition {
+    return new Condition(() => this.evaluate() || other.evaluate());
+  }
+
+  public not(): Condition {
+    return new Condition(() => !this.evaluate());
+  }
+
   public whenTrue(fn: () => void): void {
     if (this.evaluate()) {
       fn();

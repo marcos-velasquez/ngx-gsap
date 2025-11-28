@@ -22,14 +22,14 @@
 
     <!-- Navigation Tabs -->
     <div
-      animateLoad="bigEntrance({ selector: 'button', stagger:0.5})"
+      animateLoad="bigEntrance({ selector: 'button', stagger:0.5 })"
       class="flex flex-col sm:flex-row justify-center gap-4 mb-12"
     >
       <button
         (click)="setTab('animations')"
         [class.bg-purple-600]="activeTab() === 'animations'"
         [class.bg-slate-800]="activeTab() !== 'animations'"
-        class="px-8 py-3 rounded-lg font-semibold text-white transition-all hover:scale-105"
+        class="px-8 py-3 rounded-lg font-semibold text-white transition-colors"
       >
         Animations
       </button>
@@ -37,7 +37,7 @@
         (click)="setTab('docs')"
         [class.bg-purple-600]="activeTab() === 'docs'"
         [class.bg-slate-800]="activeTab() !== 'docs'"
-        class="px-8 py-3 rounded-lg font-semibold text-white transition-all hover:scale-105"
+        class="px-8 py-3 rounded-lg font-semibold text-white transition-colors"
       >
         Documentation
       </button>
@@ -45,7 +45,7 @@
         (click)="setTab('roadmap')"
         [class.bg-purple-600]="activeTab() === 'roadmap'"
         [class.bg-slate-800]="activeTab() !== 'roadmap'"
-        class="px-8 py-3 rounded-lg font-semibold text-white transition-all hover:scale-105"
+        class="px-8 py-3 rounded-lg font-semibold text-white transition-colors"
       >
         Roadmap
       </button>

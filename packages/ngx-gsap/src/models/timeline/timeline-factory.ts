@@ -19,9 +19,9 @@ export class TimelineFactory {
   }
 
   private _create(): Timeline {
-    return new Timeline(this.element, { immediateRender: Trigger.isScroll(this.trigger).evaluate() }).with(
-      this.trigger
-    );
+    return new Timeline(this.element, {
+      immediateRender: Trigger.isScroll(this.trigger).or(Trigger.isLoad(this.trigger)).evaluate(),
+    }).with(this.trigger);
   }
 
   public create(): Timeline {

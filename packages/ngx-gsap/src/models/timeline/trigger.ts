@@ -14,6 +14,10 @@ export class Trigger {
     return new Condition(() => type === 'scroll');
   }
 
+  public static isLoad(type: TriggerType): Condition {
+    return new Condition(() => type === 'load');
+  }
+
   public isScroll(): Condition {
     return Trigger.isScroll(this.triggerType);
   }
