@@ -1,5 +1,5 @@
 import { Directive, input } from '@angular/core';
-import { TriggerType } from '../models/trigger';
+import { TriggerType } from '../models/timeline';
 import { AnimateDirective } from './animate.directive';
 
 @Directive({ selector: '[animateClick]', exportAs: 'animate' })

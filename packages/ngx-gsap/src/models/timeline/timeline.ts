@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Condition, PropertyInvoker, $ } from '../../utils';
-import { Trigger, TriggerRef, TriggerType } from '../trigger';
+import { Trigger, TriggerRef, TriggerType } from './trigger';
 import { SplitTextTimeline, SplitText, SplitTextVars } from './split-text';
 
 export class Timeline {

@@ -1,6 +1,5 @@
 import * as ng from '@angular/core';
-import { Timeline, TimelineFactory } from '../models/timeline';
-import { Trigger, TriggerType } from '../models/trigger';
+import { Timeline, TimelineFactory, TriggerType, Trigger } from '../models/timeline';
 import { pluginRegister, AnimationApplicatorChain } from '../models/animation-parsing';
 
 @ng.Directive({ selector: '[animate]', exportAs: 'animate' })

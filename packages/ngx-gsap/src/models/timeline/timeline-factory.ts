@@ -1,4 +1,4 @@
-import { Trigger, TriggerType } from '../trigger';
+import { Trigger, TriggerType } from './trigger';
 import { Timeline } from './timeline';
 
 const cache = new WeakMap<HTMLElement, Map<TriggerType, Timeline>>();
