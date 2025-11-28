@@ -118,6 +118,22 @@ You can use **any valid GSAP property** to customize animations:
 <div animateClick="pulse({ duration: 2, ease: 'elastic.out', repeat: 3 })">Custom pulse</div>
 ```
 
+### Method-Specific Properties
+
+Apply properties only to specific animation methods (`to`, `from`, `set`) for fine-grained control:
+
+```html
+<!-- Stagger only on 'to' animations, not on 'set' -->
+<div animateLoad="zoomIn({ to: { stagger: 0.5 } })">
+  <button>Button 1</button>
+  <button>Button 2</button>
+  <button>Button 3</button>
+</div>
+
+<!-- Different properties per method -->
+<div animateClick="fadeIn({ from: { ease: 'power2', duration: 1 }, to: { stagger: 0.2 } })">Multiple elements</div>
+```
+
 ## Advanced Features
 
 ### Custom Animations (Raw Syntax)

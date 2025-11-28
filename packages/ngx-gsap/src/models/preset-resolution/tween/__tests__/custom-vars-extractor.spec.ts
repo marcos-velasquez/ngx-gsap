@@ -73,5 +73,32 @@ describe('TweenVarsExtractor', () => {
 
       expect(result).toEqual({});
     });
+
+    it('should extract method-specific vars when to/from/set are present', () => {
+      const matcher = new PresetMatcher('fadeIn({ to: { stagger: 0.5 }, from: { ease: "power2" } })');
+      const extractor = new TweenVarsExtractor(matcher);
+
+      const result = extractor.extract();
+
+      expect(result).toEqual({ to: { stagger: 0.5 }, from: { ease: 'power2' } });
+    });
+
+    it('should extract only to vars when only to is specified', () => {
+      const matcher = new PresetMatcher('zoomIn({ to: { stagger: 0.5, duration: 1 } })');
+      const extractor = new TweenVarsExtractor(matcher);
+
+      const result = extractor.extract();
+
+      expect(result).toEqual({ to: { stagger: 0.5, duration: 1 } });
+    });
+
+    it('should extract set vars as empty object when set is specified empty', () => {
+      const matcher = new PresetMatcher('fadeIn({ to: { stagger: 0.5 }, set: {} })');
+      const extractor = new TweenVarsExtractor(matcher);
+
+      const result = extractor.extract();
+
+      expect(result).toEqual({ to: { stagger: 0.5 }, set: {} });
+    });
   });
 });

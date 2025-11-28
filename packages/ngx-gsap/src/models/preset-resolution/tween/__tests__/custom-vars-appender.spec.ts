@@ -75,5 +75,31 @@ describe('TweenVarsAppender', () => {
 
       expect(result).toBe('set:opacity:0@selector=.target;to:x:100@duration=2,selector=.target');
     });
+
+    it('should append method-specific vars only to matching methods', () => {
+      const result = new TweenVarsAppender('set:opacity:0;x:100:0;to:scale:1').append({
+        to: { stagger: 0.5 },
+        from: { ease: 'power2' },
+      });
+
+      expect(result).toBe('set:opacity:0;x:100:0@ease=power2;to:scale:1@stagger=0.5');
+    });
+
+    it('should not append vars to set when only to vars specified', () => {
+      const result = new TweenVarsAppender('set:opacity:0;set:scale:0.1;to:opacity:1;to:scale:1').append({
+        to: { stagger: 0.5 },
+      });
+
+      expect(result).toBe('set:opacity:0;set:scale:0.1;to:opacity:1@stagger=0.5;to:scale:1@stagger=0.5');
+    });
+
+    it('should handle from as default method when no prefix', () => {
+      const result = new TweenVarsAppender('x:100:0;y:50:0;to:opacity:1').append({
+        from: { ease: 'power2' },
+        to: { stagger: 0.2 },
+      });
+
+      expect(result).toBe('x:100:0@ease=power2;y:50:0@ease=power2;to:opacity:1@stagger=0.2');
+    });
   });
 });
