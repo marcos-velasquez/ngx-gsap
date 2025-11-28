@@ -1,11 +1,11 @@
-import { CustomVarsResolver } from '../../custom/custom-vars-resolver';
+import { TweenVarsResolver } from '../tween-vars-resolver';
 import { PresetMatcher } from '../../preset-matcher';
 
-describe('CustomVarsResolver', () => {
-  let resolver: CustomVarsResolver;
+describe('TweenVarsResolver', () => {
+  let resolver: TweenVarsResolver;
 
   beforeEach(() => {
-    resolver = new CustomVarsResolver();
+    resolver = new TweenVarsResolver();
   });
 
   describe('resolve()', () => {

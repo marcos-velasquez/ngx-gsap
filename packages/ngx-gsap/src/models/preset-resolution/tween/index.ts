@@ -1,0 +1,3 @@
+export * from './tween-vars-extractor';
+export * from './tween-vars-appender';
+export * from './tween-vars-resolver';

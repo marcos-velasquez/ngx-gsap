@@ -2,7 +2,7 @@ import { gsap } from 'gsap';
 import { ObjectParser } from '../../../utils';
 import { PresetMatcher } from '../preset-matcher';
 
-export class CustomVarsExtractor {
+export class TweenVarsExtractor {
   constructor(private readonly presetMatcher: PresetMatcher) {}
 
   public extract(): gsap.TweenVars {

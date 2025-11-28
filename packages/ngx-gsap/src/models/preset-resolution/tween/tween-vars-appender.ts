@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { TypeSerializer } from '../../../utils';
 
-export class CustomVarsAppender {
+export class TweenVarsAppender {
   constructor(private readonly sequence: string) {}
 
   public append(customVars: gsap.TweenVars): string {

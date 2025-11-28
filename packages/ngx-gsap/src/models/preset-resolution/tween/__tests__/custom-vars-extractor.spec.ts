@@ -1,11 +1,11 @@
-import { CustomVarsExtractor } from '../../custom';
+import { TweenVarsExtractor } from '../tween-vars-extractor';
 import { PresetMatcher } from '../../preset-matcher';
 
-describe('CustomVarsExtractor', () => {
+describe('TweenVarsExtractor', () => {
   describe('extract()', () => {
     it('should extract customVars and exclude preset params', () => {
       const matcher = new PresetMatcher('fadeIn({ x: "100%", duration: 2, ease: "power2.out" })');
-      const extractor = new CustomVarsExtractor(matcher);
+      const extractor = new TweenVarsExtractor(matcher);
 
       const result = extractor.extract();
 
@@ -14,7 +14,7 @@ describe('CustomVarsExtractor', () => {
 
     it('should return empty object when no customVars', () => {
       const matcher = new PresetMatcher('fadeIn({ x: "100%", y: "-50%" })');
-      const extractor = new CustomVarsExtractor(matcher);
+      const extractor = new TweenVarsExtractor(matcher);
 
       const result = extractor.extract();
 
@@ -23,7 +23,7 @@ describe('CustomVarsExtractor', () => {
 
     it('should return empty object when no args', () => {
       const matcher = new PresetMatcher('fadeIn()');
-      const extractor = new CustomVarsExtractor(matcher);
+      const extractor = new TweenVarsExtractor(matcher);
 
       const result = extractor.extract();
 
@@ -32,7 +32,7 @@ describe('CustomVarsExtractor', () => {
 
     it('should return empty object when not a function', () => {
       const matcher = new PresetMatcher('fadeIn');
-      const extractor = new CustomVarsExtractor(matcher);
+      const extractor = new TweenVarsExtractor(matcher);
 
       const result = extractor.extract();
 
@@ -41,7 +41,7 @@ describe('CustomVarsExtractor', () => {
 
     it('should handle multiple customVars', () => {
       const matcher = new PresetMatcher('fadeIn({ duration: 2, delay: 0.5, ease: "bounce.out", yoyo: true })');
-      const extractor = new CustomVarsExtractor(matcher);
+      const extractor = new TweenVarsExtractor(matcher);
 
       const result = extractor.extract();
 
@@ -50,14 +50,14 @@ describe('CustomVarsExtractor', () => {
 
     it('should throw error for preset without destructured parameters', () => {
       const matcher = new PresetMatcher('fadeIn({ duration: 2 })');
-      const extractor = new CustomVarsExtractor(matcher);
+      const extractor = new TweenVarsExtractor(matcher);
 
       expect(() => extractor.extract()).not.toThrow();
     });
 
     it('should exclude timeline parameter from customVars', () => {
       const matcher = new PresetMatcher('shake({ timeline: { repeat: 3 }, duration: 2 })');
-      const extractor = new CustomVarsExtractor(matcher);
+      const extractor = new TweenVarsExtractor(matcher);
 
       const result = extractor.extract();
 
@@ -67,7 +67,7 @@ describe('CustomVarsExtractor', () => {
 
     it('should handle only timeline parameter', () => {
       const matcher = new PresetMatcher('shake({ timeline: { repeat: 1, yoyo: true } })');
-      const extractor = new CustomVarsExtractor(matcher);
+      const extractor = new TweenVarsExtractor(matcher);
 
       const result = extractor.extract();
 
