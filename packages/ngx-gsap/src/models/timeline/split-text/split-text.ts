@@ -12,11 +12,12 @@ export class SplitTextTimeline {
   public create(vars: SplitTextVars = {}): SplitText {
     const config = { target: 'chars', type: 'chars,words,lines', autoSplit: true, ...vars } as Required<SplitTextVars>;
     SplitTextTimeline.validateVars(config);
-    return SplitText.create($(this.element).queryAll(config['selector']), {
+    const element = $(this.element).queryAll(config['selector']);
+    return SplitText.create(element, {
       ...config,
       onSplit: (self) => {
         const children = this.timeline.getChildren();
-        this.timeline.clear();
+        this.timeline.set(element, { clearProps: 'all' }).clear();
         children.forEach((child) =>
           this.timeline[child.data.method](self[config.target], { ...child.vars }, child.data.position)
         );
