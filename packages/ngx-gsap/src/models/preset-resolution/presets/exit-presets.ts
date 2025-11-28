@@ -46,11 +46,10 @@ export class ExitPresets {
   }
 
   /**
-   * Flip out animation - element flips out on specified axis with perspective.
+   * Flip out animation - element flips out on specified axis.
    * @param axis - Rotation axis: 'x' or 'y' (default: 'x')
    * @param opacity - Ending opacity (default: 0)
-   * @remarks The animation performs a two-stage flip with perspective:
-   * - Uses perspective of 400px
+   * @remarks The animation performs a two-stage flip:
    * - Rotates to -5 degrees
    * - Rotates to 90 degrees (fully flipped out)
    * - Opacity fades at 20% progress
@@ -60,7 +59,7 @@ export class ExitPresets {
    */
   public static flipOut({ axis = 'x', opacity = 0 } = {}): string {
     const rotateAxis = axis === 'x' ? 'rotateX' : 'rotateY';
-    return `set:transformPerspective:400;to:${rotateAxis}:-5;to:${rotateAxis}:90;to:opacity:${opacity}:<20%`;
+    return `element@transformPerspective=400;to:${rotateAxis}:-5;to:${rotateAxis}:90;to:opacity:${opacity}:<20%`;
   }
 
   /**

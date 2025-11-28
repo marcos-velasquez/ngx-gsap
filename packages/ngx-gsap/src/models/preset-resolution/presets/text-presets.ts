@@ -9,7 +9,7 @@ export class TextPresets {
    * @example screenReader({ opacity: 0.5, stagger: 0.05 }) // Faster animation
    */
   public static screenReader({ opacity = 0, stagger = 0.1 } = {}): string {
-    return `set:perspective:500;set:opacity:${opacity};to:opacity:1@ease=sine.out,stagger=${stagger};splitText@type="words",target="words"`;
+    return `element@perspective=500;set:opacity:${opacity};to:opacity:1@ease=sine.out,stagger=${stagger};splitText@type="words",target="words"`;
   }
 
   /**
@@ -70,6 +70,6 @@ export class TextPresets {
     ease = 'power3',
     stagger = 0.25,
   } = {}): string {
-    return `set:perspective:500;set:rotationX:${rotationX};set:opacity:0;to:rotationX:0@duration=${duration},ease=${ease},stagger=${stagger},opacity=1,transformOrigin="${transformOrigin}";splitText@type="lines",target="lines"`;
+    return `element@perspective=500,transformOrigin="${transformOrigin}";set:rotationX:${rotationX};set:opacity:0;to:rotationX:0@duration=${duration},ease=${ease},stagger=${stagger},opacity=1;splitText@type="lines",target="lines"`;
   }
 }

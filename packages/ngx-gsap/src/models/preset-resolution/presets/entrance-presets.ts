@@ -99,7 +99,7 @@ export class EntrancePresets {
    */
   public static flipIn({ axis = 'x', opacity = 0 } = {}): string {
     const rotateAxis = axis === 'x' ? 'rotateX' : 'rotateY';
-    return `set:transformPerspective:400;${rotateAxis}:90:0;opacity:${opacity}:0;to:${rotateAxis}:-20:0.4;to:${rotateAxis}:10:0.6;to:opacity:1:0.6;to:${rotateAxis}:-5:0.8;to:${rotateAxis}:0`;
+    return `element@transformPerspective=400;${rotateAxis}:90:0;opacity:${opacity}:0;to:${rotateAxis}:-20:0.4;to:${rotateAxis}:10:0.6;to:opacity:1:0.6;to:${rotateAxis}:-5:0.8;to:${rotateAxis}:0`;
   }
 
   /**
