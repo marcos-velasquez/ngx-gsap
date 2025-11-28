@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Condition, PropertyInvoker } from '../../utils';
+import { Condition, PropertyInvoker, $ } from '../../utils';
 import { Trigger, TriggerRef, TriggerType } from '../trigger';
 import { SplitTextTimeline, SplitText, SplitTextVars } from './split-text';
 
@@ -37,12 +37,12 @@ export class Timeline {
   }
 
   public from(selector: string | undefined, vars: gsap.TweenVars, position?: gsap.Position): Timeline {
-    this.gsapTimeline.from(this.getTarget(selector), { ...vars, data: { method: 'from' } }, position);
+    this.gsapTimeline.from(this.getTarget(selector), { ...vars, data: { method: 'from', position } }, position);
     return this;
   }
 
   public to(selector: string | undefined, vars: gsap.TweenVars, position?: gsap.Position): Timeline {
-    this.gsapTimeline.to(this.getTarget(selector), { ...vars, data: { method: 'to' } }, position);
+    this.gsapTimeline.to(this.getTarget(selector), { ...vars, data: { method: 'to', position } }, position);
     return this;
   }
 
@@ -60,7 +60,7 @@ export class Timeline {
   }
 
   private getTarget(selector?: string): gsap.DOMTarget {
-    return selector ? this.element.querySelectorAll(selector) : this.element;
+    return $(this.element).queryAll(selector);
   }
 
   public play(): Timeline {

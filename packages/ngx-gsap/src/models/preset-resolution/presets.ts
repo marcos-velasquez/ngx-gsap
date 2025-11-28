@@ -58,4 +58,6 @@ export class Presets {
   // Text animations - delegated to TextPresets
   public static screenReader = TextPresets.screenReader;
   public static slideReveal = TextPresets.slideReveal;
+  public static wordDrop = TextPresets.wordDrop;
+  public static lineFlip = TextPresets.lineFlip;
 }

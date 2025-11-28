@@ -96,7 +96,7 @@
                   ' aspect-square rounded-2xl cursor-pointer shadow-xl flex items-center justify-center px-4'
                 "
       >
-        <div [innerHTML]="animation.content || ''"></div>
+        <div class="animation-content" [innerHTML]="animation.content || ''"></div>
       </div>
       <h3 class="text-white font-semibold mt-4 text-lg">{{ animation.name }}</h3>
       <p class="text-slate-400 text-sm">{{ animation.description }}</p>

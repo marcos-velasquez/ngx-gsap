@@ -334,4 +334,28 @@ export const animations: Animation[] = [
     gradient: 'from-cyan-400 to-blue-600',
     content: '<div>"Each letter glides into view, painting words across the canvas of imagination."</div>',
   },
+  {
+    name: 'Word Drop',
+    category: 'text',
+    value: 'wordDrop',
+    description: 'Words fall from above with random rotation and bounce effect.',
+    examples: ['wordDrop', 'wordDrop({ y: -150, stagger: 0.2 })', 'wordDrop({ rotation: "[-45,45]", ease: "bounce" })'],
+    gradient: 'from-violet-400 to-purple-600',
+    content:
+      '<div>"Words tumble down like autumn leaves, each one dancing to its own rhythm before settling into place."</div>',
+  },
+  {
+    name: 'Line Flip',
+    category: 'text',
+    value: 'lineFlip({ selector: ".animation-content" })',
+    description: 'Lines flip in with 3D perspective and rotation effect.',
+    examples: [
+      'lineFlip',
+      'lineFlip({ rotationX: -120, stagger: 0.3 })',
+      'lineFlip({ transformOrigin: "50% 50% -200px", ease: "back" })',
+    ],
+    gradient: 'from-pink-400 to-rose-600',
+    content:
+      '<div>"Each line unfolds like a page turning in space, revealing its message with dramatic flair and depth."</div>',
+  },
 ];

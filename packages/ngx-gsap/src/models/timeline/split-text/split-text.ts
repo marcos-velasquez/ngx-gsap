@@ -1,10 +1,10 @@
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
-import { assert } from '../../../utils';
+import { assert, $ } from '../../../utils';
 
 export { SplitText } from 'gsap/SplitText';
 export type SplitTextTarget = 'chars' | 'words' | 'lines';
-export type SplitTextVars = Partial<SplitText.Vars & { target: SplitTextTarget }>;
+export type SplitTextVars = Partial<SplitText.Vars & { target: SplitTextTarget; selector?: string }>;
 
 export class SplitTextTimeline {
   constructor(private readonly element: HTMLElement, private readonly timeline: gsap.core.Timeline) {}
@@ -12,13 +12,14 @@ export class SplitTextTimeline {
   public create(vars: SplitTextVars = {}): SplitText {
     const config = { target: 'chars', type: 'chars,words,lines', autoSplit: true, ...vars } as Required<SplitTextVars>;
     SplitTextTimeline.validateVars(config);
-
-    return SplitText.create(this.element, {
+    return SplitText.create($(this.element).queryAll(config.selector), {
       ...config,
       onSplit: (self) => {
         const children = this.timeline.getChildren();
         this.timeline.clear();
-        children.forEach((child) => this.timeline[child.data.method](self[config.target], { ...child.vars }, 0));
+        children.forEach((child) =>
+          this.timeline[child.data.method](self[config.target], { ...child.vars }, child.data.position)
+        );
         return this.timeline;
       },
     });
