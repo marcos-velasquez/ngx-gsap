@@ -1,6 +1,7 @@
 import { Timeline } from '../timeline';
 import { AnimationApplicator } from './__shared__';
 import { AnimationParser } from './animation-parser';
+import { ElementApplicator } from './element';
 import { ScrollApplicator } from './scroll';
 import { SplitTextApplicator } from './split-text';
 import { TimelineApplicator } from './timeline';
@@ -10,6 +11,7 @@ export class AnimationApplicatorChain {
   private readonly applicators: AnimationApplicator[] = [
     new TimelineApplicator(),
     new TweenApplicator(),
+    new ElementApplicator(),
     new ScrollApplicator(),
     new SplitTextApplicator(),
   ];

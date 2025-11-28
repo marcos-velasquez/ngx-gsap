@@ -43,4 +43,11 @@ export class RegexPatterns {
    * Groups: [1] = props string
    */
   public static readonly SPLIT_TEXT_PROPS = /splitText@([^;]+)/;
+
+  /**
+   * Matches element properties syntax: element@props
+   * Example: "element@perspective=500,transformOrigin='50% 50%'"
+   * Groups: [1] = props string
+   */
+  public static readonly ELEMENT_PROPS = /element@([^;]+)/;
 }

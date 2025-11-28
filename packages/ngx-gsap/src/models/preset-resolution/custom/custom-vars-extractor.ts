@@ -22,8 +22,12 @@ export class CustomVarsExtractor {
 
   private isCustomVar(key: string): boolean {
     return (
-      // TODO: This is a temporary solution to avoid extracting timeline, scroll, and splitText vars
-      key !== 'timeline' && key !== 'scroll' && key !== 'splitText' && !this.presetMatcher.paramNames().includes(key)
+      // TODO: This is a temporary solution to avoid extracting timeline, scroll, splitText, and element vars
+      key !== 'timeline' &&
+      key !== 'scroll' &&
+      key !== 'splitText' &&
+      key !== 'element' &&
+      !this.presetMatcher.paramNames().includes(key)
     );
   }
 }
