@@ -1,6 +1,6 @@
 <div class="overflow-x-hidden">
   <!-- Search Bar -->
-  <div class="max-w-2xl mx-auto mb-8">
+  <div animateLoad="zoomIn" class="max-w-2xl mx-auto mb-8">
     <div class="relative">
       <input
         [ngModel]="searchQuery()"
@@ -22,7 +22,7 @@
   </div>
 
   <!-- Category Filters -->
-  <div class="flex flex-wrap justify-center gap-3 mb-12">
+  <div animateLoad="swingIn({ selector: 'button'})" class="flex flex-wrap justify-center gap-3 mb-12">
     <button
       (click)="setCategory('all')"
       [class.bg-purple-600]="selectedCategory() === 'all'"

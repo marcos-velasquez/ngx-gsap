@@ -1,12 +1,12 @@
 import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AnimateClickDirective } from 'ngx-gsap';
+import { AnimateClickDirective, AnimateLoadDirective } from 'ngx-gsap';
 import { Animation, AnimationList } from '../../models/animations';
 
 @Component({
   selector: 'app-animations',
-  imports: [CommonModule, FormsModule, AnimateClickDirective],
+  imports: [CommonModule, FormsModule, AnimateClickDirective, AnimateLoadDirective],
   templateUrl: './animations.html',
 })
 export class Animations {

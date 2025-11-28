@@ -10,7 +10,7 @@
     </header>
 
     <!-- GitHub Link -->
-    <section class="text-center mb-4">
+    <section animateLoad="spin" class="text-center mb-4">
       <a href="https://github.com/marcos-velasquez/angular-animations" target="_blank" class="inline-flex text-white">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
           <path
@@ -21,7 +21,10 @@
     </section>
 
     <!-- Navigation Tabs -->
-    <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+    <div
+      animateLoad="bigEntrance({ selector: 'button', stagger:0.5})"
+      class="flex flex-col sm:flex-row justify-center gap-4 mb-12"
+    >
       <button
         (click)="setTab('animations')"
         [class.bg-purple-600]="activeTab() === 'animations'"

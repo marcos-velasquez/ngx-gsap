@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AnimateScrollDirective } from 'ngx-gsap';
+import { AnimateLoadDirective, AnimateScrollDirective } from 'ngx-gsap';
 
 @Component({
   selector: 'app-roadmap',
-  imports: [CommonModule, AnimateScrollDirective],
+  imports: [CommonModule, AnimateScrollDirective, AnimateLoadDirective],
   templateUrl: './roadmap.html',
 })
 export class Roadmap {
