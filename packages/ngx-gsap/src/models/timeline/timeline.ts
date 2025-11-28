@@ -36,18 +36,18 @@ export class Timeline {
     return this;
   }
 
-  public from(selector: string | undefined, vars: gsap.TweenVars, position?: gsap.Position): Timeline {
-    this.gsapTimeline.from(this.getTarget(selector), { ...vars, data: { method: 'from', position } }, position);
+  public from(vars: gsap.TweenVars, position?: gsap.Position): Timeline {
+    this.gsapTimeline.from(this.getTarget(vars['selector']), { ...vars, data: { method: 'from', position } }, position);
     return this;
   }
 
-  public to(selector: string | undefined, vars: gsap.TweenVars, position?: gsap.Position): Timeline {
-    this.gsapTimeline.to(this.getTarget(selector), { ...vars, data: { method: 'to', position } }, position);
+  public to(vars: gsap.TweenVars, position?: gsap.Position): Timeline {
+    this.gsapTimeline.to(this.getTarget(vars['selector']), { ...vars, data: { method: 'to', position } }, position);
     return this;
   }
 
-  public set(selector: string | undefined, vars: gsap.TweenVars): Timeline {
-    this.gsapTimeline.set(this.getTarget(selector), { ...vars, data: { method: 'set' } });
+  public set(vars: gsap.TweenVars): Timeline {
+    this.gsapTimeline.set(this.getTarget(vars['selector']), { ...vars, data: { method: 'set' } });
     return this;
   }
 
@@ -57,6 +57,11 @@ export class Timeline {
 
   public splitText(vars: SplitTextVars = {}): SplitText {
     return new SplitTextTimeline(this.element, this.timeline).create(vars);
+  }
+
+  public target(vars: gsap.TweenVars): Timeline {
+    gsap.set(this.getTarget(vars['selector']), vars);
+    return this;
   }
 
   private getTarget(selector?: string): gsap.DOMTarget {

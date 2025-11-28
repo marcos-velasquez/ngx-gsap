@@ -3,7 +3,7 @@ import { RegexPatterns } from '../../@constants';
 import { PropsParser } from '../__shared__';
 
 export type Method = 'to' | 'from' | 'set';
-export type ParsedAnimation = { method: Method; selector?: string; vars: gsap.TweenVars; position: gsap.Position };
+export type ParsedAnimation = { method: Method; vars: gsap.TweenVars; position: gsap.Position };
 
 export class TweenPropsExtractor {
   constructor(private readonly sequence: string) {}
@@ -16,8 +16,6 @@ export class TweenPropsExtractor {
     const vars: gsap.TweenVars = { [prop]: isNaN(Number(value)) ? value : Number(value) };
     if (propsString) Object.assign(vars, new PropsParser(propsString).parse());
 
-    const { selector, ...restVars } = vars as gsap.TweenVars & { selector?: string };
-
-    return { method: method as Method, selector, vars: restVars, position };
+    return { method: method as Method, vars, position };
   }
 }
