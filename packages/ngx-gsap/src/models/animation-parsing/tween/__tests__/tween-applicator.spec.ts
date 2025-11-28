@@ -21,7 +21,7 @@ describe('TweenApplicator', () => {
 
       applicator.apply(mockTimeline, context);
 
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: 100 }, '>');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: 100 }, '>');
     });
 
     it('should apply multiple animations', () => {
@@ -32,8 +32,8 @@ describe('TweenApplicator', () => {
 
       applicator.apply(mockTimeline, context);
 
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: 100 }, '>');
-      expect(mockTimeline.from).toHaveBeenCalledWith(undefined, { opacity: 0 }, '>');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: 100 }, '>');
+      expect(mockTimeline.from).toHaveBeenCalledWith({ opacity: 0 }, '>');
     });
 
     it('should apply animation with position', () => {
@@ -44,7 +44,7 @@ describe('TweenApplicator', () => {
 
       applicator.apply(mockTimeline, context);
 
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: 100 }, '<');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: 100 }, '<');
     });
 
     it('should apply animation with string value', () => {
@@ -55,7 +55,7 @@ describe('TweenApplicator', () => {
 
       applicator.apply(mockTimeline, context);
 
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: '100%' }, '>');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: '100%' }, '>');
     });
 
     it('should apply from animation', () => {
@@ -66,7 +66,7 @@ describe('TweenApplicator', () => {
 
       applicator.apply(mockTimeline, context);
 
-      expect(mockTimeline.from).toHaveBeenCalledWith(undefined, { y: '-50%' }, '>');
+      expect(mockTimeline.from).toHaveBeenCalledWith({ y: '-50%' }, '>');
     });
 
     it('should apply set animation', () => {
@@ -77,7 +77,7 @@ describe('TweenApplicator', () => {
 
       applicator.apply(mockTimeline, context);
 
-      expect(mockTimeline.set).toHaveBeenCalledWith(undefined, { opacity: 0 }, '>');
+      expect(mockTimeline.set).toHaveBeenCalledWith({ opacity: 0 }, '>');
     });
 
     it('should filter out null animations', () => {
@@ -89,7 +89,7 @@ describe('TweenApplicator', () => {
       applicator.apply(mockTimeline, context);
 
       expect(mockTimeline.to).toHaveBeenCalledTimes(1);
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: 100 }, '>');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: 100 }, '>');
     });
 
     it('should handle empty sequences', () => {
@@ -113,7 +113,7 @@ describe('TweenApplicator', () => {
 
       applicator.apply(mockTimeline, context);
 
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: -100 }, '>');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: -100 }, '>');
     });
   });
 });

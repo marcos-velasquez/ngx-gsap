@@ -184,7 +184,7 @@ describe('Preset Parsing', () => {
 
       expect(parseAnimations(result).length).toBeGreaterThan(3);
       parseAnimations(result).forEach((anim) => {
-        expect(anim.selector).toBe('.card');
+        expect(anim.vars['selector']).toBe('.card');
       });
     });
   });
@@ -195,8 +195,7 @@ describe('Preset Parsing', () => {
 
       expect(parseAnimations(result).length).toBe(3);
       parseAnimations(result).forEach((anim) => {
-        expect(anim.selector).toBe('.card');
-        expect(anim.vars).not.toHaveProperty('selector');
+        expect(anim.vars['selector']).toBe('.card');
       });
     });
 
@@ -204,9 +203,8 @@ describe('Preset Parsing', () => {
       const result = new AnimationParser('slideIn({ selector: "> div", axis: "x", distance: "-200%" })').parse();
 
       expect(parseAnimations(result).length).toBe(1);
-      expect(parseAnimations(result)[0].selector).toBe('> div');
+      expect(parseAnimations(result)[0].vars['selector']).toBe('> div');
       expect(parseAnimations(result)[0].vars.x).toBe('-200%');
-      expect(parseAnimations(result)[0].vars).not.toHaveProperty('selector');
     });
 
     it('should extract selector with multiple custom vars', () => {
@@ -216,11 +214,10 @@ describe('Preset Parsing', () => {
 
       expect(parseAnimations(result).length).toBe(3);
       parseAnimations(result).forEach((anim) => {
-        expect(anim.selector).toBe('.card');
+        expect(anim.vars['selector']).toBe('.card');
         expect(anim.vars).toHaveProperty('duration', 2);
         expect(anim.vars).toHaveProperty('ease', 'power2.out');
         expect(anim.vars).toHaveProperty('stagger', 0.5);
-        expect(anim.vars).not.toHaveProperty('selector');
       });
     });
   });

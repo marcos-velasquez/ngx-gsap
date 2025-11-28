@@ -16,7 +16,7 @@ describe('AnimationApplicatorChain', () => {
 
       chain.apply();
 
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: 100 }, '>');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: 100 }, '>');
     });
 
     it('should apply multiple animations in sequence', () => {
@@ -24,8 +24,8 @@ describe('AnimationApplicatorChain', () => {
 
       chain.apply();
 
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: 100 }, '>');
-      expect(mockTimeline.from).toHaveBeenCalledWith(undefined, { opacity: 0 }, '>');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: 100 }, '>');
+      expect(mockTimeline.from).toHaveBeenCalledWith({ opacity: 0 }, '>');
     });
 
     it('should apply timeline configuration', () => {
@@ -37,7 +37,7 @@ describe('AnimationApplicatorChain', () => {
         repeat: 2,
         yoyo: true,
       });
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: 100 }, '>');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: 100 }, '>');
     });
 
     it('should apply scroll trigger when timeline is scroll', () => {
@@ -62,9 +62,9 @@ describe('AnimationApplicatorChain', () => {
       chain.apply();
 
       // fadeIn() expands to: x:0:0;y:0:0;opacity:0:<
-      expect(mockTimeline.from).toHaveBeenCalledWith(undefined, { x: 0 }, '0');
-      expect(mockTimeline.from).toHaveBeenCalledWith(undefined, { y: 0 }, '0');
-      expect(mockTimeline.from).toHaveBeenCalledWith(undefined, { opacity: 0 }, '<');
+      expect(mockTimeline.from).toHaveBeenCalledWith({ x: 0 }, '0');
+      expect(mockTimeline.from).toHaveBeenCalledWith({ y: 0 }, '0');
+      expect(mockTimeline.from).toHaveBeenCalledWith({ opacity: 0 }, '<');
     });
 
     it('should handle complex sequence with preset, timeline, and scroll', () => {
@@ -77,9 +77,9 @@ describe('AnimationApplicatorChain', () => {
       chain.apply();
 
       // fadeIn() expands to: x:0:0;y:0:0;opacity:0:<
-      expect(mockTimeline.from).toHaveBeenCalledWith(undefined, { x: 0 }, '0');
-      expect(mockTimeline.from).toHaveBeenCalledWith(undefined, { y: 0 }, '0');
-      expect(mockTimeline.from).toHaveBeenCalledWith(undefined, { opacity: 0 }, '<');
+      expect(mockTimeline.from).toHaveBeenCalledWith({ x: 0 }, '0');
+      expect(mockTimeline.from).toHaveBeenCalledWith({ y: 0 }, '0');
+      expect(mockTimeline.from).toHaveBeenCalledWith({ opacity: 0 }, '<');
       expect(mockTimeline.configure).toHaveBeenCalledWith({ repeat: 2 });
       expect(mockTimeline.scroll).toHaveBeenCalledWith({ trigger: '.container' });
     });
@@ -89,9 +89,9 @@ describe('AnimationApplicatorChain', () => {
 
       chain.apply();
 
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: 100 }, '>');
-      expect(mockTimeline.from).toHaveBeenCalledWith(undefined, { opacity: 0 }, '<');
-      expect(mockTimeline.set).toHaveBeenCalledWith(undefined, { y: 50 }, '>');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: 100 }, '>');
+      expect(mockTimeline.from).toHaveBeenCalledWith({ opacity: 0 }, '<');
+      expect(mockTimeline.set).toHaveBeenCalledWith({ y: 50 }, '>');
     });
 
     it('should apply animations with positions', () => {
@@ -99,8 +99,8 @@ describe('AnimationApplicatorChain', () => {
 
       chain.apply();
 
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: 100 }, '<');
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { y: 200 }, '>');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: 100 }, '<');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ y: 200 }, '>');
     });
 
     it('should apply animations with string values', () => {
@@ -108,7 +108,7 @@ describe('AnimationApplicatorChain', () => {
 
       chain.apply();
 
-      expect(mockTimeline.to).toHaveBeenCalledWith(undefined, { x: '100%' }, '>');
+      expect(mockTimeline.to).toHaveBeenCalledWith({ x: '100%' }, '>');
     });
 
     it('should apply set animations', () => {
@@ -116,7 +116,7 @@ describe('AnimationApplicatorChain', () => {
 
       chain.apply();
 
-      expect(mockTimeline.set).toHaveBeenCalledWith(undefined, { x: 100 }, '>');
+      expect(mockTimeline.set).toHaveBeenCalledWith({ x: 100 }, '>');
     });
   });
 });

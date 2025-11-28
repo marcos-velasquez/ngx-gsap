@@ -99,8 +99,7 @@ describe('TweenPropsExtractor', () => {
 
       expect(result).toEqual({
         method: 'from',
-        selector: '.card',
-        vars: { opacity: 0 },
+        vars: { opacity: 0, selector: '.card' },
         position: '>',
       });
     });
@@ -109,7 +108,7 @@ describe('TweenPropsExtractor', () => {
       const result = new TweenPropsExtractor('opacity:0@selector=.card,duration=2').parse();
 
       expect(result?.method).toBe('from');
-      expect(result?.selector).toBe('.card');
+      expect(result?.vars['selector']).toBe('.card');
       expect(result?.vars.opacity).toBe(0);
       expect(result?.vars.duration).toBe(2);
       expect(result?.position).toBe('>');
@@ -118,7 +117,7 @@ describe('TweenPropsExtractor', () => {
     it('should extract selector with child combinator', () => {
       const result = new TweenPropsExtractor('x:100@selector=> div').parse();
 
-      expect(result?.selector).toBe('> div');
+      expect(result?.vars['selector']).toBe('> div');
       expect(result?.vars.x).toBe(100);
     });
 
