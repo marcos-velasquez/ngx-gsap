@@ -345,17 +345,18 @@ export const animations: Animation[] = [
       '<div>"Words tumble down like autumn leaves, each one dancing to its own rhythm before settling into place."</div>',
   },
   {
-    name: 'Line Flip',
+    name: 'Text Flip',
     category: 'text',
-    value: 'lineFlip({ selector: ".animation-content" })',
-    description: 'Lines flip in with 3D perspective and rotation effect.',
+    value: 'textFlip({ selector: ".animation-content" })',
+    description: 'Text elements flip in with 3D perspective and rotation effect. Supports lines, words, or characters.',
     examples: [
-      'lineFlip',
-      'lineFlip({ rotationX: -120, stagger: 0.3 })',
-      'lineFlip({ transformOrigin: "50% 50% -200px", ease: "back" })',
+      'textFlip',
+      'textFlip({ rotationX: -120, stagger: 0.3 })',
+      'textFlip({ target: "chars", stagger: 0.05 })',
+      'textFlip({ target: "words", transformOrigin: "50% 50% -200px" })',
     ],
     gradient: 'from-pink-400 to-rose-600',
     content:
-      '<div>"Each line unfolds like a page turning in space, revealing its message with dramatic flair and depth."</div>',
+      '<div>"Each element unfolds like a page turning in space, revealing its message with dramatic flair and depth."</div>',
   },
 ];

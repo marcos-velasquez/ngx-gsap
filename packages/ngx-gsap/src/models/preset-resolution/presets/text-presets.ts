@@ -52,24 +52,27 @@ export class TextPresets {
   }
 
   /**
-   * Line flip animation - lines flip in 3D with perspective effect.
-   * Uses SplitText to animate lines individually with 3D rotation on X axis.
+   * Text flip animation - text elements flip in 3D with perspective effect.
+   * Uses SplitText to animate text individually with 3D rotation on X axis.
    * @param rotationX - Starting X rotation in degrees (default: -100)
    * @param transformOrigin - Transform origin for 3D effect (default: '50% 50% -160px')
    * @param duration - Animation duration (default: 0.8)
    * @param ease - Easing function (default: 'power3')
-   * @param stagger - Delay between each line (default: 0.25)
-   * @example lineFlip() // Default line flip effect
-   * @example lineFlip({ rotationX: -120, stagger: 0.3 }) // More rotation with slower stagger
-   * @example lineFlip({ transformOrigin: '50% 50% -200px', ease: 'back' }) // Deeper perspective
+   * @param stagger - Delay between each element (default: 0.25)
+   * @param target - Target type: 'lines', 'chars', or 'words' (default: 'lines')
+   * @example textFlip() // Default line flip effect
+   * @example textFlip({ rotationX: -120, stagger: 0.3 }) // More rotation with slower stagger
+   * @example textFlip({ target: 'chars' }) // Flip individual characters
+   * @example textFlip({ target: 'words', transformOrigin: '50% 50% -200px' }) // Flip words with deeper perspective
    */
-  public static lineFlip({
+  public static textFlip({
     rotationX = -100,
     transformOrigin = '50% 50% -160px',
     duration = 0.8,
     ease = 'power3',
     stagger = 0.25,
+    target = 'lines',
   } = {}): string {
-    return `element@perspective=500,transformOrigin="${transformOrigin}";set:rotationX:${rotationX};set:opacity:0;to:rotationX:0@duration=${duration},ease=${ease},stagger=${stagger},opacity=1;splitText@type="lines",target="lines"`;
+    return `element@perspective=500;set:rotationX:${rotationX};set:opacity:0;to:rotationX:0@duration=${duration},ease=${ease},stagger=${stagger},opacity=1,transformOrigin="${transformOrigin}";splitText@type="${target}",target="${target}"`;
   }
 }
