@@ -1,26 +1,18 @@
 import { gsap } from 'gsap';
 import { TypeSerializer } from '../../../utils';
-
-type MethodVars = { to?: gsap.TweenVars; from?: gsap.TweenVars; set?: gsap.TweenVars };
+import { type MethodVars } from './utils';
 
 export class TweenVarsAppender {
   constructor(private readonly sequence: string) {}
 
   public append(customVars: gsap.TweenVars | MethodVars): string {
     if (Object.keys(customVars).length === 0) return this.sequence;
+    if (this.isMethodSpecificVars(customVars)) return this.appendMethodSpecificVars(customVars as MethodVars);
 
-    // Check if using method-specific vars
-    if (this.isMethodSpecificVars(customVars)) {
-      return this.appendMethodSpecificVars(customVars as MethodVars);
-    }
-
-    // Otherwise, append to all sequences as before
     const customVarsString = this.serializeVars(customVars as gsap.TweenVars);
     return this.sequence
       .split(';')
-      .map((seq) => {
-        return seq.includes('@') ? `${seq},${customVarsString}` : `${seq}@${customVarsString}`;
-      })
+      .map((seq) => (seq.includes('@') ? `${seq},${customVarsString}` : `${seq}@${customVarsString}`))
       .join(';');
   }
 
@@ -32,13 +24,8 @@ export class TweenVarsAppender {
     return this.sequence
       .split(';')
       .map((seq) => {
-        const method = this.extractMethod(seq);
-        const varsForMethod = methodVars[method];
-
-        if (!varsForMethod || Object.keys(varsForMethod).length === 0) {
-          return seq;
-        }
-
+        const varsForMethod = methodVars[this.extractMethod(seq)];
+        if (!varsForMethod || Object.keys(varsForMethod).length === 0) return seq;
         const varsString = this.serializeVars(varsForMethod);
         return seq.includes('@') ? `${seq},${varsString}` : `${seq}@${varsString}`;
       })
@@ -48,7 +35,7 @@ export class TweenVarsAppender {
   private extractMethod(sequence: string): 'to' | 'from' | 'set' {
     if (sequence.startsWith('to:')) return 'to';
     if (sequence.startsWith('set:')) return 'set';
-    return 'from'; // Default method
+    return 'from';
   }
 
   private serializeVars(vars: gsap.TweenVars): string {
