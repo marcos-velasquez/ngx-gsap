@@ -89,7 +89,7 @@ Use with the `trigger` input for flexibility:
 
 ## Animation Presets
 
-**30+ preset animations** organized in 5 categories: Entrance, Exit, Attention, Special Effects, and Shadow Effects.
+**35+ preset animations** organized in 6 categories: Entrance, Exit, Attention, Special Effects, Shadow Effects, and Text Animations.
 
 ### Flexible & Parametrized
 
@@ -120,11 +120,11 @@ You can use **any valid GSAP property** to customize animations:
 
 ### Method-Specific Properties
 
-Apply properties only to specific animation methods (`to`, `from`, `set`) for fine-grained control:
+Apply properties only to specific animation methods (`to`, `from`, `set`) for fine-grained control. This is particularly useful when you want `stagger` to apply only to animated properties, not to instant `set` operations:
 
 ```html
 <!-- Stagger only on 'to' animations, not on 'set' -->
-<div animateLoad="zoomIn({ to: { stagger: 0.5 } })">
+<div animateLoad="zoomIn({ set: { opacity: 0 }, to: { stagger: 0.5, opacity: 1 } })">
   <button>Button 1</button>
   <button>Button 2</button>
   <button>Button 3</button>
@@ -133,6 +133,8 @@ Apply properties only to specific animation methods (`to`, `from`, `set`) for fi
 <!-- Different properties per method -->
 <div animateClick="fadeIn({ from: { ease: 'power2', duration: 1 }, to: { stagger: 0.2 } })">Multiple elements</div>
 ```
+
+**Common use case:** Prevent `stagger` from affecting `set` (instant) operations while keeping it on `to`/`from` (animated) operations.
 
 ## Advanced Features
 
@@ -165,14 +167,14 @@ For complete control, use raw GSAP syntax:
 
 ### Timeline Properties
 
-Apply properties to the entire timeline using `timeline@` or the `timeline` parameter in presets:
+Apply properties to the entire timeline:
 
 ```html
-<!-- Raw syntax -->
+<!-- Raw syntax with timeline@ -->
 <div animateClick="timeline@repeat=3,yoyo=true;to:x:10;to:x:-10;to:x:0">Shake 4 times</div>
 <div animateLoad="timeline@repeat=-1;pulse">Pulse forever</div>
 
-<!-- Preset syntax -->
+<!-- Preset syntax with timeline parameter -->
 <div animateClick="shake({ timeline: { repeat: 1 } })">Shake twice</div>
 <div animateClick="pulse({ opacity: 0, timeline: { repeat: 2, yoyo: true } })">Pulse 3 times</div>
 ```
@@ -181,34 +183,56 @@ Timeline properties apply to the **entire animation sequence** and can be placed
 
 ### Scroll Properties
 
-Configure scroll-triggered animations using `scroll@` or the `scroll` parameter in presets:
+Configure scroll-triggered animations:
 
 ```html
-<!-- Raw syntax -->
+<!-- Raw syntax with scroll@ -->
 <div animateScroll="x:100%:>;scroll@start='top center',scrub=true">Smooth scroll fade</div>
 <div animateScroll="slideIn({ x: '-100%' });scroll@start='top bottom',end='bottom top'">Slide on scroll</div>
 
-<!-- Preset syntax -->
+<!-- Preset syntax with scroll parameter -->
 <div animateScroll="fadeIn({ scroll: { start: 'top center', scrub: true } })">Smooth fade</div>
 <div animateScroll="zoomIn({ scroll: { start: 'top bottom', pin: true, markers: true } })">Pinned zoom</div>
 ```
 
 Scroll properties apply to the **entire timeline** and work with `animateScroll` directive.
 
-### SplitText Properties
+### SplitText Plugin
 
-Configure text splitting animations using `splitText@` syntax with the GSAP SplitText plugin:
+Animate text by splitting it into characters, words, or lines using the GSAP SplitText plugin:
 
 ```html
-<!-- Raw syntax -->
+<!-- Raw syntax with splitText@ -->
 <div animateLoad="from:opacity:0:>;from:y:-20:0.1;splitText@type='chars'">Fade and slide chars</div>
 <div animateClick="to:scale:1.2:>;to:rotate:360:>;splitText@type='words'">Scale and rotate words</div>
 
-<!-- Preset syntax -->
+<!-- Preset syntax with splitText@ in sequence -->
 <div animateLoad="fadeIn;splitText@type='chars'">Animate each character</div>
 <div animateLoad="slideIn;splitText@type='words,lines',wordsClass='word'">Split text</div>
-<div animateClick="rotateIn;splitText@type='chars',charsClass='char',position='relative'">Custom split</div>
+
+<!-- Preset syntax with splitText parameter -->
+<div animateLoad="fadeIn({ splitText: { type: 'chars', target: 'chars' } })">Animate each character</div>
+<div animateClick="rotateIn({ splitText: { type: 'chars', charsClass: 'char', position: 'relative' } })">
+  Custom split
+</div>
 ```
+
+### Element Properties
+
+Apply CSS properties to the container element **before** animations run using `element@`. This is essential for properties that affect child rendering like `perspective`, `transformOrigin`, or `overflow`:
+
+```html
+<!-- Apply perspective for 3D transforms -->
+<div animateLoad="rotateIn;element@perspective=1000,transformOrigin='center'">3D rotation</div>
+
+<!-- Combine with SplitText for 3D text effects -->
+<div animateLoad="fadeIn;element@perspective=800;splitText@type='chars'">3D text animation</div>
+
+<!-- Set overflow before animation -->
+<div animateClick="slideIn;element@overflow='hidden'">Contained slide</div>
+```
+
+**When to use:** Use `element@` when you need to apply styles to the parent container before child animations, especially for 3D transforms (`perspective`), positioning (`transformOrigin`), or layout (`overflow`).
 
 ### Combining Animations
 
@@ -243,7 +267,7 @@ export class MyComponent {
 
 ### Animating Child Elements
 
-Use `selector` to animate children instead of the parent:
+Use `selector` to animate children instead of the parent. The `selector` property works with **all animation methods** (`to`, `from`, `set`, `fromTo`):
 
 ```html
 <!-- Basic -->
@@ -260,33 +284,19 @@ Use `selector` to animate children instead of the parent:
   }
 </div>
 
-<!-- Raw syntax -->
+<!-- Raw syntax - works with all methods -->
 <div animate="opacity:0@selector=.card,stagger={amount:1,from:center}">
   @for (item of items; track item.id) {
   <div class="card">{{ item }}</div>
   }
 </div>
+
+<!-- Selector with specific methods -->
+<div animate="to:x:100@selector=.child">Slide children</div>
+<div animate="from:opacity:0@selector=.item">Fade in items</div>
 ```
 
 ## Animation Events
-
-Listen to animation lifecycle events:
-
-```typescript
-export class MyComponent {
-  onStart() {
-    console.log('Animation started');
-  }
-
-  onComplete() {
-    console.log('Animation completed');
-  }
-
-  onUpdate() {
-    console.log('Animation updating');
-  }
-}
-```
 
 ```html
 <div
@@ -321,6 +331,7 @@ Control animations programmatically using template references:
 <button (click)="animation.reverse()">Reverse</button>
 <button (click)="animation.resume()">Resume</button>
 <button (click)="animation.restart()">Restart</button>
+<button (click)="animation.invalidate()">Invalidate</button>
 ```
 
 **Available methods:**
@@ -330,6 +341,7 @@ Control animations programmatically using template references:
 - `reverse()` - Reverse the animation direction
 - `resume()` - Resume a paused animation
 - `restart()` - Restart the animation from the beginning
+- `invalidate()` - Invalidate and reset the animation
 
 ## Important Notes
 
