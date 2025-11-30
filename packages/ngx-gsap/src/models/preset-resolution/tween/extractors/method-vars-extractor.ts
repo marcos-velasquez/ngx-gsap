@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { TypeChecker } from '../../../../utils';
-import { TweenMethod } from '../tween-method';
+import { TweenMethod } from '../__utils__/tween-method';
 
 export type MethodVars = { to?: gsap.TweenVars; from?: gsap.TweenVars; set?: gsap.TweenVars };
 

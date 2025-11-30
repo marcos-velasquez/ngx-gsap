@@ -20,8 +20,4 @@ export class TweenMethod {
   public static existsIn(obj: Record<string, unknown>): boolean {
     return TweenMethod.METHODS.some((method) => method in obj);
   }
-
-  public static filter<T>(entries: [string, T][]): [string, T][] {
-    return entries.filter(([key]) => !TweenMethod.isMethod(key));
-  }
 }

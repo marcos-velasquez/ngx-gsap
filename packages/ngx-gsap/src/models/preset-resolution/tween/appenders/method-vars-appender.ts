@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { TypeSerializer } from '../../../../utils';
 import { type MethodVars } from '../extractors';
-import { TweenMethod } from '../tween-method';
+import { TweenMethod } from '../__utils__/tween-method';
 
 export class MethodVarsAppender {
   constructor(private readonly sequence: string) {}
