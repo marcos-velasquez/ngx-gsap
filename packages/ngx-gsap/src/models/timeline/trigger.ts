@@ -4,9 +4,7 @@ export type TriggerType = 'enter' | 'leave' | 'click' | 'load' | 'scroll' | 'non
 export type TriggerRef = { trigger: Trigger; connect: () => void; disconnect: () => void };
 
 export class Trigger {
-  public static readonly default = 'none';
-
-  private triggerType: TriggerType = Trigger.default;
+  private triggerType: TriggerType = 'none';
 
   constructor(private readonly el: HTMLElement) {}
 

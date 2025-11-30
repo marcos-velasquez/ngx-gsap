@@ -1,6 +1,6 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { RegexPatterns } from '../../@constants';
-import { PresetVarsAppender } from '../__shared__';
+import { PresetVarsAppender } from '../__utils__';
 
 export class ScrollVarsAppender extends PresetVarsAppender<ScrollTrigger.StaticVars> {
   constructor(sequence: string) {

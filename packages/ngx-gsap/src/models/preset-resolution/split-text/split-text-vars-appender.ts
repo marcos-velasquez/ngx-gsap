@@ -1,5 +1,5 @@
 import { RegexPatterns } from '../../@constants';
-import { PresetVarsAppender } from '../__shared__';
+import { PresetVarsAppender } from '../__utils__';
 import { SplitTextVars } from '../../timeline/split-text';
 
 export class SplitTextVarsAppender extends PresetVarsAppender<SplitTextVars> {

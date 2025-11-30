@@ -1,4 +1,4 @@
-import { PresetVarsResolver } from '../__shared__';
+import { PresetVarsResolver } from '../__utils__';
 import { ScrollVarsExtractor } from './scroll-vars-extractor';
 import { ScrollVarsAppender } from './scroll-vars-appender';
 

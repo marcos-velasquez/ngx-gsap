@@ -1,4 +1,4 @@
-import { PresetVarsResolver } from '../__shared__';
+import { PresetVarsResolver } from '../__utils__';
 import { ElementVarsExtractor } from './element-vars-extractor';
 import { ElementVarsAppender } from './element-vars-appender';
 

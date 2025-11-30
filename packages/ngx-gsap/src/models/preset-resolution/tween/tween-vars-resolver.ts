@@ -1,4 +1,4 @@
-import { PresetVarsResolver } from '../__shared__';
+import { PresetVarsResolver } from '../__utils__';
 import { TweenVarsExtractor } from './tween-vars-extractor';
 import { TweenVarsAppender } from './tween-vars-appender';
 
