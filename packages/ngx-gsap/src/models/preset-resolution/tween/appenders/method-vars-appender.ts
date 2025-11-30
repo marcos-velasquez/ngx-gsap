@@ -1,6 +1,7 @@
 import { gsap } from 'gsap';
 import { TypeSerializer } from '../../../../utils';
 import { type MethodVars } from '../extractors';
+import { TweenMethod } from '../tween-method';
 
 export class MethodVarsAppender {
   constructor(private readonly sequence: string) {}
@@ -9,8 +10,7 @@ export class MethodVarsAppender {
     return this.sequence
       .split(';')
       .map((seq) => {
-        const method = seq.startsWith('to:') ? 'to' : seq.startsWith('set:') ? 'set' : 'from';
-        const methodVars = vars[method] as gsap.TweenVars | undefined;
+        const methodVars = vars[TweenMethod.parse(seq)] as gsap.TweenVars | undefined;
         if (!methodVars) return seq;
 
         const varsString = Object.entries(methodVars)

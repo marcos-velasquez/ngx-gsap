@@ -1,7 +1,8 @@
 import { gsap } from 'gsap';
+import { TweenMethod } from '../tween-method';
 
 export class GlobalVarsExtractor {
-  private static readonly EXCLUDED_KEYS = ['timeline', 'scroll', 'splitText', 'element', 'to', 'from', 'set'];
+  private static readonly EXCLUDED_KEYS = ['timeline', 'scroll', 'splitText', 'element'];
 
   constructor(private readonly params: Record<string, unknown>, private readonly presetParamNames: string[]) {}
 
@@ -12,6 +13,10 @@ export class GlobalVarsExtractor {
   }
 
   private isCustomVar(key: string): boolean {
-    return !GlobalVarsExtractor.EXCLUDED_KEYS.includes(key) && !this.presetParamNames.includes(key);
+    return (
+      !GlobalVarsExtractor.EXCLUDED_KEYS.includes(key) &&
+      !TweenMethod.isMethod(key) &&
+      !this.presetParamNames.includes(key)
+    );
   }
 }

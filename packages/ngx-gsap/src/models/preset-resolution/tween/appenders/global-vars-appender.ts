@@ -1,13 +1,13 @@
 import { gsap } from 'gsap';
 import { TypeSerializer } from '../../../../utils';
 import { type MethodVars } from '../extractors';
+import { TweenMethod } from '../tween-method';
 
 export class GlobalVarsAppender {
   constructor(private readonly sequence: string) {}
 
   public append(vars: gsap.TweenVars | MethodVars): string {
-    const varsString = Object.entries(vars)
-      .filter(([k]) => k !== 'to' && k !== 'from' && k !== 'set')
+    const varsString = TweenMethod.filter(Object.entries(vars))
       .map(([k, v]) => `${k}=${new TypeSerializer(v, { quoteStrings: false }).serialize()}`)
       .join(',');
 
