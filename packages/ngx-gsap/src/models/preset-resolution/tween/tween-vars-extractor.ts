@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ObjectParser } from '../../../utils';
 import { PresetMatcher } from '../preset-matcher';
-import { MethodVarsExtractor, GlobalVarsExtractor, type MethodVars } from './utils';
+import { MethodVarsExtractor, GlobalVarsExtractor, type MethodVars } from './extractors';
 
 export type { MethodVars };
 
