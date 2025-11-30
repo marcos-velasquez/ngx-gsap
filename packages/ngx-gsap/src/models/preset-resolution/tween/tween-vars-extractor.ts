@@ -15,11 +15,9 @@ export class TweenVarsExtractor {
     if (!hasArgs) return {};
 
     const params = new ObjectParser(argsString).parse();
+    const globalVars = new GlobalVarsExtractor(params, this.presetMatcher.paramNames()).extract();
+    const methodVars = new MethodVarsExtractor(params).extract();
 
-    if (new MethodVarsExtractor(params).isPresent()) {
-      return new MethodVarsExtractor(params).extract();
-    } else {
-      return new GlobalVarsExtractor(params, this.presetMatcher.paramNames()).extract();
-    }
+    return { ...globalVars, ...methodVars };
   }
 }

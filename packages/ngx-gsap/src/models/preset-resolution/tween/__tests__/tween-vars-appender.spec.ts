@@ -101,5 +101,17 @@ describe('TweenVarsAppender', () => {
 
       expect(result).toBe('x:100:0@ease=power2;y:50:0@ease=power2;to:opacity:1@stagger=0.2');
     });
+
+    it('should combined method-specific vars with global vars', () => {
+      const result = new TweenVarsAppender('x:100:0;y:50:0;to:opacity:1').append({
+        from: { ease: 'power2' },
+        to: { stagger: 0.2 },
+        duration: 2,
+      });
+
+      expect(result).toBe(
+        'x:100:0@ease=power2,duration=2;y:50:0@ease=power2,duration=2;to:opacity:1@stagger=0.2,duration=2'
+      );
+    });
   });
 });

@@ -100,5 +100,14 @@ describe('TweenVarsExtractor', () => {
 
       expect(result).toEqual({ to: { stagger: 0.5 }, set: {} });
     });
+
+    it('should extract specific vars when to/from/set are present and global vars are present', () => {
+      const matcher = new PresetMatcher('fadeIn({ to: { stagger: 0.5 }, from: { ease: "power2" }, duration: 2 })');
+      const extractor = new TweenVarsExtractor(matcher);
+
+      const result = extractor.extract();
+
+      expect(result).toEqual({ to: { stagger: 0.5 }, from: { ease: 'power2' }, duration: 2 });
+    });
   });
 });

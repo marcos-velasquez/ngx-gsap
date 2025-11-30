@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 
 export class GlobalVarsExtractor {
-  private readonly excludedKeys = ['timeline', 'scroll', 'splitText', 'element'];
+  private static readonly EXCLUDED_KEYS = ['timeline', 'scroll', 'splitText', 'element', 'to', 'from', 'set'];
 
   constructor(private readonly params: Record<string, unknown>, private readonly presetParamNames: string[]) {}
 
@@ -12,6 +12,6 @@ export class GlobalVarsExtractor {
   }
 
   private isCustomVar(key: string): boolean {
-    return !this.excludedKeys.includes(key) && !this.presetParamNames.includes(key);
+    return !GlobalVarsExtractor.EXCLUDED_KEYS.includes(key) && !this.presetParamNames.includes(key);
   }
 }
