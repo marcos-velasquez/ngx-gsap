@@ -79,6 +79,14 @@
     >
       Text <span class="text-purple-300">({{ categoryCounts().text }})</span>
     </button>
+    <button
+      (click)="setCategory('morph')"
+      [class.bg-purple-600]="selectedCategory() === 'morph'"
+      [class.bg-slate-800]="selectedCategory() !== 'morph'"
+      class="px-6 py-2 rounded-full font-medium text-white transition-all hover:scale-105"
+    >
+      SVG Morph <span class="text-purple-300">({{ categoryCounts().morph }})</span>
+    </button>
   </div>
 
   <!-- Animations Grid -->
@@ -86,18 +94,11 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
     @for (animation of animations(); track animation.name) {
     <div class="group">
-      <div
-        #animateRef="animate"
-        (animateComplete)="delayedRevert(animateRef)"
-        [animateClick]="animation.value"
-        [class]="
-                  'bg-gradient-to-br ' +
-                  animation.gradient +
-                  ' aspect-square rounded-2xl cursor-pointer shadow-xl flex items-center justify-center px-4'
-                "
-      >
-        <div class="animation-content" [innerHTML]="animation.content || ''"></div>
-      </div>
+      @if(animation.category === 'morph') {
+      <app-morph [animation]="animation" />
+      }@else {
+      <app-default [animation]="animation" />
+      }
       <h3 class="text-white font-semibold mt-4 text-lg">{{ animation.name }}</h3>
       <p class="text-slate-400 text-sm">{{ animation.description }}</p>
       @for (example of animation.examples; track example) {

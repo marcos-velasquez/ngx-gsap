@@ -18,6 +18,7 @@ export class AnimationList {
       special: this.animations.filter((animation) => animation.category === 'special').length,
       shadow: this.animations.filter((animation) => animation.category === 'shadow').length,
       text: this.animations.filter((animation) => animation.category === 'text').length,
+      morph: this.animations.filter((animation) => animation.category === 'morph').length,
     };
   }
 

@@ -1,0 +1,12 @@
+<div
+  #animateRef="animate"
+  (animateComplete)="delayedRevert(animateRef)"
+  [animateClick]="animation().value"
+  [class]="
+            'bg-gradient-to-br ' +
+            animation().gradient +
+            ' aspect-square rounded-2xl cursor-pointer shadow-xl flex items-center justify-center px-4'
+        "
+>
+  <div class="animation-content" [innerHTML]="animation().content || ''"></div>
+</div>
