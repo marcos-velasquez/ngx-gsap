@@ -89,7 +89,7 @@ Use with the `trigger` input for flexibility:
 
 ## Animation Presets
 
-**35+ preset animations** organized in 6 categories: Entrance, Exit, Attention, Special Effects, Shadow Effects, and Text Animations.
+**37+ preset animations** organized in 7 categories: Entrance, Exit, Attention, Special Effects, Shadow Effects, Text Animations, and SVG Morphing.
 
 ### Flexible & Parametrized
 
@@ -215,6 +215,31 @@ Animate text by splitting it into characters, words, or lines using the GSAP Spl
 <div animateClick="rotateIn({ splitText: { type: 'chars', charsClass: 'char', position: 'relative' } })">
   Custom split
 </div>
+```
+
+### MorphSVG Plugin
+
+Morph SVG shapes smoothly using the GSAP MorphSVGPlugin:
+
+```html
+<!-- Raw syntax with morphSVG@ -->
+<svg animateClick="to:fill:blue:>;morphSVG@shape='#star',type='linear'">
+  <path id="circle" d="..." />
+</svg>
+
+<!-- Preset syntax with morphSVG parameter -->
+<svg animateClick="fadeIn({ morphSVG: { shape: '#star', type: 'linear' } })">
+  <path d="..." />
+</svg>
+
+<!-- Dedicated presets -->
+<svg animateClick="morphLinear({ shape: '#star', duration: 1 })">
+  <path d="..." />
+</svg>
+
+<svg animateHover="morphRotational({ shape: '#lightning', duration: 1.5 })">
+  <path d="..." />
+</svg>
 ```
 
 ### Element Properties
