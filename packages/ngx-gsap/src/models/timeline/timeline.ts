@@ -61,7 +61,7 @@ export class Timeline {
   }
 
   public morphSVG(vars: MorphSVGVars): void {
-    new MorphSVGTimeline(this.element, this.timeline).morph(vars);
+    new MorphSVGTimeline(this.element, this.timeline).create(vars);
   }
 
   public target(vars: gsap.TweenVars): Timeline {
@@ -74,7 +74,6 @@ export class Timeline {
   }
 
   public play(): Timeline {
-    console.log('play', this.timeline.getTweensOf(this.element));
     this.gsapTimeline.play(0);
     return this;
   }
