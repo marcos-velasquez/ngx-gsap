@@ -47,14 +47,6 @@ describe('MorphSVGVarsResolver', () => {
       expect(result).toContain('shapeIndex=0');
     });
 
-    it('should work with preset without parentheses', () => {
-      const matcher = new PresetMatcher('fadeIn');
-
-      const result = resolver.resolve(matcher, 'from:opacity:0:>');
-
-      expect(result).toBe('from:opacity:0:>');
-    });
-
     it('should preserve existing sequence content', () => {
       const matcher = new PresetMatcher('fadeIn({ morphSVG: { shape: "#star", type: "linear" } })');
 

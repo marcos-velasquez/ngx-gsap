@@ -6,16 +6,8 @@ export class MorphPresets {
    * @param origin - Transform origin point
    * @example morphLinear({ shape: '#star', duration: 1 })
    */
-  public static morphLinear({
-    shape,
-    duration = 1,
-    origin = '50% 50%',
-  }: {
-    shape: string;
-    duration?: number;
-    origin?: string;
-  }): string {
-    return `timeline@duration=${duration};morphSVG@shape=${shape},type=linear,origin=${origin};`;
+  public static morphLinear({ shape = '', origin = '50% 50%' } = {}): string {
+    return `morphSVG@shape=${shape},type=linear,origin=${origin};`;
   }
 
   /**
@@ -25,15 +17,7 @@ export class MorphPresets {
    * @param origin - Transform origin point
    * @example morphRotational({ shape: '#star', duration: 1 })
    */
-  public static morphRotational({
-    shape,
-    duration = 1,
-    origin = '50% 50%',
-  }: {
-    shape: string;
-    duration?: number;
-    origin?: string;
-  }): string {
-    return `timeline@duration=${duration};morphSVG@shape=${shape},type=rotational,origin=${origin};`;
+  public static morphRotational({ shape = '', origin = '50% 50%' } = {}): string {
+    return `morphSVG@shape=${shape},type=rotational,origin=${origin};`;
   }
 }

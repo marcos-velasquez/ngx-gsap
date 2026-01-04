@@ -67,7 +67,6 @@ describe('MorphSVGVarsAppender', () => {
 
   it('should handle map property', () => {
     const appender = new MorphSVGVarsAppender('fadeIn');
-    // `map` expects one of 'size' | 'position' | 'complexity' according to types
     const result = appender.append({ shape: '#target', map: 'complexity' as const });
 
     expect(result).toContain('shape="#target"');
