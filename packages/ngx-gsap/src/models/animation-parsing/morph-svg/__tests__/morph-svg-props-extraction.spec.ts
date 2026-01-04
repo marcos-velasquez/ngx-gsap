@@ -22,7 +22,7 @@ describe('MorphSVG Properties Extraction', () => {
 
   it('should handle all MorphSVG properties', () => {
     const result = new AnimationParser(
-      'fadeIn();morphSVG@shape="#circle",type="linear",origin="50% 50%",shapeIndex=0,map="complexity:0.5"'
+      'fadeIn();morphSVG@shape="#circle",type="linear",origin="50% 50%",shapeIndex=0,map="complexity"'
     ).parse();
     const morphSVGVars = new MorphSVGPropsExtractor(result.sequence).extract();
     expect(morphSVGVars).toEqual({
@@ -30,7 +30,7 @@ describe('MorphSVG Properties Extraction', () => {
       type: 'linear',
       origin: '50% 50%',
       shapeIndex: 0,
-      map: 'complexity:0.5',
+      map: 'complexity',
     });
   });
 });

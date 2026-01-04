@@ -79,7 +79,7 @@ describe('MorphSVGVarsResolver', () => {
 
     it('should handle complex morphSVG configuration', () => {
       const matcher = new PresetMatcher(
-        'fadeIn({ morphSVG: { shape: "#target", type: "linear", origin: "center", shapeIndex: 1, map: "complexity:0.5" } })'
+        'fadeIn({ morphSVG: { shape: "#target", type: "linear", origin: "center", shapeIndex: 1, map: "complexity" } })'
       );
 
       const result = resolver.resolve(matcher, 'from:opacity:0:>');
@@ -88,7 +88,7 @@ describe('MorphSVGVarsResolver', () => {
       expect(result).toContain('type=linear');
       expect(result).toContain('origin=center');
       expect(result).toContain('shapeIndex=1');
-      expect(result).toContain('map="complexity:0.5"');
+      expect(result).toContain('map=complexity');
     });
   });
 });

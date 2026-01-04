@@ -61,9 +61,9 @@ describe('MorphSVGVarsExtractor', () => {
   });
 
   it('should handle map property', () => {
-    const matcher = new PresetMatcher('fadeIn({ morphSVG: { shape: "#target", map: "complexity:0.5" } })');
+    const matcher = new PresetMatcher('fadeIn({ morphSVG: { shape: "#target", map: "complexity" } })');
     const extractor = new MorphSVGVarsExtractor(matcher);
 
-    expect(extractor.extract()).toEqual({ shape: '#target', map: 'complexity:0.5' });
+    expect(extractor.extract()).toEqual({ shape: '#target', map: 'complexity' });
   });
 });

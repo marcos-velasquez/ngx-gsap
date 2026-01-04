@@ -49,7 +49,7 @@ describe('MorphSVGPropsExtractor', () => {
   });
 
   it('should handle map property', () => {
-    const morphSVGVars = new MorphSVGPropsExtractor('morphSVG@shape="#target",map="complexity:0.5"').extract();
-    expect(morphSVGVars).toEqual({ shape: '#target', map: 'complexity:0.5' });
+    const morphSVGVars = new MorphSVGPropsExtractor('morphSVG@shape="#target",map="complexity"').extract();
+    expect(morphSVGVars).toEqual({ shape: '#target', map: 'complexity' });
   });
 });
