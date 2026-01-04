@@ -223,22 +223,22 @@ Morph SVG shapes smoothly using the GSAP MorphSVGPlugin:
 
 ```html
 <!-- Raw syntax with morphSVG@ -->
-<svg animateClick="to:fill:blue:>;morphSVG@shape='#star',type='linear'">
-  <path id="circle" d="..." />
+<svg>
+  <path animateClick="to:fill:blue:>;morphSVG@shape='#star',type='linear'" id="circle" d="..." />
 </svg>
 
 <!-- Preset syntax with morphSVG parameter -->
-<svg animateClick="fadeIn({ morphSVG: { shape: '#star', type: 'linear' } })">
-  <path d="..." />
+<svg>
+  <path animateClick="fadeIn({ morphSVG: { shape: '#star', type: 'linear' } })" d="..." />
 </svg>
 
 <!-- Dedicated presets -->
-<svg animateClick="morphLinear({ shape: '#star', duration: 1 })">
-  <path d="..." />
+<svg>
+  <path animateClick="morphLinear({ shape: '#star', timeline: { duration: 2, yoyo: true, repeat: -1 } })" d="..." />
 </svg>
 
-<svg animateHover="morphRotational({ shape: '#lightning', duration: 1.5 })">
-  <path d="..." />
+<svg>
+  <path animateHover="morphRotational({ shape: '#lightning',  timeline: { duration: 2 } })" d="..." />
 </svg>
 ```
 
