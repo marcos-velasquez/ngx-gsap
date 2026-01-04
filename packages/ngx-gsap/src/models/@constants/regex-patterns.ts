@@ -50,4 +50,11 @@ export class RegexPatterns {
    * Groups: [1] = props string
    */
   public static readonly ELEMENT_PROPS = /element@([^;]+)/;
+
+  /**
+   * Matches morph SVG properties syntax: morphSVG@props
+   * Example: "morphSVG@shape='#star',type='rotational'"
+   * Groups: [1] = props string
+   */
+  public static readonly MORPH_SVG_PROPS = /morphSVG@([^;]+)/;
 }

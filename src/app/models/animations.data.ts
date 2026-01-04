@@ -363,7 +363,7 @@ export const animations: Animation[] = [
   {
     name: 'Morph Linear',
     category: 'morph',
-    value: 'morphLinear({ shape: "#star", duration: 1 })',
+    value: 'morphLinear({ shape: "#lightning", duration: 1 })',
     description: 'Morph SVG shape with linear interpolation.',
     examples: [
       'morphLinear({ shape: "#star", duration: 1 })',
@@ -371,13 +371,11 @@ export const animations: Animation[] = [
       'morphLinear({ shape: "#circle", duration: 2, origin: "center" })',
     ],
     gradient: 'from-emerald-400 to-teal-600',
-    content:
-      '<svg width="120" height="120" viewBox="0 0 100 100"><defs><path id="circle" d="M50,10 A40,40 0 1,1 50,90 A40,40 0 1,1 50,10 Z"/><path id="star" d="M50,5 L61,38 L95,38 L68,58 L79,91 L50,71 L21,91 L32,58 L5,38 L39,38 Z"/></defs><path d="M50,10 A40,40 0 1,1 50,90 A40,40 0 1,1 50,10 Z" fill="white" stroke="white" stroke-width="2"/></svg>',
   },
   {
     name: 'Morph Rotational',
     category: 'morph',
-    value: 'morphRotational({ shape: "#lightning", duration: 1.5 })',
+    value: 'morphRotational({ shape: "#morph", duration: 1.5 })',
     description: 'Morph SVG shape with rotational interpolation.',
     examples: [
       'morphRotational({ shape: "#star", duration: 1 })',
@@ -385,7 +383,5 @@ export const animations: Animation[] = [
       'morphRotational({ shape: "#hexagon", duration: 2, origin: "50% 50%" })',
     ],
     gradient: 'from-blue-400 to-indigo-600',
-    content:
-      '<svg width="120" height="120" viewBox="0 0 100 100"><defs><path id="lightning" d="M50,5 L35,40 L50,40 L30,95 L60,50 L45,50 L65,5 Z"/><path id="hexagon" d="M50,5 L85,27.5 L85,72.5 L50,95 L15,72.5 L15,27.5 Z"/></defs><path d="M50,10 A40,40 0 1,1 50,90 A40,40 0 1,1 50,10 Z" fill="white" stroke="white" stroke-width="2"/></svg>',
   },
 ];

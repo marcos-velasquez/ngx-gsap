@@ -14,6 +14,7 @@ export class TimelineMockBuilder {
       }),
       scroll: jest.fn(),
       splitText: jest.fn(),
+      morphSVG: jest.fn(),
     } as unknown as jest.Mocked<Timeline>;
   }
 }

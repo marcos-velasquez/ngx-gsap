@@ -1,1 +1,31 @@
-<p>morph works!</p>
+<div
+  [class]="
+            'bg-gradient-to-br ' +
+            animation().gradient +
+            ' aspect-square rounded-2xl cursor-pointer shadow-xl flex items-center justify-center px-4'
+        "
+>
+  <svg id="svg-stage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+    <path
+      #animateRef="animate"
+      (animateComplete)="delayedRevert(animateRef)"
+      [animateClick]="animation().value"
+      id="diamond"
+      fill="white"
+      d="M50,1l49,49L50,99L1,50L50,1z"
+    />
+    <path
+      id="lightning"
+      fill="transparent"
+      d="M47.1,0.8 73.3,0.8 61.9,37.2 77.1,37.2 30.7,99.4 45.8,51.9 29,51.9z"
+      class="hidden"
+    />
+
+    <path
+      id="morph"
+      fill="white"
+      d="M74.6 50.2h-.2v-.4h.2a24.4 24.4 0 1 0-24.4-24.4v.2h-.4v-.2a24.4 24.4 0 1 0-24.4 24.4h.2v.4h-.2a24.4 24.4 0 1 0 24.4 24.4v-.2h.4v.2a24.4 24.4 0 1 0 24.4-24.4z"
+      class="hidden"
+    />
+  </svg>
+</div>

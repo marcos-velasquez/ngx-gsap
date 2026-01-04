@@ -3,6 +3,7 @@ import { ExitPresets } from './presets/exit-presets';
 import { AttentionPresets } from './presets/attention-presets';
 import { EffectPresets } from './presets/effect-presets';
 import { TextPresets } from './presets/text-presets';
+import { MorphPresets } from './presets/morph-presets';
 
 export type Preset = (params?: Record<string, unknown>) => string;
 
@@ -60,4 +61,8 @@ export class Presets {
   public static slideReveal = TextPresets.slideReveal;
   public static wordDrop = TextPresets.wordDrop;
   public static textFlip = TextPresets.textFlip;
+
+  // Morph animations - delegated to MorphPresets
+  public static morphLinear = MorphPresets.morphLinear;
+  public static morphRotational = MorphPresets.morphRotational;
 }
