@@ -1,4 +1,4 @@
-import { PresetVarsResolver } from '../__utils__';
+import { PresetVarsResolver } from '../__shared__';
 import { MorphSVGVarsExtractor } from './morph-svg-vars-extractor';
 import { MorphSVGVarsAppender } from './morph-svg-vars-appender';
 

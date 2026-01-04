@@ -27,7 +27,8 @@ describe('MorphSVGVarsAppender', () => {
   it('should return sequence unchanged when morphSVGVars is empty', () => {
     const sequence = 'to:x:100:>;to:y:50:0';
     const appender = new MorphSVGVarsAppender(sequence);
-    const result = appender.append({});
+    // MorphSVGVars requires a `shape` property in the type definitions; cast to any for empty case
+    const result = appender.append({} as any);
 
     expect(result).toBe(sequence);
   });
@@ -66,9 +67,10 @@ describe('MorphSVGVarsAppender', () => {
 
   it('should handle map property', () => {
     const appender = new MorphSVGVarsAppender('fadeIn');
-    const result = appender.append({ shape: '#target', map: 'complexity:0.5' });
+    // `map` expects one of 'size' | 'position' | 'complexity' according to types
+    const result = appender.append({ shape: '#target', map: 'complexity' as const });
 
     expect(result).toContain('shape="#target"');
-    expect(result).toContain('map="complexity:0.5"');
+    expect(result).toContain('map=complexity');
   });
 });

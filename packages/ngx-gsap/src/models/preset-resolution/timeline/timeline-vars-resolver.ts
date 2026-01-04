@@ -1,4 +1,4 @@
-import { PresetVarsResolver } from '../__utils__';
+import { PresetVarsResolver } from '../__shared__';
 import { TimelineVarsExtractor } from './timeline-vars-extractor';
 import { TimelineVarsAppender } from './timeline-vars-appender';
 

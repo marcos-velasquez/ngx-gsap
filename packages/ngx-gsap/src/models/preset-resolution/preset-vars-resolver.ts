@@ -1,4 +1,4 @@
-import { PresetVarsResolver } from './__utils__';
+import { PresetVarsResolver } from './__shared__';
 import { PresetMatcher } from './preset-matcher';
 import { TweenVarsResolver } from './tween';
 import { ElementVarsResolver } from './element';

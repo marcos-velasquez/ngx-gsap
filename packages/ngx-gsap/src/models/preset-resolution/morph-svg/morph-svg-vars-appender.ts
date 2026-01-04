@@ -1,5 +1,5 @@
 import { RegexPatterns } from '../../@constants';
-import { PresetVarsAppender } from '../__utils__';
+import { PresetVarsAppender } from '../__shared__';
 import { MorphSVGVars } from '../../timeline/morph-svg';
 
 export class MorphSVGVarsAppender extends PresetVarsAppender<MorphSVGVars> {
