@@ -15,11 +15,15 @@ export class Animations {
   public readonly animationList = new AnimationList();
   public readonly searchQuery = signal('');
   public readonly selectedCategory = signal<'all' | Animation['category']>('all');
+  public readonly categoryCounts = signal(this.animationList.categoryCounts);
 
   public readonly animations = computed(() => this.animationList.filter(this.selectedCategory(), this.searchQuery()));
-  public readonly categoryCounts = computed(() => this.animationList.categoryCounts);
 
-  public setCategory(category: 'all' | Animation['category']) {
-    this.selectedCategory.set(category);
+  public setCategory(category: 'all' | Animation['category'] | string) {
+    this.selectedCategory.set(category as 'all' | Animation['category']);
+  }
+
+  public setQuery(query: string) {
+    this.searchQuery.set(query);
   }
 }

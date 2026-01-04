@@ -30,11 +30,6 @@ export class Roadmap {
           icon: '🛤️',
         },
         {
-          name: 'MorphSVG',
-          description: 'Smooth transformation between SVG shapes',
-          icon: '🔄',
-        },
-        {
           name: 'ScrollSmoother',
           description: 'Smooth and fluid scroll with parallax effects',
           icon: '✨',

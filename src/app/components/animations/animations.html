@@ -4,7 +4,7 @@
     <div class="relative">
       <input
         [ngModel]="searchQuery()"
-        (ngModelChange)="searchQuery.set($event)"
+        (ngModelChange)="setQuery($event)"
         placeholder="Search animations... (e.g., fade, bounce, rotate)"
         class="w-full px-6 py-4 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
       />
@@ -23,70 +23,17 @@
 
   <!-- Category Filters -->
   <div animateLoad="swingIn({ selector: 'button'})" class="flex flex-wrap justify-center gap-3 mb-12">
+    @for(category of ['all', 'entrance', 'exit', 'attention', 'special', 'shadow', 'text', 'morph']; track category) {
     <button
-      (click)="setCategory('all')"
-      [class.bg-purple-600]="selectedCategory() === 'all'"
-      [class.bg-slate-800]="selectedCategory() !== 'all'"
+      (click)="setCategory(category)"
+      [class.bg-purple-600]="selectedCategory() === category"
+      [class.bg-slate-800]="selectedCategory() !== category"
       class="px-6 py-2 rounded-full font-medium text-white transition-all hover:scale-105"
     >
-      All <span class="text-purple-300">({{ categoryCounts().all }})</span>
+      <span class="capitalize"> {{ category }} </span>
+      <span class="text-purple-300">({{ categoryCounts()[category] }})</span>
     </button>
-    <button
-      (click)="setCategory('entrance')"
-      [class.bg-purple-600]="selectedCategory() === 'entrance'"
-      [class.bg-slate-800]="selectedCategory() !== 'entrance'"
-      class="px-6 py-2 rounded-full font-medium text-white transition-all hover:scale-105"
-    >
-      Entrance <span class="text-purple-300">({{ categoryCounts().entrance }})</span>
-    </button>
-    <button
-      (click)="setCategory('exit')"
-      [class.bg-purple-600]="selectedCategory() === 'exit'"
-      [class.bg-slate-800]="selectedCategory() !== 'exit'"
-      class="px-6 py-2 rounded-full font-medium text-white transition-all hover:scale-105"
-    >
-      Exit <span class="text-purple-300">({{ categoryCounts().exit }})</span>
-    </button>
-    <button
-      (click)="setCategory('attention')"
-      [class.bg-purple-600]="selectedCategory() === 'attention'"
-      [class.bg-slate-800]="selectedCategory() !== 'attention'"
-      class="px-6 py-2 rounded-full font-medium text-white transition-all hover:scale-105"
-    >
-      Attention <span class="text-purple-300">({{ categoryCounts().attention }})</span>
-    </button>
-    <button
-      (click)="setCategory('special')"
-      [class.bg-purple-600]="selectedCategory() === 'special'"
-      [class.bg-slate-800]="selectedCategory() !== 'special'"
-      class="px-6 py-2 rounded-full font-medium text-white transition-all hover:scale-105"
-    >
-      Special <span class="text-purple-300">({{ categoryCounts().special }})</span>
-    </button>
-    <button
-      (click)="setCategory('shadow')"
-      [class.bg-purple-600]="selectedCategory() === 'shadow'"
-      [class.bg-slate-800]="selectedCategory() !== 'shadow'"
-      class="px-6 py-2 rounded-full font-medium text-white transition-all hover:scale-105"
-    >
-      Shadow <span class="text-purple-300">({{ categoryCounts().shadow }})</span>
-    </button>
-    <button
-      (click)="setCategory('text')"
-      [class.bg-purple-600]="selectedCategory() === 'text'"
-      [class.bg-slate-800]="selectedCategory() !== 'text'"
-      class="px-6 py-2 rounded-full font-medium text-white transition-all hover:scale-105"
-    >
-      Text <span class="text-purple-300">({{ categoryCounts().text }})</span>
-    </button>
-    <button
-      (click)="setCategory('morph')"
-      [class.bg-purple-600]="selectedCategory() === 'morph'"
-      [class.bg-slate-800]="selectedCategory() !== 'morph'"
-      class="px-6 py-2 rounded-full font-medium text-white transition-all hover:scale-105"
-    >
-      SVG Morph <span class="text-purple-300">({{ categoryCounts().morph }})</span>
-    </button>
+    }
   </div>
 
   <!-- Animations Grid -->
@@ -99,6 +46,7 @@
       }@else {
       <app-default [animation]="animation" />
       }
+
       <h3 class="text-white font-semibold mt-4 text-lg">{{ animation.name }}</h3>
       <p class="text-slate-400 text-sm">{{ animation.description }}</p>
       @for (example of animation.examples; track example) {

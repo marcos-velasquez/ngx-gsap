@@ -4,6 +4,8 @@ import { AnimateLoadDirective } from 'ngx-gsap';
 import { AnimationList } from './models/animations';
 import { Animations, Docs, Roadmap } from './components';
 
+type Tab = 'animations' | 'docs' | 'roadmap';
+
 @Component({
   imports: [CommonModule, Animations, Docs, Roadmap, AnimateLoadDirective],
   selector: 'app-root',
@@ -11,9 +13,9 @@ import { Animations, Docs, Roadmap } from './components';
 })
 export class App {
   public readonly animationsLength = new AnimationList().length;
-  public readonly activeTab = signal<'animations' | 'docs' | 'roadmap'>('animations');
+  public readonly activeTab = signal<Tab>('animations');
 
-  public setTab(tab: 'animations' | 'docs' | 'roadmap') {
+  public setTab(tab: Tab): void {
     this.activeTab.set(tab);
   }
 }
