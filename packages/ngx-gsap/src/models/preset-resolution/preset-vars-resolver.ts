@@ -5,6 +5,7 @@ import { ElementVarsResolver } from './element';
 import { TimelineVarsResolver } from './timeline';
 import { ScrollVarsResolver } from './scroll';
 import { SplitTextVarsResolver } from './split-text';
+import { MorphSVGVarsResolver } from './morph-svg';
 
 export class PresetVarsResolverChain {
   private readonly resolvers: PresetVarsResolver[] = [
@@ -13,6 +14,7 @@ export class PresetVarsResolverChain {
     new TimelineVarsResolver(),
     new ScrollVarsResolver(),
     new SplitTextVarsResolver(),
+    new MorphSVGVarsResolver(),
   ];
 
   constructor(private readonly matcher: PresetMatcher) {}

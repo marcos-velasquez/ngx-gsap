@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Condition, PropertyInvoker, $ } from '../../utils';
 import { Trigger, TriggerRef, TriggerType } from './trigger';
 import { SplitTextTimeline, SplitText, SplitTextVars } from './split-text';
+import { MorphSVGTimeline, MorphSVGVars } from './morph-svg';
 
 export class Timeline {
   private readonly gsapTimeline: gsap.core.Timeline;
@@ -55,8 +56,12 @@ export class Timeline {
     return ScrollTrigger.create({ trigger: this.element, animation: this.gsapTimeline, ...vars });
   }
 
-  public splitText(vars: SplitTextVars = {}): SplitText {
+  public splitText(vars: SplitTextVars): SplitText {
     return new SplitTextTimeline(this.element, this.timeline).create(vars);
+  }
+
+  public morphSVG(vars: MorphSVGVars): void {
+    new MorphSVGTimeline(this.element, this.timeline).morph(vars);
   }
 
   public target(vars: gsap.TweenVars): Timeline {
@@ -69,6 +74,7 @@ export class Timeline {
   }
 
   public play(): Timeline {
+    console.log('play', this.timeline.getTweensOf(this.element));
     this.gsapTimeline.play(0);
     return this;
   }

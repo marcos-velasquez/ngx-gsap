@@ -375,7 +375,7 @@ export const animations: Animation[] = [
   {
     name: 'Morph Rotational',
     category: 'morph',
-    value: 'morphRotational({ shape: "#morph", duration: 1.5 })',
+    value: 'morphRotational({ shape: "#morph", duration: 1 })',
     description: 'Morph SVG shape with rotational interpolation.',
     examples: [
       'morphRotational({ shape: "#star", duration: 1 })',
