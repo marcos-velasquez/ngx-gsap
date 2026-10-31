@@ -43,6 +43,20 @@ describe('PresetExpander', () => {
       expect(result).toContain('y:-50%');
     });
 
+    it('should expand presets where evaluating code is blocked, as under a strict CSP', () => {
+      const original = globalThis.Function;
+      globalThis.Function = function () {
+        throw new EvalError('Refused to evaluate a string as JavaScript');
+      } as unknown as FunctionConstructor;
+
+      try {
+        const result = new PresetExpander(new PresetMatcher('fadeIn({ x: "-100%" })')).expand();
+        expect(result).toContain('x:-100%');
+      } finally {
+        globalThis.Function = original;
+      }
+    });
+
     it('should return multiple sequences separated by semicolon', () => {
       const matcher = new PresetMatcher('fadeIn()');
       const expander = new PresetExpander(matcher);
