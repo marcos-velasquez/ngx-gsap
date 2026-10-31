@@ -11,15 +11,19 @@ export class AnimateExitDirective extends AnimateDirective {
   public override readonly trigger = input<TriggerType>('none' as const);
 
   private exiting?: Promise<void>;
+  private pendingCleanup?: ReturnType<typeof setTimeout>;
 
   protected onLeave(event: AnimationCallbackEvent): void {
+    clearTimeout(this.pendingCleanup);
     this.exiting = this.exit().then(() => event.animationComplete());
+    this.exiting.then(() => super.cleanup());
   }
 
-  /* Angular destroys the directive as soon as the exit starts, with the element still on screen. */
+  /* Angular destroys the directive right before calling the leave hook (22) or right after (20.3),
+     with the element still on screen either way. The revert waits a task so the hook can take over. */
   protected override cleanup(): void {
-    if (this.exiting) this.exiting.then(() => super.cleanup());
-    else super.cleanup();
+    if (this.exiting) return;
+    this.pendingCleanup = setTimeout(() => super.cleanup());
   }
 
   private exit(): Promise<void> {

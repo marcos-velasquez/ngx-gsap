@@ -67,6 +67,30 @@ describe('AnimateExitDirective', () => {
     expect(gsap.getTweensOf(element)).toHaveLength(0);
   });
 
+  it('should still animate the exit when Angular destroys the directive before calling the leave hook', async () => {
+    const animationComplete = jest.fn();
+    directive.ngOnDestroy();
+
+    (directive as unknown as { onLeave(event: object): void }).onLeave({ target: element, animationComplete });
+    await flush();
+    expect(gsap.getTweensOf(element)).toHaveLength(1);
+    expect(animationComplete).not.toHaveBeenCalled();
+
+    directive.timeline().timeline.progress(1, false);
+    await flush();
+    expect(animationComplete).toHaveBeenCalledTimes(1);
+    expect(gsap.getTweensOf(element)).toHaveLength(0);
+  });
+
+  it('should revert after a task when no leave hook comes', async () => {
+    directive.ngOnDestroy();
+    expect(gsap.getTweensOf(element)).toHaveLength(1);
+
+    await flush();
+
+    expect(gsap.getTweensOf(element)).toHaveLength(0);
+  });
+
   it('should let the element go at once when the system asks for reduced motion', async () => {
     jest.spyOn(window, 'matchMedia').mockReturnValue({ matches: true } as MediaQueryList);
 
