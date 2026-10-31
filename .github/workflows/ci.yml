@@ -28,5 +28,5 @@ jobs:
       - run: npx nx run-many -t lint test build -p ngx-gsap
       - run: npm run deps:validate
       - run: npx nx build angular-animations
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium firefox webkit
       - run: npx nx e2e e2e
