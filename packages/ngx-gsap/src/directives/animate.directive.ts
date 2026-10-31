@@ -6,7 +6,7 @@ import { AnimateSequence, Sequence } from '../models/preset-resolution';
 import { NGX_GSAP_CONFIG, ReducedMotion } from '../config';
 
 @ng.Directive({ selector: '[animate]', exportAs: 'animate' })
-export abstract class AnimateDirective implements ng.OnInit, ng.OnDestroy {
+export class AnimateDirective implements ng.OnInit, ng.OnDestroy {
   public readonly sequence = ng.input.required<AnimateSequence>({ alias: 'animate' });
   public readonly trigger = ng.input<TriggerType>('none');
 

@@ -11,6 +11,7 @@ import { AnimateScrollDirective } from '../animate-scroll.directive';
 import { AnimateDirective } from '../animate.directive';
 
 const IMPORTS = [
+  AnimateDirective,
   AnimateClickDirective,
   AnimateEnterDirective,
   AnimateHoverDirective,
@@ -121,6 +122,15 @@ describe('AnimateDirective', () => {
     const fixture = await render(`<div data-target animateLoad="to:x:100:0@duration=5"></div>`);
 
     expect(gsap.getProperty(elementOf(fixture), 'x')).toBe(100);
+  });
+
+  it('should take its trigger as an input on the universal directive', async () => {
+    const fixture = await render(`<div data-target animate="to:x:100:0" trigger="click"></div>`);
+    const play = jest.spyOn(directiveOf(fixture, AnimateDirective).timeline(), 'play');
+
+    elementOf(fixture).click();
+
+    expect(play).toHaveBeenCalledTimes(1);
   });
 
   it('should play on hover', async () => {
