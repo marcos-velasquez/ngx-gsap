@@ -8,8 +8,7 @@ import { assert } from '../../utils';
 
 export type Preset = (params?: Record<string, unknown>) => string;
 
-/* The only names a sequence can resolve to. A lookup in this object, unlike one on a class, never
-   reaches `name`, `length` or `prototype`, and nothing is ever evaluated as code. */
+/* A lookup here, unlike one on a class, never reaches `name`, `length` or `prototype`. */
 export const PRESETS = {
   // Entrance animations, from EntrancePresets
   fadeIn: EntrancePresets.fadeIn,
@@ -78,8 +77,8 @@ export class Presets {
     return (PRESETS[presetName as PresetName] as Preset)(params);
   }
 
-  /* The keys a preset destructures from its params, recorded by calling it with a proxy. Its source
-     text is no use here: a minified build renames `{ x = '0' }` to `{x:t="0"}`, while the keys survive. */
+  /* Recorded through a proxy rather than read from the source: minified, `{ x = '0' }` becomes
+     `{x:t="0"}`, but the keys survive. */
   public static paramNames(presetName: PresetName): string[] {
     return Presets.paramNamesOf(PRESETS[presetName] as Preset);
   }

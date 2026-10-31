@@ -12,11 +12,11 @@ export class PresetMatcher {
   }
 
   public get presetName(): string {
-    return this.isFunction() ? this.match![1] : this.sequence;
+    return this.match?.[1] ?? this.sequence;
   }
 
   public get argsString(): string {
-    return this.match![2];
+    return this.match?.[2] ?? '';
   }
 
   public paramNames(): string[] {

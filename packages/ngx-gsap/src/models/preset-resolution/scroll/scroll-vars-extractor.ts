@@ -1,5 +1,4 @@
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import type { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PresetMatcher } from '../preset-matcher';
 import { PresetVarsExtractor } from '../__shared__';
 

@@ -1,10 +1,14 @@
 import { Trigger, TriggerType } from './trigger';
-import { Timeline } from './timeline';
+import { Timeline, TimelineOptions } from './timeline';
 
 const cache = new WeakMap<HTMLElement, Map<TriggerType, Timeline>>();
 
 export class TimelineFactory {
-  constructor(private readonly element: HTMLElement, private readonly trigger: TriggerType) {
+  constructor(
+    private readonly element: HTMLElement,
+    private readonly trigger: TriggerType,
+    private readonly options: TimelineOptions = {}
+  ) {
     if (!cache.has(this.element)) {
       cache.set(this.element, new Map());
     }
@@ -19,9 +23,11 @@ export class TimelineFactory {
   }
 
   private _create(): Timeline {
-    return new Timeline(this.element, {
-      immediateRender: Trigger.isScroll(this.trigger).or(Trigger.isLoad(this.trigger)).evaluate(),
-    }).with(this.trigger);
+    return new Timeline(
+      this.element,
+      { immediateRender: Trigger.isScroll(this.trigger).or(Trigger.isLoad(this.trigger)).evaluate() },
+      this.options
+    ).with(this.trigger);
   }
 
   public create(): Timeline {

@@ -23,6 +23,7 @@ module.exports = {
           '(^|/)tsconfig\\.json$', // TypeScript config
           '(^|/)index\\.ts$', // barrel exports
           'public-api\\.ts$', // public API exports
+          'test-polyfills\\.ts$', // loaded by jest through setupFiles
         ],
       },
       to: {},

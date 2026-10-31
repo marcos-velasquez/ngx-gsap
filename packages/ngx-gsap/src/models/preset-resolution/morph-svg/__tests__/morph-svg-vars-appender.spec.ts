@@ -1,3 +1,4 @@
+import { MorphSVGVars } from '../../../timeline/morph-svg';
 import { MorphSVGVarsAppender } from '../morph-svg-vars-appender';
 
 describe('MorphSVGVarsAppender', () => {
@@ -27,8 +28,7 @@ describe('MorphSVGVarsAppender', () => {
   it('should return sequence unchanged when morphSVGVars is empty', () => {
     const sequence = 'to:x:100:>;to:y:50:0';
     const appender = new MorphSVGVarsAppender(sequence);
-    // MorphSVGVars requires a `shape` property in the type definitions; cast to any for empty case
-    const result = appender.append({} as any);
+    const result = appender.append({} as Partial<MorphSVGVars> as MorphSVGVars);
 
     expect(result).toBe(sequence);
   });
