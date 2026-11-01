@@ -1,12 +1,14 @@
 name: Release
 
-# Publishes the version in packages/ngx-gsap/package.json when a matching tag is pushed:
+# Stages the version in packages/ngx-gsap/package.json on npm when a matching tag is pushed:
 #   cd packages/ngx-gsap && npm version 2.1.0 --no-git-tag-version
 #   git commit -am "chore: release 2.1.0" && git tag v2.1.0 && git push --follow-tags
+# Then approve it on npmjs.com (package > Staged Packages > Approve) or with
+# `npm stage approve <stage-id>`; both ask for 2FA, and nothing is installable until then.
 #
 # No token is stored: npm trusts this workflow through OIDC (Trusted Publishing), configured on
 # npmjs.com under the package's Settings > Trusted Publisher with this repository and
-# `release.yml`. A tag whose version npm already has is checked and skipped, not re-published.
+# `release.yml`, allowed to stage only. A tag whose version npm already has is skipped.
 on:
   push:
     tags: ['v*']
@@ -16,7 +18,7 @@ permissions:
   id-token: write
 
 jobs:
-  publish:
+  stage:
     runs-on: ubuntu-24.04
     env:
       NX_DAEMON: false
@@ -28,8 +30,8 @@ jobs:
           node-version: 22
           cache: npm
           registry-url: https://registry.npmjs.org
-      # Trusted Publishing needs npm 11.5.1 or later; Node 22 ships npm 10.
-      - run: npm install -g npm@^11.5.1
+      # Staged publishing needs npm 11.15.0 or later; Node 22 ships npm 10.
+      - run: npm install -g npm@^11.15.0
       - run: npm ci
       - run: npx nx run-many -t lint test -p ngx-gsap
       - name: Tag matches the package version
@@ -39,11 +41,13 @@ jobs:
         run: |
           VERSION=$(node -p "require('./packages/ngx-gsap/package.json').version")
           if npm view "ngx-gsap@$VERSION" version > /dev/null 2>&1; then
-            echo "ngx-gsap@$VERSION is already on npm; nothing to publish."
+            echo "ngx-gsap@$VERSION is already on npm; nothing to stage."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
+          # A pre-release must not become `latest`.
+          if [[ "$VERSION" == *-* ]]; then echo "dist-tag=next" >> "$GITHUB_OUTPUT"; else echo "dist-tag=latest" >> "$GITHUB_OUTPUT"; fi
       - run: npx nx build ngx-gsap --configuration=production
         if: steps.published.outputs.skip != 'true'
-      - run: npm publish --access public
+      - run: npm stage publish --access public --tag ${{ steps.published.outputs.dist-tag }}
         if: steps.published.outputs.skip != 'true'
         working-directory: dist/packages/ngx-gsap
