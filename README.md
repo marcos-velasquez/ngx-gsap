@@ -12,6 +12,8 @@ For complete documentation, examples, and API reference, see the [ngx-gsap packa
 npm install gsap ngx-gsap
 ```
 
+Requires Angular 20.3+ and GSAP 3.13+.
+
 ```typescript
 import { AnimateClickDirective, AnimateLoadDirective } from 'ngx-gsap';
 
@@ -35,6 +37,7 @@ This is a monorepo containing:
 
 - [Full Documentation](./packages/ngx-gsap/README.md)
 - [Demo App](https://marcos-velasquez.github.io/ngx-gsap)
+- [Changelog](./CHANGELOG.md)
 
 ## 📄 License
 

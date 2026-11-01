@@ -1,0 +1,35 @@
+name: Release
+
+# Publishes the version in packages/ngx-gsap/package.json when a matching tag is pushed:
+#   cd packages/ngx-gsap && npm version 2.0.0 && git push --follow-tags
+# Needs an npm automation token in the repository secret NPM_TOKEN.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    env:
+      NX_DAEMON: false
+      NX_NO_CLOUD: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npx nx run-many -t lint test -p ngx-gsap
+      - name: Tag matches the package version
+        run: test "v$(node -p "require('./packages/ngx-gsap/package.json').version")" = "$GITHUB_REF_NAME"
+      - run: npx nx build ngx-gsap --configuration=production
+      - run: npm publish --provenance --access public
+        working-directory: dist/packages/ngx-gsap
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

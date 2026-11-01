@@ -1,4 +1,4 @@
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import type { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { RegexPatterns } from '../../@constants';
 import { PropsExtractor } from '../__shared__';
 

@@ -4,65 +4,89 @@ import { AttentionPresets } from './presets/attention-presets';
 import { EffectPresets } from './presets/effect-presets';
 import { TextPresets } from './presets/text-presets';
 import { MorphPresets } from './presets/morph-presets';
+import { assert } from '../../utils';
 
 export type Preset = (params?: Record<string, unknown>) => string;
 
+/* A lookup here, unlike one on a class, never reaches `name`, `length` or `prototype`. */
+export const PRESETS = {
+  // Entrance animations, from EntrancePresets
+  fadeIn: EntrancePresets.fadeIn,
+  zoomIn: EntrancePresets.zoomIn,
+  slideIn: EntrancePresets.slideIn,
+  bounceIn: EntrancePresets.bounceIn,
+  rotateIn: EntrancePresets.rotateIn,
+  flipIn: EntrancePresets.flipIn,
+  rollIn: EntrancePresets.rollIn,
+  lightSpeedIn: EntrancePresets.lightSpeedIn,
+  swingIn: EntrancePresets.swingIn,
+  jackInTheBox: EntrancePresets.jackInTheBox,
+  backIn: EntrancePresets.backIn,
+  bigEntrance: EntrancePresets.bigEntrance,
+  hatch: EntrancePresets.hatch,
+
+  // Exit animations, from ExitPresets
+  fadeOut: ExitPresets.fadeOut,
+  zoomOut: ExitPresets.zoomOut,
+  slideOut: ExitPresets.slideOut,
+  flipOut: ExitPresets.flipOut,
+  rollOut: ExitPresets.rollOut,
+  rotateOut: ExitPresets.rotateOut,
+  bounceOut: ExitPresets.bounceOut,
+  lightSpeedOut: ExitPresets.lightSpeedOut,
+  backOut: ExitPresets.backOut,
+
+  // Attention animations, from AttentionPresets
+  pulse: AttentionPresets.pulse,
+  shake: AttentionPresets.shake,
+  jello: AttentionPresets.jello,
+  heartBeat: AttentionPresets.heartBeat,
+  flash: AttentionPresets.flash,
+  spin: AttentionPresets.spin,
+  skew: AttentionPresets.skew,
+  expand: AttentionPresets.expand,
+  pull: AttentionPresets.pull,
+
+  // Effect animations, from EffectPresets
+  blur: EffectPresets.blur,
+  morphing: EffectPresets.morphing,
+  float: EffectPresets.float,
+  pop: EffectPresets.pop,
+  glow: EffectPresets.glow,
+
+  // Text animations, from TextPresets
+  screenReader: TextPresets.screenReader,
+  slideReveal: TextPresets.slideReveal,
+  wordDrop: TextPresets.wordDrop,
+  textFlip: TextPresets.textFlip,
+
+  // Morph animations, from MorphPresets
+  morphLinear: MorphPresets.morphLinear,
+  morphRotational: MorphPresets.morphRotational,
+} satisfies Record<string, (params: never) => string>;
+
+export type PresetName = keyof typeof PRESETS;
+
 export class Presets {
-  public static eval(presetName: string, argsString = ''): string {
-    return new Function('Presets', `return Presets.${presetName}(${argsString})`)(Presets);
+  public static has(presetName: string): presetName is PresetName {
+    return Object.prototype.hasOwnProperty.call(PRESETS, presetName);
   }
 
-  // Entrance animations - delegated to EntrancePresets
-  public static fadeIn = EntrancePresets.fadeIn;
-  public static zoomIn = EntrancePresets.zoomIn;
-  public static slideIn = EntrancePresets.slideIn;
-  public static bounceIn = EntrancePresets.bounceIn;
-  public static rotateIn = EntrancePresets.rotateIn;
-  public static flipIn = EntrancePresets.flipIn;
-  public static rollIn = EntrancePresets.rollIn;
-  public static lightSpeedIn = EntrancePresets.lightSpeedIn;
-  public static swingIn = EntrancePresets.swingIn;
-  public static jackInTheBox = EntrancePresets.jackInTheBox;
-  public static backIn = EntrancePresets.backIn;
-  public static bigEntrance = EntrancePresets.bigEntrance;
-  public static hatch = EntrancePresets.hatch;
+  public static invoke(presetName: string, params?: Record<string, unknown>): string {
+    assert(Presets.has(presetName), `Unknown preset: ${presetName}`);
+    return (PRESETS[presetName as PresetName] as Preset)(params);
+  }
 
-  // Exit animations - delegated to ExitPresets
-  public static fadeOut = ExitPresets.fadeOut;
-  public static zoomOut = ExitPresets.zoomOut;
-  public static slideOut = ExitPresets.slideOut;
-  public static flipOut = ExitPresets.flipOut;
-  public static rollOut = ExitPresets.rollOut;
-  public static rotateOut = ExitPresets.rotateOut;
-  public static bounceOut = ExitPresets.bounceOut;
-  public static lightSpeedOut = ExitPresets.lightSpeedOut;
-  public static backOut = ExitPresets.backOut;
+  /* Recorded through a proxy rather than read from the source: minified, `{ x = '0' }` becomes
+     `{x:t="0"}`, but the keys survive. */
+  public static paramNames(presetName: PresetName): string[] {
+    return Presets.paramNamesOf(PRESETS[presetName] as Preset);
+  }
 
-  // Attention animations - delegated to AttentionPresets
-  public static pulse = AttentionPresets.pulse;
-  public static shake = AttentionPresets.shake;
-  public static jello = AttentionPresets.jello;
-  public static heartBeat = AttentionPresets.heartBeat;
-  public static flash = AttentionPresets.flash;
-  public static spin = AttentionPresets.spin;
-  public static skew = AttentionPresets.skew;
-  public static expand = AttentionPresets.expand;
-  public static pull = AttentionPresets.pull;
-
-  // Effect animations - delegated to EffectPresets
-  public static blur = EffectPresets.blur;
-  public static morphing = EffectPresets.morphing;
-  public static float = EffectPresets.float;
-  public static pop = EffectPresets.pop;
-  public static glow = EffectPresets.glow;
-
-  // Text animations - delegated to TextPresets
-  public static screenReader = TextPresets.screenReader;
-  public static slideReveal = TextPresets.slideReveal;
-  public static wordDrop = TextPresets.wordDrop;
-  public static textFlip = TextPresets.textFlip;
-
-  // Morph animations - delegated to MorphPresets
-  public static morphLinear = MorphPresets.morphLinear;
-  public static morphRotational = MorphPresets.morphRotational;
+  public static paramNamesOf(preset: Preset): string[] {
+    const read = new Set<string>();
+    const recorder = new Proxy({}, { get: (_, key) => (typeof key === 'string' && read.add(key), undefined) });
+    preset(recorder);
+    return [...read];
+  }
 }

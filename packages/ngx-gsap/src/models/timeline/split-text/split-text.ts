@@ -1,8 +1,9 @@
 import { gsap } from 'gsap';
-import { SplitText } from 'gsap/SplitText';
+import type { SplitText } from 'gsap/SplitText';
 import { assert, $ } from '../../../utils';
+import { GsapPlugins } from '../../plugins';
 
-export { SplitText } from 'gsap/SplitText';
+export type { SplitText } from 'gsap/SplitText';
 export type SplitTextTarget = 'chars' | 'words' | 'lines';
 export type SplitTextVars = Partial<SplitText.Vars & { target: SplitTextTarget }>;
 
@@ -13,7 +14,7 @@ export class SplitTextTimeline {
     const config = { target: 'chars', type: 'chars,words,lines', autoSplit: true, ...vars } as Required<SplitTextVars>;
     SplitTextTimeline.validateVars(config);
     const element = $(this.element).queryAll(config['selector']);
-    return SplitText.create(element, {
+    return GsapPlugins.SplitText.create(element, {
       ...config,
       onSplit: (self) => {
         const children = this.timeline.getChildren();

@@ -42,25 +42,10 @@ export class Roadmap {
       ],
     },
     {
-      title: 'Animation Presets',
+      title: 'More Presets',
       status: 'Coming Soon',
-      description: 'Collection of ready-to-use predefined animations',
+      description: 'New ready-to-use animations on top of the entrance, exit, attention and text presets',
       items: [
-        {
-          name: 'Entrance Animations',
-          description: 'Fade in, slide in, zoom in, bounce in, etc.',
-          icon: '🎭',
-        },
-        {
-          name: 'Exit Animations',
-          description: 'Fade out, slide out, zoom out, etc.',
-          icon: '🚪',
-        },
-        {
-          name: 'Attention Seekers',
-          description: 'Shake, pulse, wobble, bounce, etc.',
-          icon: '👀',
-        },
         {
           name: 'Loading Animations',
           description: 'Spinners, progress bars, skeleton screens',
@@ -68,7 +53,7 @@ export class Roadmap {
         },
         {
           name: 'Page Transitions',
-          description: 'Smooth transitions between routes',
+          description: 'Route transitions built on animateExit',
           icon: '🔄',
         },
       ],

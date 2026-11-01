@@ -1,6 +1,8 @@
 import { Condition } from '../../utils';
 
-export type TriggerType = 'enter' | 'leave' | 'click' | 'load' | 'scroll' | 'none';
+/* `enter` and `leave` are the 1.x names for `hover` and `hoverOut`, kept so existing templates still
+   work. They name the pointer, not the element entering or leaving the DOM. */
+export type TriggerType = 'hover' | 'hoverOut' | 'enter' | 'leave' | 'click' | 'load' | 'scroll' | 'none';
 export type TriggerRef = { trigger: Trigger; connect: () => void; disconnect: () => void };
 
 export class Trigger {
@@ -20,7 +22,7 @@ export class Trigger {
     return Trigger.isScroll(this.triggerType);
   }
 
-  private onEnter(callback: () => void): TriggerRef {
+  private onHover(callback: () => void): TriggerRef {
     return {
       trigger: this,
       connect: () => this.el.addEventListener('mouseenter', callback),
@@ -28,7 +30,7 @@ export class Trigger {
     };
   }
 
-  private onLeave(callback: () => void): TriggerRef {
+  private onHoverOut(callback: () => void): TriggerRef {
     return {
       trigger: this,
       connect: () => this.el.addEventListener('mouseleave', callback),
@@ -53,10 +55,12 @@ export class Trigger {
     return {
       then: (callback: () => void) => {
         switch (this.triggerType) {
+          case 'hover':
           case 'enter':
-            return this.onEnter(callback);
+            return this.onHover(callback);
+          case 'hoverOut':
           case 'leave':
-            return this.onLeave(callback);
+            return this.onHoverOut(callback);
           case 'click':
             return this.onClick(callback);
           case 'load':

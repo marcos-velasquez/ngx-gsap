@@ -1,15 +1,17 @@
 {
   "name": "ngx-gsap",
-  "version": "1.1.0",
-  "description": "Powerful GSAP animations for Angular with 30+ preset animations - highly customizable and easy to use",
+  "version": "2.0.0",
+  "description": "GSAP animations for Angular: declarative presets, scroll and exit animations, and injectGsap() for your own timelines",
   "keywords": [
     "angular",
     "gsap",
+    "animation",
     "animations",
-    "ngx",
     "directive",
-    "web-animations",
-    "presets"
+    "scrolltrigger",
+    "splittext",
+    "presets",
+    "injectGsap"
   ],
   "author": "Marcos Velasquez",
   "license": "MIT",
@@ -17,13 +19,14 @@
     "type": "git",
     "url": "https://github.com/marcos-velasquez/ngx-gsap"
   },
-  "homepage": "marcos-velasquez.github.io/ngx-gsap",
+  "homepage": "https://marcos-velasquez.github.io/ngx-gsap",
   "bugs": {
     "url": "https://github.com/marcos-velasquez/ngx-gsap/issues"
   },
   "peerDependencies": {
-    "@angular/core": "^18.0.0 || ^19.0.0 || ^20.0.0",
-    "gsap": "^3.12.0"
+    "@angular/common": ">=20.3.0",
+    "@angular/core": ">=20.3.0",
+    "gsap": "^3.13.0"
   },
   "sideEffects": false
 }

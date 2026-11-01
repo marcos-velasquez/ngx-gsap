@@ -16,12 +16,6 @@ export class RegexPatterns {
    */
   public static readonly ANIMATION_SEQUENCE = /^(?:(to|from|set):)?([^:]+):([^:@;]+)(?::([^@;]+))?(?:@([^;]+))?$/;
 
-  /**
-   * Matches destructured parameters in function string
-   * Example: "({ x, y = 0, duration = 2 })" → "x, y = 0, duration = 2"
-   * Groups: [1] = parameters string
-   */
-  public static readonly DESTRUCTURED_PARAMS = /\{([^}]+)\}/;
 
   /**
    * Matches timeline properties syntax: timeline@props

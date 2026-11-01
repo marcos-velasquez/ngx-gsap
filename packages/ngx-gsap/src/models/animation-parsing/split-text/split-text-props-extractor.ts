@@ -1,4 +1,4 @@
-import { SplitText } from 'gsap/SplitText';
+import type { SplitText } from 'gsap/SplitText';
 import { RegexPatterns } from '../../@constants';
 import { PropsExtractor } from '../__shared__';
 

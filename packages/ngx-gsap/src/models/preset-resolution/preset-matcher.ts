@@ -1,6 +1,6 @@
 import { assert } from '../../utils';
 import { RegexPatterns } from '../@constants';
-import { Presets, Preset } from './presets';
+import { Presets, PresetName } from './presets';
 
 export type PresetMatch = { presetName: string; argsString: string; hasArgs: boolean };
 
@@ -12,22 +12,16 @@ export class PresetMatcher {
   }
 
   public get presetName(): string {
-    return this.isFunction() ? this.match![1] : this.sequence;
+    return this.match?.[1] ?? this.sequence;
   }
 
   public get argsString(): string {
-    return this.match![2];
-  }
-
-  public get preset(): Preset {
-    return (Presets as any)[this.presetName];
+    return this.match?.[2] ?? '';
   }
 
   public paramNames(): string[] {
-    const paramMatch = this.preset.toString().match(RegexPatterns.DESTRUCTURED_PARAMS);
-    assert(!!paramMatch, 'Preset must have destructured parameters');
-
-    return paramMatch![1].split(',').map((p) => p.trim().split('=')[0].trim());
+    assert(this.isPreset(), `Unknown preset: ${this.presetName}`);
+    return Presets.paramNames(this.presetName as PresetName);
   }
 
   public isFunction(): boolean {
@@ -35,7 +29,7 @@ export class PresetMatcher {
   }
 
   public isPreset(): boolean {
-    return !!this.preset;
+    return Presets.has(this.presetName);
   }
 
   public asPresetMatch(): PresetMatch {

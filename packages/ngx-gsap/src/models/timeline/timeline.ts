@@ -1,18 +1,29 @@
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import type { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Condition, PropertyInvoker, $ } from '../../utils';
+import { GsapPlugins } from '../plugins';
 import { Trigger, TriggerRef, TriggerType } from './trigger';
 import { SplitTextTimeline, SplitText, SplitTextVars } from './split-text';
 import { MorphSVGTimeline, MorphSVGVars } from './morph-svg';
 
+export type TimelineEvent = 'onStart' | 'onComplete' | 'onUpdate' | 'onRepeat' | 'onReverseComplete';
+
+export type TimelineOptions = { reducedMotion?: () => boolean };
+
+/* GSAP's own `_bigNum`: the total duration it reports for a timeline that repeats forever. */
+const INFINITE_DURATION = 1e8;
+
 export class Timeline {
   private readonly gsapTimeline: gsap.core.Timeline;
-  private triggerRef!: TriggerRef;
+  private readonly listeners = new Map<TimelineEvent, Set<VoidFunction>>();
+  private triggerRef?: TriggerRef;
 
-  constructor(private readonly element: HTMLElement, defaults: gsap.TweenVars) {
+  constructor(
+    private readonly element: HTMLElement,
+    defaults: gsap.TweenVars,
+    private readonly options: TimelineOptions = {}
+  ) {
     this.gsapTimeline = gsap.timeline({ paused: true, defaults });
-    this.gsapTimeline.eventCallback('onStart', () => this.disconnect() as unknown as void);
-    this.gsapTimeline.eventCallback('onComplete', () => this.connect() as unknown as void);
   }
 
   public get timeline(): gsap.core.Timeline {
@@ -23,13 +34,25 @@ export class Timeline {
     return this.gsapTimeline.isActive();
   }
 
+  /* GSAP keeps one callback per event: a second `eventCallback` would replace the first. */
+  public on(event: TimelineEvent, listener: VoidFunction): VoidFunction {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, new Set());
+      this.gsapTimeline.eventCallback(event, () => this.listeners.get(event)?.forEach((fn) => fn()));
+    }
+    this.listeners.get(event)?.add(listener);
+    return () => this.listeners.get(event)?.delete(listener);
+  }
+
   public with(triggerType: TriggerType): Timeline {
-    this.triggerRef = new Trigger(this.element).when(triggerType).then(() => this.play());
+    this.triggerRef = new Trigger(this.element).when(triggerType).then(() => {
+      if (!this.isActive()) this.play();
+    });
     return this;
   }
 
   public isScroll(): Condition {
-    return this.triggerRef.trigger.isScroll();
+    return this.triggerRef?.trigger.isScroll() ?? new Condition(() => false);
   }
 
   public configure(vars: gsap.TimelineVars): Timeline {
@@ -52,8 +75,12 @@ export class Timeline {
     return this;
   }
 
-  public scroll(vars: ScrollTrigger.StaticVars = {}): ScrollTrigger {
-    return ScrollTrigger.create({ trigger: this.element, animation: this.gsapTimeline, ...vars });
+  public scroll(vars: ScrollTrigger.StaticVars = {}): ScrollTrigger | undefined {
+    if (this.isReducedMotion()) {
+      this.settle();
+      return undefined;
+    }
+    return GsapPlugins.ScrollTrigger.create({ trigger: this.element, animation: this.gsapTimeline, ...vars });
   }
 
   public splitText(vars: SplitTextVars): SplitText {
@@ -74,8 +101,24 @@ export class Timeline {
   }
 
   public play(): Timeline {
+    if (this.isReducedMotion()) return this.settle();
     this.gsapTimeline.play(0);
     return this;
+  }
+
+  /* Callbacks fire, so a listener waiting for completion still hears it. An animation that repeats
+     forever has no end to rest at, so it stays at its natural state. */
+  public settle(): Timeline {
+    if (this.gsapTimeline.totalDuration() >= INFINITE_DURATION) {
+      this.gsapTimeline.pause(0);
+    } else {
+      this.gsapTimeline.totalProgress(1, false).pause();
+    }
+    return this;
+  }
+
+  public isReducedMotion(): boolean {
+    return this.options.reducedMotion?.() ?? false;
   }
 
   public pause(): Timeline {
@@ -114,12 +157,12 @@ export class Timeline {
   }
 
   public disconnect(): Timeline {
-    this.triggerRef.disconnect();
+    this.triggerRef?.disconnect();
     return this;
   }
 
   public connect(): Timeline {
-    this.triggerRef.connect();
+    this.triggerRef?.connect();
     return this;
   }
 
