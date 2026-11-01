@@ -1,6 +1,12 @@
 # ngx-gsap
 
-A lightweight Angular animation library powered by GSAP. Highly customizable, declarative, and easy to use.
+GSAP animations for Angular: declarative presets on any element, scroll and exit animations, and `injectGsap()` for the timelines you write yourself.
+
+- Runs outside Angular's zone, so animating never triggers change detection.
+- Cleans up after itself: everything a directive or `injectGsap()` creates is reverted when the host is destroyed.
+- Respects `prefers-reduced-motion` by default.
+- Works with server-side rendering and with a strict Content Security Policy.
+- ScrollTrigger, SplitText and MorphSVG load only when a sequence uses them.
 
 ## Installation
 
@@ -8,22 +14,23 @@ A lightweight Angular animation library powered by GSAP. Highly customizable, de
 npm install gsap ngx-gsap
 ```
 
+Requires Angular 20.3 or later and GSAP 3.13 or later.
+
 ## Quick Start
 
 Import the directives you need:
 
 ```typescript
-import { AnimateClickDirective, AnimateEnterDirective, AnimateLeaveDirective, AnimateLoadDirective, AnimateScrollDirective } from 'ngx-gsap';
+import { AnimateClickDirective, AnimateHoverDirective, AnimateLoadDirective, AnimateScrollDirective } from 'ngx-gsap';
 
 @Component({
-  imports: [AnimateClickDirective, AnimateEnterDirective, AnimateLeaveDirective, AnimateLoadDirective, AnimateScrollDirective],
+  imports: [AnimateClickDirective, AnimateHoverDirective, AnimateLoadDirective, AnimateScrollDirective],
   template: `
     <div animateClick="pulse">Click me!</div>
-    <div animateEnter="fadeIn">Hover over me!</div>
-    <div animateLeave="fadeOut">Mouse leave</div>
+    <div animateHover="pulse">Hover over me!</div>
     <div animateLoad="slideIn">Animates on page load</div>
     <div animateScroll="fadeIn">Fades in when scrolled into view</div>
-  `
+  `,
 })
 ```
 
@@ -56,24 +63,31 @@ There are **two ways** to trigger animations:
 Each directive handles a specific event:
 
 ```html
-<!-- animateLoad - Triggers on page load -->
+<!-- animateLoad - Triggers when the element renders -->
 <div animateLoad="fadeIn">Appears on page load</div>
 
 <!-- animateClick - Triggers on click -->
 <button animateClick="pulse">Pulse on click</button>
 
-<!-- animateEnter - Triggers on mouse enter (hover) -->
-<div animateEnter="fadeIn">Fades in on hover</div>
+<!-- animateHover - Triggers when the pointer enters -->
+<div animateHover="pulse">Pulses on hover</div>
 
-<!-- animateLeave - Triggers on mouse leave -->
-<div animateLeave="fadeOut">Fades out on mouse leave</div>
+<!-- animateHoverOut - Triggers when the pointer leaves -->
+<div animateHoverOut="shake">Shakes when the pointer leaves</div>
 
 <!-- animateScroll - Triggers on scroll position -->
 <div animateScroll="fadeIn({ scroll: { start: 'top center', scrub: true } })">Smooth fade</div>
 
+<!-- animateExit - Plays when Angular removes the element -->
+@if (visible) {
+  <div animateExit="fadeOut">Fades out before it leaves the DOM</div>
+}
+
 <!-- Combine multiple directives -->
-<div animateClick="scale" animateEnter="fadeIn" animateLeave="fadeOut">Multiple triggers</div>
+<div animateClick="pulse" animateHover="pulse">Multiple triggers</div>
 ```
+
+A trigger that fires while its animation is still running is ignored rather than restarting it halfway.
 
 ### 2. Universal `animate` Directive
 
@@ -82,9 +96,28 @@ Use with the `trigger` input for flexibility:
 ```html
 <div animate="fadeIn" trigger="load">Appears on page load</div>
 <button animate="pulse" trigger="click">Pulse on click</button>
-<div animate="fadeIn" trigger="enter">Fades in on hover</div>
-<div animate="fadeOut" trigger="leave">Fades out on mouse leave</div>
+<div animate="pulse" trigger="hover">Pulses on hover</div>
+<div animate="shake" trigger="hoverOut">Shakes when the pointer leaves</div>
 <div animate="zoomIn" trigger="scroll">Zoom in when scrolled into view</div>
+```
+
+### Exit animations
+
+`animateExit` runs when Angular removes the element — an `@if` turning false, an item leaving a `@for`, a route changing — and Angular keeps the element in the DOM until the animation ends. It is built on Angular's own `animate.leave`.
+
+```html
+@for (item of items(); track item.id) {
+  <li animateExit="slideOut({ x: '100%' })">{{ item.name }}</li>
+}
+```
+
+### Typed presets
+
+Any directive also takes a preset as an object. Its parameters autocomplete, and GSAP vars ride along as they do in the string form:
+
+```html
+<div [animateClick]="{ preset: 'fadeIn', x: '-100%', duration: 2 }">Typed preset</div>
+<div [animateScroll]="{ preset: 'zoomIn', scroll: { start: 'top center', scrub: true } }">Typed scroll</div>
 ```
 
 ## Animation Presets
@@ -368,6 +401,58 @@ Control animations programmatically using template references:
 - `restart()` - Restart the animation from the beginning
 - `invalidate()` - Invalidate and reset the animation
 
+## Configuration
+
+`provideNgxGsap()` is optional; without it, the defaults below apply.
+
+```typescript
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { provideNgxGsap } from 'ngx-gsap';
+
+bootstrapApplication(App, {
+  providers: [
+    provideNgxGsap({
+      reducedMotion: 'respect', // default; 'ignore' always animates
+      plugins: { scrollTrigger: ScrollTrigger }, // register up front instead of loading on first use
+    }),
+  ],
+});
+```
+
+### Reduced motion
+
+When the system asks for reduced motion (`prefers-reduced-motion: reduce`), every animation rests at its end instead of playing, and `animateComplete` still fires. An animation that repeats forever has no end, so it stays still. Exit animations let the element go at once.
+
+### Plugins
+
+ScrollTrigger, SplitText and MorphSVG are imported the first time a sequence needs them, so an app that only uses simple presets never downloads them. Pass them to `plugins` to load them with the app instead.
+
+## Your own timelines: `injectGsap()`
+
+For animations a preset cannot express, `injectGsap()` gives a component a GSAP context tied to its lifecycle — Angular's counterpart to React's `useGSAP`:
+
+```typescript
+import { gsap } from 'gsap';
+import { injectGsap } from 'ngx-gsap';
+
+@Component({ template: `<ul><li class="card">…</li></ul>` })
+export class Cards {
+  private readonly gsap = injectGsap(() => {
+    gsap.from('.card', { y: 24, opacity: 0, stagger: 0.1 });
+  });
+
+  protected onShuffle(): void {
+    this.gsap.run(() => gsap.to('.card', { rotate: 'random(-5, 5)' }));
+  }
+}
+```
+
+- The setup runs after the first render; selector strings resolve inside the host element.
+- `run()` adds more animations to the same context later.
+- Everything runs outside Angular's zone and is reverted when the component is destroyed.
+- On the server nothing runs, and `run()` returns `undefined`.
+- `reducedMotion` says whether the user asked for less motion and the app respects it.
+
 ## Important Notes
 
 ### ⚠️ CSS Transitions Conflict
@@ -390,6 +475,18 @@ Control animations programmatically using template references:
 ```
 
 **Rule of thumb:** If GSAP animates an element's `transform`, `opacity`, or any other property, don't use CSS transitions/animations on those same properties for that element.
+
+### Server-side rendering
+
+Directives and `injectGsap()` do nothing on the server: animations start in the browser after the first render.
+
+### Content Security Policy
+
+ngx-gsap never evaluates strings as code, so it works under a policy without `'unsafe-eval'`.
+
+### Migrating from 1.x
+
+See the [changelog](https://github.com/marcos-velasquez/ngx-gsap/blob/main/CHANGELOG.md#migrating-from-1x). In short: `animateEnter` / `animateLeave` became `animateHover` / `animateHoverOut` (the old names keep working, with a warning), and reduced motion is respected by default.
 
 ## License
 
